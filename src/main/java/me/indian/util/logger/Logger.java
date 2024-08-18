@@ -48,7 +48,7 @@ public abstract class Logger {
         }
 
         try {
-            this.logFile = new File(logsDir, "ServerLog-" + this.configuration.appStartDate() + ".log");
+            this.logFile = new File(logsDir, "Log-" + this.configuration.appStartDate() + ".log");
             final FileOutputStream fileOutputStream = new FileOutputStream(this.logFile, true);
             this.printStream = new PrintStream(fileOutputStream);
         } catch (final Exception exception) {
