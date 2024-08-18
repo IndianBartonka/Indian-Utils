@@ -67,8 +67,7 @@ public final class ThreadUtil implements ThreadFactory {
         try {
             Thread.sleep(1000L * seconds);
         } catch (final InterruptedException exception) {
-            Thread.currentThread().interrupt();
-            exception.printStackTrace();
+            throw new RuntimeException(exception);
         }
     }
 
@@ -81,8 +80,7 @@ public final class ThreadUtil implements ThreadFactory {
         try {
             Thread.sleep(millis);
         } catch (final InterruptedException exception) {
-            Thread.currentThread().interrupt();
-            exception.printStackTrace();
+            throw new RuntimeException(exception);
         }
     }
 
@@ -111,16 +109,6 @@ public final class ThreadUtil implements ThreadFactory {
      */
     public static int getPeakThreadsCount() {
         return ManagementFactory.getThreadMXBean().getPeakThreadCount();
-    }
-
-    /**
-     * Checks if the current thread is important based on its name.
-     *
-     * @return true if the current thread is important, false otherwise
-     */
-    public static boolean isImportantThread() {
-        final String threadName = Thread.currentThread().getName();
-        return threadName.contains("Console") || threadName.contains("Server process");
     }
 
     @Override

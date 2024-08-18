@@ -53,12 +53,12 @@ public final class MessageUtil {
         return newArgs;
     }
 
-    public static String listToSpacedString(final List<String> lista) {
-        return stringListToString(lista, "\n");
+    public static String listToSpacedString(final List<String> list) {
+        return stringListToString(list, "\n");
     }
 
     public static String stringListToString(final List<String> list, String split) {
-        if (split == null) split = " ";
+        if (split == null) split = "";
         if (list == null || list.isEmpty()) return "";
         if (list.size() == 1) return list.get(0);
 
@@ -66,7 +66,7 @@ public final class MessageUtil {
     }
 
     public static <T> String objectListToString(final List<T> list, String split) {
-        if (split == null) split = " ";
+        if (split == null) split = "";
         if (list == null || list.isEmpty()) return "";
         if (list.size() == 1) return String.valueOf(list.get(0));
 
@@ -74,14 +74,14 @@ public final class MessageUtil {
     }
 
     public static <E extends Enum<E>> String enumSetToString(final EnumSet<E> enumSet, String split) {
-        if (split == null) split = " ";
+        if (split == null) split = "";
         if (enumSet == null || enumSet.isEmpty()) return "";
 
         return String.join(split, enumSet.stream().map(Enum::toString).toArray(String[]::new));
     }
 
     public static List<String> stringToStringList(final String text, String split) {
-        if (split == null) split = " ";
+        if (split == null) split = "";
         if (text == null || text.isEmpty()) return new ArrayList<>();
 
         return Arrays.asList(text.split(split));
