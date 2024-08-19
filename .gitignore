@@ -40,4 +40,5 @@ out/
 .idea/compiler.xml
 .idea/vcs.xml
 
-
+#####################
+./logs

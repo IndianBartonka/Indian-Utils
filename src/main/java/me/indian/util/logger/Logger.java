@@ -15,18 +15,22 @@ public abstract class Logger {
     protected LogState logState;
     protected PrintStream printStream;
     private Logger parent;
-    private final List<Logger> childrens;
+    private final List<Logger> children;
 
     public Logger(final Logger parent) {
+        this.parent = parent;
         this.configuration = parent.configuration;
-        this.childrens = new ArrayList<>();
+        this.children = new ArrayList<>();
+        this.logState = LogState.NONE;
+        this.updatePrefix();
+        this.initializeLogFile();
 
-        parent.childrens.add(this);
+        parent.children.add(this);
     }
 
     public Logger(final LoggerConfiguration loggerConfiguration) {
         this.configuration = loggerConfiguration;
-        this.childrens = new ArrayList<>();
+        this.children = new ArrayList<>();
         this.logState = LogState.NONE;
         this.updatePrefix();
         this.initializeLogFile();
@@ -40,6 +44,13 @@ public abstract class Logger {
     }
 
     private void initializeLogFile() {
+        final Logger parent = this.getParent();
+        if (parent != null) {
+            this.logFile = parent.getLogFile();
+            this.printStream = parent.printStream;
+            return;
+        }
+
         final File logsDir = new File(this.configuration.logsPath().toString());
         if (!logsDir.exists()) {
             if (!logsDir.mkdir()) if (logsDir.mkdirs()) {
@@ -62,9 +73,7 @@ public abstract class Logger {
 
     public void print(final Object log) {
         this.logState = LogState.NONE;
-        if (this.printStream != null) {
-            this.printStream.println(ConsoleColors.removeColors(log));
-        }
+        this.instantLogToFile(log);
 
         System.out.println(ConsoleColors.convertMinecraftColors(log));
     }
@@ -191,8 +200,8 @@ public abstract class Logger {
         return this.parent;
     }
 
-    public List<Logger> getChildrens() {
-        return this.childrens;
+    public List<Logger> getChildren() {
+        return this.children;
     }
 
     public File getLogFile() {
