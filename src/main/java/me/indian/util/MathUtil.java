@@ -192,7 +192,7 @@ public final class MathUtil {
     /**
      * Formats kilobytes dynamically based on their magnitude, using either short or long names.
      *
-     * @param kilobytes The number of kilobytes to format.
+     * @param kilobytes  The number of kilobytes to format.
      * @param shortNames If true, uses short names (e.g., KB, MB, GB); otherwise uses long names (e.g., kilobytes, megabytes, gigabytes).
      * @return The formatted kilobytes as a string.
      */
@@ -216,12 +216,12 @@ public final class MathUtil {
     /**
      * Formats bytes dynamically based on their magnitude, using either short or long names.
      *
-     * @param bytes The number of bytes to format.
+     * @param bytes      The number of bytes to format.
      * @param shortNames If true, uses short names (e.g., KB, MB, GB); otherwise uses long names (e.g., kilobytes, megabytes, gigabytes).
      * @return The formatted bytes as a string.
      */
     public static String formatBytesDynamic(final long bytes, final boolean shortNames) {
-        if (bytes == 0) return "N/A";
+        if (bytes <= 0) return "N/A";
 
         final List<Character> unitsPattern = new ArrayList<>();
         final long gb = bytesToGB(bytes);
@@ -245,9 +245,9 @@ public final class MathUtil {
     /**
      * Formats kilobytes according to the specified units pattern and naming convention.
      *
-     * @param kilobytes The number of kilobytes to format.
+     * @param kilobytes    The number of kilobytes to format.
      * @param unitsPattern The units pattern to use (e.g., 'k', 'm', 'g').
-     * @param shortNames If true, uses short names; otherwise uses long names.
+     * @param shortNames   If true, uses short names; otherwise uses long names.
      * @return The formatted kilobytes as a string.
      */
     public static String formatKilobytes(final long kilobytes, final List<Character> unitsPattern, final boolean shortNames) {
@@ -266,9 +266,9 @@ public final class MathUtil {
     /**
      * Formats bytes according to the specified units pattern and naming convention.
      *
-     * @param bytes The number of bytes to format.
+     * @param bytes        The number of bytes to format.
      * @param unitsPattern The units pattern to use (e.g., 'b', 'k', 'm', 'g').
-     * @param shortNames If true, uses short names; otherwise uses long names.
+     * @param shortNames   If true, uses short names; otherwise uses long names.
      * @return The formatted bytes as a string.
      */
     public static String formatBytes(final long bytes, final List<Character> unitsPattern, final boolean shortNames) {
@@ -289,7 +289,7 @@ public final class MathUtil {
     /**
      * Provides a mapping of unit characters to their string representations for bytes.
      *
-     * @param bytes The number of bytes.
+     * @param bytes      The number of bytes.
      * @param shortNames If true, uses short names; otherwise uses long names.
      * @return A map of unit characters to their string representations.
      */
@@ -300,10 +300,12 @@ public final class MathUtil {
             UNIT_MAP.put('k', getRemainingKbFromBytes(bytes) + " KB");
             UNIT_MAP.put('m', getRemainingMbFromBytes(bytes) + " MB");
             UNIT_MAP.put('g', getRemainingGbFromBytes(bytes) + " GB");
+            UNIT_MAP.put('b', bytes + " b");
         } else {
             UNIT_MAP.put('k', getRemainingKbFromBytes(bytes) + " kilobajtów");
             UNIT_MAP.put('m', getRemainingMbFromBytes(bytes) + " megabajtów");
             UNIT_MAP.put('g', getRemainingGbFromBytes(bytes) + " gigabajtów");
+            UNIT_MAP.put('b', bytes + " bajtów");
         }
 
         return UNIT_MAP;
@@ -312,7 +314,7 @@ public final class MathUtil {
     /**
      * Provides a mapping of unit characters to their string representations for kilobytes.
      *
-     * @param kilobytes The number of kilobytes.
+     * @param kilobytes  The number of kilobytes.
      * @param shortNames If true, uses short names; otherwise uses long names.
      * @return A map of unit characters to their string representations.
      */
