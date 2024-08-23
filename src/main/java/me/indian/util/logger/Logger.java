@@ -6,16 +6,17 @@ import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.List;
 import me.indian.util.DateUtil;
+import me.indian.util.FileUtil;
 
 public abstract class Logger {
 
     protected final LoggerConfiguration configuration;
+    private final List<Logger> children;
     protected File logFile;
     protected String prefix;
     protected LogState logState;
     protected PrintStream printStream;
     private Logger parent;
-    private final List<Logger> children;
 
     public Logger(final Logger parent) {
         this.parent = parent;
@@ -51,7 +52,8 @@ public abstract class Logger {
             return;
         }
 
-        final File logsDir = new File(this.configuration.logsPath().toString());
+        final File logsDir = new File(this.configuration.getLogsPath());
+        
         if (!logsDir.exists()) {
             if (!logsDir.mkdir()) if (logsDir.mkdirs()) {
                 throw new RuntimeException("Nie można utworzyć miejsca na logi");
@@ -59,7 +61,19 @@ public abstract class Logger {
         }
 
         try {
-            this.logFile = new File(logsDir, "Log-" + this.configuration.appStartDate() + ".log");
+            if (this.configuration.isOneLog()) {
+                this.logFile = new File(logsDir, "Latest.log");
+
+                if (this.logFile.exists()) {
+                    if (!this.logFile.delete()) {
+                        FileUtil.writeText(this.logFile, List.of(""));
+                    }
+                }
+
+            } else {
+                this.logFile = new File(logsDir, this.configuration.getLogName() + ".log");
+            }
+
             final FileOutputStream fileOutputStream = new FileOutputStream(this.logFile, true);
             this.printStream = new PrintStream(fileOutputStream);
         } catch (final Exception exception) {
@@ -144,7 +158,7 @@ public abstract class Logger {
     }
 
     public void debug(final Object log) {
-        if (this.configuration.debug()) {
+        if (this.configuration.isDebug()) {
             this.logState = LogState.DEBUG;
             this.updatePrefix();
             this.logToFile(log);
@@ -153,7 +167,7 @@ public abstract class Logger {
     }
 
     public void debug(final Object log, final Throwable throwable) {
-        if (this.configuration.debug()) {
+        if (this.configuration.isDebug()) {
             this.debug(log);
             this.logThrowable(throwable);
         }
