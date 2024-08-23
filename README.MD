@@ -19,10 +19,10 @@
 ```
 
 ```xml
-<dependency>
-    <groupId>com.github.IndianBartonka</groupId>
-    <artifactId>Indian-Utils</artifactId>
-    <version>0.0.1</version>
-</dependency>
+	<dependency>
+	    <groupId>com.github.IndianBartonka</groupId>
+	    <artifactId>Indian-Utils</artifactId>
+	    <version>0.0.3-beta</version>
+	</dependency>
 ```
 
