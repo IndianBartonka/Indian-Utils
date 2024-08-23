@@ -46,7 +46,7 @@ public final class MessageUtil {
     }
 
     public static String[] removeArgs(final String[] args, final int startFrom) {
-        if (args == null) return new String[]{};
+        if (args == null) return new String[] {};
         final String[] newArgs = new String[args.length - startFrom];
         System.arraycopy(args, startFrom, newArgs, 0, newArgs.length);
 

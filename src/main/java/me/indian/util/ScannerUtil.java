@@ -5,7 +5,7 @@ import java.util.Scanner;
 /**
  * Utility class for handling user input through a {@link Scanner}.
  * Provides methods to ask various types of questions and process the user's responses.
- * Docs writed by Chat-GTP
+ * Documents written by Chat-GTP
  */
 public final class ScannerUtil {
 
@@ -23,9 +23,9 @@ public final class ScannerUtil {
     /**
      * Asks a string question to the user, provides a default value if no input is given, and processes the response.
      *
-     * @param question A {@link StringResponseConsumer} that handles the question prompt.
+     * @param question     A {@link StringResponseConsumer} that handles the question prompt.
      * @param defaultValue The default value to use if the user provides no input.
-     * @param response A {@link StringResponseConsumer} that handles the user's response.
+     * @param response     A {@link StringResponseConsumer} that handles the user's response.
      * @return The user's input or the default value if no input was provided.
      */
     public String addStringQuestion(final StringResponseConsumer question, final String defaultValue, final StringResponseConsumer response) {
@@ -40,9 +40,9 @@ public final class ScannerUtil {
     /**
      * Asks a boolean question to the user, provides a default value if no input is given, and processes the response.
      *
-     * @param question A {@link BooleanResponseConsumer} that handles the question prompt.
+     * @param question     A {@link BooleanResponseConsumer} that handles the question prompt.
      * @param defaultValue The default value to use if the user provides no input.
-     * @param response A {@link BooleanResponseConsumer} that handles the user's response.
+     * @param response     A {@link BooleanResponseConsumer} that handles the user's response.
      * @return The user's input or the default value if no input was provided.
      */
     public boolean addBooleanQuestion(final BooleanResponseConsumer question, final boolean defaultValue, final BooleanResponseConsumer response) {
@@ -57,9 +57,9 @@ public final class ScannerUtil {
     /**
      * Asks an integer question to the user, provides a default value if no input is given, and processes the response.
      *
-     * @param question A {@link IntegerResponseConsumer} that handles the question prompt.
+     * @param question     A {@link IntegerResponseConsumer} that handles the question prompt.
      * @param defaultValue The default value to use if the user provides no input.
-     * @param response A {@link IntegerResponseConsumer} that handles the user's response.
+     * @param response     A {@link IntegerResponseConsumer} that handles the user's response.
      * @return The user's input or the default value if no input was provided.
      */
     public int addIntQuestion(final IntegerResponseConsumer question, final int defaultValue, final IntegerResponseConsumer response) {
@@ -74,9 +74,9 @@ public final class ScannerUtil {
     /**
      * Asks a double question to the user, provides a default value if no input is given, and processes the response.
      *
-     * @param question A {@link DoubleResponseConsumer} that handles the question prompt.
+     * @param question     A {@link DoubleResponseConsumer} that handles the question prompt.
      * @param defaultValue The default value to use if the user provides no input.
-     * @param response A {@link DoubleResponseConsumer} that handles the user's response.
+     * @param response     A {@link DoubleResponseConsumer} that handles the user's response.
      * @return The user's input or the default value if no input was provided.
      */
     public double addDoubleQuestion(final DoubleResponseConsumer question, final double defaultValue, final DoubleResponseConsumer response) {

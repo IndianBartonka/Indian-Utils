@@ -14,7 +14,7 @@ import java.util.concurrent.TimeUnit;
 /**
  * Utility class for date and time operations.
  * Provides methods for formatting and converting between different time units.
- * Docs writed by Chat-GTP
+ * Documents written by Chat-GTP
  */
 public final class DateUtil {
 
@@ -100,7 +100,7 @@ public final class DateUtil {
     /**
      * Converts a time value from the specified source unit to days.
      *
-     * @param time The time value to convert.
+     * @param time       The time value to convert.
      * @param sourceUnit The source {@link TimeUnit}.
      * @return The equivalent time in days.
      */
@@ -111,7 +111,7 @@ public final class DateUtil {
     /**
      * Converts a time value in days to the specified target unit.
      *
-     * @param time The time value to convert.
+     * @param time       The time value to convert.
      * @param targetUnit The target {@link TimeUnit}.
      * @return The equivalent time in the target unit.
      */
@@ -122,7 +122,7 @@ public final class DateUtil {
     /**
      * Converts a time value from the specified source unit to hours.
      *
-     * @param time The time value to convert.
+     * @param time       The time value to convert.
      * @param sourceUnit The source {@link TimeUnit}.
      * @return The equivalent time in hours.
      */
@@ -133,7 +133,7 @@ public final class DateUtil {
     /**
      * Converts a time value in hours to the specified target unit.
      *
-     * @param time The time value to convert.
+     * @param time       The time value to convert.
      * @param targetUnit The target {@link TimeUnit}.
      * @return The equivalent time in the target unit.
      */
@@ -144,7 +144,7 @@ public final class DateUtil {
     /**
      * Converts a time value from the specified source unit to minutes.
      *
-     * @param time The time value to convert.
+     * @param time       The time value to convert.
      * @param sourceUnit The source {@link TimeUnit}.
      * @return The equivalent time in minutes.
      */
@@ -155,7 +155,7 @@ public final class DateUtil {
     /**
      * Converts a time value in minutes to the specified target unit.
      *
-     * @param time The time value to convert.
+     * @param time       The time value to convert.
      * @param targetUnit The target {@link TimeUnit}.
      * @return The equivalent time in the target unit.
      */
@@ -166,7 +166,7 @@ public final class DateUtil {
     /**
      * Converts a time value from the specified source unit to milliseconds.
      *
-     * @param time The time value to convert.
+     * @param time       The time value to convert.
      * @param sourceUnit The source {@link TimeUnit}.
      * @return The equivalent time in milliseconds.
      */
@@ -177,7 +177,7 @@ public final class DateUtil {
     /**
      * Converts a time value in milliseconds to the specified target unit.
      *
-     * @param time The time value to convert.
+     * @param time       The time value to convert.
      * @param targetUnit The target {@link TimeUnit}.
      * @return The equivalent time in the target unit.
      */
@@ -261,7 +261,7 @@ public final class DateUtil {
      * Formats a time duration in milliseconds into a human-readable string with days, hours, minutes, seconds, and milliseconds.
      * Allows for short names if specified.
      *
-     * @param millis The time duration in milliseconds.
+     * @param millis     The time duration in milliseconds.
      * @param shortNames If true, uses short names for units; otherwise, uses full names.
      * @return The formatted time string.
      */
@@ -288,9 +288,9 @@ public final class DateUtil {
      * Formats a time duration in milliseconds into a human-readable string based on the specified unit pattern.
      * Allows for short names if specified.
      *
-     * @param millis The time duration in milliseconds.
+     * @param millis       The time duration in milliseconds.
      * @param unitsPattern A list of characters representing the time units to include in the output.
-     * @param shortNames If true, uses short names for units; otherwise, uses full names.
+     * @param shortNames   If true, uses short names for units; otherwise, uses full names.
      * @return The formatted time string.
      */
     public static String formatTime(final long millis, final List<Character> unitsPattern, final boolean shortNames) {
@@ -310,7 +310,7 @@ public final class DateUtil {
      * Formats a time duration in milliseconds into a human-readable string based on the specified unit pattern.
      * Uses full names for units by default.
      *
-     * @param millis The time duration in milliseconds.
+     * @param millis       The time duration in milliseconds.
      * @param unitsPattern A list of characters representing the time units to include in the output.
      * @return The formatted time string.
      */
@@ -321,7 +321,7 @@ public final class DateUtil {
     /**
      * Builds a map of time units and their corresponding formatted strings based on the given time duration and short name preference.
      *
-     * @param millis The time duration in milliseconds.
+     * @param millis     The time duration in milliseconds.
      * @param shortNames If true, uses short names for units; otherwise, uses full names.
      * @return A map of time units and their formatted strings.
      */

@@ -10,7 +10,7 @@ import java.util.Map;
 
 /**
  * Utility class providing mathematical operations, data conversions, and formatting functions.
- * Docs writed by Chat-GTP
+ * Documents written by Chat-GTP
  */
 public final class MathUtil {
 
