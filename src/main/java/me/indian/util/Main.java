@@ -1,7 +1,6 @@
 package me.indian.util;
 
 import java.io.File;
-import java.nio.file.Path;
 import java.util.Random;
 import me.indian.util.logger.Logger;
 import me.indian.util.logger.LoggerConfiguration;
@@ -9,18 +8,19 @@ import me.indian.util.system.SystemUtil;
 
 public final class Main {
 
-    private static long START_TIME = System.currentTimeMillis();
-    private static Random RANDOM = new Random(Integer.MAX_VALUE);
-    private static final Logger LOGGER = new Logger(new LoggerConfiguration(true,
-            Path.of(System.getProperty("user.dir") + File.separator + "logs"), DateUtil.getFixedDate())
-    ) {
+    private static final Logger LOGGER = new Logger(new LoggerConfiguration(true, System.getProperty("user.dir") + File.separator + "logs", true)) {
     };
     private static final Logger LOGGER2 = new Logger(LOGGER) {
     };
+//    private static final Logger LOGGER = new Logger(new LoggerConfiguration(true,
+//            System.getProperty("user.dir") + File.separator + "logs", DateUtil.getFixedDate())) {};
+    private static final long START_TIME = System.currentTimeMillis();
+    private static final Random RANDOM = new Random(Integer.MAX_VALUE);
 
     public static void loggerTest() {
         LOGGER.info("Logger Test");
         LOGGER.print("1");
+        LOGGER.info("2");
         LOGGER.info("2");
 
         LOGGER.print();
@@ -49,9 +49,9 @@ public final class Main {
 
     public static void mathUtilTest() {
         LOGGER.info("Math Util Test");
-        int randomNumber = RANDOM.nextInt();
-        double randomDouble = RANDOM.nextDouble();
-        int bigNumber = MathUtil.getCorrectNumber(randomNumber, 1, 900000);
+        final int randomNumber = RANDOM.nextInt();
+        final double randomDouble = RANDOM.nextDouble();
+        final int bigNumber = MathUtil.getCorrectNumber(randomNumber, 1, 900000);
 
         LOGGER.info("Randomowa liczba: " + randomNumber);
         LOGGER.info("Wielka liczba: " + bigNumber);
@@ -71,14 +71,12 @@ public final class Main {
     }
 
 
-    public static void bedrockQueryTest(){
+    public static void bedrockQueryTest() {
         LOGGER.info("BedrockQuery Test");
         final BedrockQuery query = BedrockQuery.create("play.skyblockpe.com", 19132);
 
         LOGGER.info(query);
     }
-
-
 
 
     public static void main(final String[] args) {
