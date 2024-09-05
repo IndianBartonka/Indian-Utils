@@ -60,6 +60,7 @@ public final class ZipUtil {
              final ZipOutputStream zipOut = new ZipOutputStream(fos)) {
             for (final File srcFile : srcFiles) {
                 if (!srcFile.exists()) continue;
+                if(srcFile.isDirectory() && FileUtil.directoryIsEmpty(srcFile)) continue;
                 try (final FileInputStream fis = new FileInputStream(srcFile)) {
                     final ZipEntry zipEntry = new ZipEntry(srcFile.getName());
                     zipOut.putNextEntry(zipEntry);
