@@ -55,14 +55,13 @@ public final class ZipUtil {
      * @param zipFilePath The path where the ZIP file will be created.
      * @throws Exception If an error occurs during the zipping process.
      */
-    public static void zipFiles(final List<String> srcFiles, final String zipFilePath) throws Exception {
+    public static void zipFiles(final File[] srcFiles, final String zipFilePath) throws Exception {
         try (final FileOutputStream fos = new FileOutputStream(zipFilePath);
              final ZipOutputStream zipOut = new ZipOutputStream(fos)) {
-            for (final String srcFile : srcFiles) {
-                final File fileToZip = new File(srcFile);
-                if (!fileToZip.exists()) continue;
-                try (final FileInputStream fis = new FileInputStream(fileToZip)) {
-                    final ZipEntry zipEntry = new ZipEntry(fileToZip.getName());
+            for (final File srcFile : srcFiles) {
+                if (!srcFile.exists()) continue;
+                try (final FileInputStream fis = new FileInputStream(srcFile)) {
+                    final ZipEntry zipEntry = new ZipEntry(srcFile.getName());
                     zipOut.putNextEntry(zipEntry);
                     final byte[] bytes = new byte[1024];
                     int length;
