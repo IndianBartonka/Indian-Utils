@@ -10,6 +10,7 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.NoSuchFileException;
 import java.nio.file.Path;
+import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -52,6 +53,25 @@ public final class FileUtil {
         } catch (final Exception exception) {
             throw new RuntimeException(exception);
         }
+    }
+
+    public static boolean directoryIsEmpty(final File directory) {
+        if (!directory.isDirectory()) {
+            throw new IllegalArgumentException("Provided file is not a directory.");
+        }
+
+        final File[] files = directory.listFiles();
+        if (files == null) return true;
+
+        for (final File file : files) {
+            if (file.isDirectory()) {
+                if (!directoryIsEmpty(file)) return false;
+            } else {
+                return false;
+            }
+        }
+
+        return true;
     }
 
     public static boolean addExecutePerm(final String filePath) {
