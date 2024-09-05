@@ -98,6 +98,7 @@ public final class ZipUtil {
      */
     public static void unzipFile(final String zipFilePath, final String targetDirectory, final boolean deleteOnEnd, final List<String> skipFiles) throws Exception {
         final Path path = Path.of(zipFilePath);
+        Files.createDirectories(Path.of(targetDirectory));
         try (final ZipInputStream zipInputStream = new ZipInputStream(Files.newInputStream(path))) {
             ZipEntry zipEntry;
             while ((zipEntry = zipInputStream.getNextEntry()) != null) {
