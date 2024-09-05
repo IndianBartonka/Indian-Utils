@@ -55,7 +55,7 @@ public final class ZipUtil {
      * @param zipFilePath The path where the ZIP file will be created.
      * @throws Exception If an error occurs during the zipping process.
      */
-    public static void zipFiles(final File[] srcFiles, final String zipFilePath) throws Exception {
+    public static File zipFiles(final File[] srcFiles, final String zipFilePath) throws Exception {
         try (final FileOutputStream fos = new FileOutputStream(zipFilePath);
              final ZipOutputStream zipOut = new ZipOutputStream(fos)) {
             for (final File srcFile : srcFiles) {
@@ -71,6 +71,8 @@ public final class ZipUtil {
                 }
             }
         }
+
+        return new File(zipFilePath);
     }
 
     /**
