@@ -22,7 +22,7 @@
 	<dependency>
 	    <groupId>com.github.IndianBartonka</groupId>
 	    <artifactId>Indian-Utils</artifactId>
-	    <version>0.0.3-beta</version>
+	    <version>TAG</version>
 	</dependency>
 ```
 
