@@ -21,7 +21,39 @@ public final class DateUtil {
     /**
      * The time zone used for date and time operations (Europe/Warsaw).
      */
+    public static ZoneId DEFAULT_ZONE = ZoneId.systemDefault();
+
+    /**
+     * Some EU time zones
+     */
     public static final ZoneId POLISH_ZONE = ZoneId.of("Europe/Warsaw");
+    public static final ZoneId LONDON_ZONE = ZoneId.of("Europe/London");
+    public static final ZoneId PARIS_ZONE = ZoneId.of("Europe/Paris");
+    public static final ZoneId BERLIN_ZONE = ZoneId.of("Europe/Berlin");
+    public static final ZoneId MADRID_ZONE = ZoneId.of("Europe/Madrid");
+    public static final ZoneId ROME_ZONE = ZoneId.of("Europe/Rome");
+    public static final ZoneId AMSTERDAM_ZONE = ZoneId.of("Europe/Amsterdam");
+    public static final ZoneId VIENNA_ZONE = ZoneId.of("Europe/Vienna");
+    public static final ZoneId ATHENS_ZONE = ZoneId.of("Europe/Athens");
+    public static final ZoneId BRUSSELS_ZONE = ZoneId.of("Europe/Brussels");
+    public static final ZoneId BUDAPEST_ZONE = ZoneId.of("Europe/Budapest");
+    public static final ZoneId BUCHAREST_ZONE = ZoneId.of("Europe/Bucharest");
+    public static final ZoneId COPENHAGEN_ZONE = ZoneId.of("Europe/Copenhagen");
+    public static final ZoneId DUBLIN_ZONE = ZoneId.of("Europe/Dublin");
+    public static final ZoneId HELSINKI_ZONE = ZoneId.of("Europe/Helsinki");
+    public static final ZoneId LISBON_ZONE = ZoneId.of("Europe/Lisbon");
+    public static final ZoneId LUXEMBOURG_ZONE = ZoneId.of("Europe/Luxembourg");
+    public static final ZoneId MOSCOW_ZONE = ZoneId.of("Europe/Moscow");
+    public static final ZoneId OSLO_ZONE = ZoneId.of("Europe/Oslo");
+    public static final ZoneId PRAGUE_ZONE = ZoneId.of("Europe/Prague");
+    public static final ZoneId SOFIA_ZONE = ZoneId.of("Europe/Sofia");
+    public static final ZoneId STOCKHOLM_ZONE = ZoneId.of("Europe/Stockholm");
+    public static final ZoneId ZURICH_ZONE = ZoneId.of("Europe/Zurich");
+    public static final ZoneId ISTANBUL_ZONE = ZoneId.of("Europe/Istanbul");
+    public static final ZoneId KIEV_ZONE = ZoneId.of("Europe/Kiev");
+    public static final ZoneId VILNIUS_ZONE = ZoneId.of("Europe/Vilnius");
+    public static final ZoneId TALLINN_ZONE = ZoneId.of("Europe/Tallinn");
+    public static final ZoneId RIGA_ZONE = ZoneId.of("Europe/Riga");
 
     /**
      * Map for storing time unit strings.
@@ -33,12 +65,21 @@ public final class DateUtil {
     }
 
     /**
+     * Method to set default ZoneID
+     *
+     * @param zoneId - ID of zone
+     */
+    private static void setZone(final ZoneId zoneId) {
+        DEFAULT_ZONE = zoneId;
+    }
+
+    /**
      * Gets the current date and time in "yyyy-MM-dd HH:mm:ss" format, with colons replaced by hyphens.
      *
      * @return The formatted date and time as a string.
      */
     public static String getFixedDate() {
-        return LocalDateTime.now(POLISH_ZONE).format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")).replace(":", "-");
+        return LocalDateTime.now(DEFAULT_ZONE).format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")).replace(":", "-");
     }
 
     /**
@@ -47,7 +88,7 @@ public final class DateUtil {
      * @return The formatted date and time as a string.
      */
     public static String getDate() {
-        return LocalDateTime.now(POLISH_ZONE).format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+        return LocalDateTime.now(DEFAULT_ZONE).format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
     }
 
     /**
@@ -56,7 +97,7 @@ public final class DateUtil {
      * @return The formatted time as a string.
      */
     public static String getTimeHM() {
-        return LocalDateTime.now(POLISH_ZONE).format(DateTimeFormatter.ofPattern("HH:mm"));
+        return LocalDateTime.now(DEFAULT_ZONE).format(DateTimeFormatter.ofPattern("HH:mm"));
     }
 
     /**
@@ -65,7 +106,7 @@ public final class DateUtil {
      * @return The formatted time as a string.
      */
     public static String getTimeHMS() {
-        return LocalDateTime.now(POLISH_ZONE).format(DateTimeFormatter.ofPattern("HH:mm:ss"));
+        return LocalDateTime.now(DEFAULT_ZONE).format(DateTimeFormatter.ofPattern("HH:mm:ss"));
     }
 
     /**
@@ -74,7 +115,7 @@ public final class DateUtil {
      * @return The formatted time as a string.
      */
     public static String getTimeHMSMS() {
-        return LocalDateTime.now(POLISH_ZONE).format(DateTimeFormatter.ofPattern("HH:mm:ss:SSS"));
+        return LocalDateTime.now(DEFAULT_ZONE).format(DateTimeFormatter.ofPattern("HH:mm:ss:SSS"));
     }
 
     /**
@@ -83,8 +124,18 @@ public final class DateUtil {
      * @param localDateTime The {@link LocalDateTime} to convert.
      * @return The epoch seconds.
      */
-    public static long localDateTimeToLong(final LocalDateTime localDateTime) {
-        return localDateTime.atZone(POLISH_ZONE).toEpochSecond();
+    public static long localDateTimeToSeconds(final LocalDateTime localDateTime) {
+        return localDateTime.atZone(DEFAULT_ZONE).toEpochSecond();
+    }
+
+    /**
+     * Converts a {@link LocalDateTime} to epoch millis.
+     *
+     * @param localDateTime The {@link LocalDateTime} to convert.
+     * @return The epoch millis.
+     */
+    public static long localDateTimeToMillis(final LocalDateTime localDateTime) {
+        return localDateTime.atZone(DEFAULT_ZONE).toInstant().toEpochMilli();
     }
 
     /**
@@ -93,8 +144,21 @@ public final class DateUtil {
      * @param seconds The epoch seconds to convert.
      * @return The corresponding {@link LocalDateTime}.
      */
-    public static LocalDateTime longToLocalDateTime(final long seconds) {
-        return Instant.ofEpochSecond(seconds).atZone(POLISH_ZONE).toLocalDateTime();
+    public static LocalDateTime secondsToLocalDateTime(final long seconds) {
+        return Instant.ofEpochSecond(seconds).atZone(DEFAULT_ZONE).toLocalDateTime();
+    }
+
+    /**
+     * Converts epoch millis to a {@link LocalDateTime}.
+     *
+     * @param millis The epoch millis to convert.
+     * @return The corresponding {@link LocalDateTime}.
+     */
+    public static LocalDateTime millisToLocalDateTime(final long millis) {
+        return LocalDateTime.ofInstant(
+                Instant.ofEpochMilli(millis),
+                DEFAULT_ZONE
+        );
     }
 
     /**
