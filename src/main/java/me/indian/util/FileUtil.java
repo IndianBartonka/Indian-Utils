@@ -10,9 +10,10 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.NoSuchFileException;
 import java.nio.file.Path;
-import java.util.Arrays;
+import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.stream.Stream;
 
 public final class FileUtil {
 
@@ -72,6 +73,23 @@ public final class FileUtil {
         }
 
         return true;
+    }
+
+    public static void deleteFile(final File file) throws IOException {
+        try {
+            Files.delete(file.toPath());
+        } catch (final IOException ioException) {
+            try (final Stream<Path> stream = Files.walk(file.toPath())) {
+                stream.sorted(Comparator.reverseOrder())
+                        .forEach(path -> {
+                            try {
+                                Files.delete(path);
+                            } catch (final IOException e) {
+                                throw new RuntimeException(e);
+                            }
+                        });
+            }
+        }
     }
 
     public static boolean addExecutePerm(final String filePath) {
