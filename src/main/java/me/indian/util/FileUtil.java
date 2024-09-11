@@ -84,8 +84,8 @@ public final class FileUtil {
                         .forEach(path -> {
                             try {
                                 Files.delete(path);
-                            } catch (final IOException e) {
-                                throw new RuntimeException(e);
+                            } catch (final IOException exception) {
+                                exception.printStackTrace();
                             }
                         });
             }
