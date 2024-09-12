@@ -10,8 +10,7 @@ public final class Main {
 
     private static final Logger LOGGER = new Logger(new LoggerConfiguration(true, System.getProperty("user.dir") + File.separator + "logs", true)) {
     };
-    private static final Logger LOGGER2 = new Logger(LOGGER) {
-    };
+    private static final Logger LOGGER2 = LOGGER.prefixed("Logger 2");
 //    private static final Logger LOGGER = new Logger(new LoggerConfiguration(true,
 //            System.getProperty("user.dir") + File.separator + "logs", DateUtil.getFixedDate())) {};
     private static final long START_TIME = System.currentTimeMillis();
@@ -35,8 +34,9 @@ public final class Main {
 
         LOGGER.print();
 
-        LOGGER.alert("Rodzic: " + LOGGER2.getParent() + " Dzieci: " + LOGGER2.getChildren());
-        LOGGER2.alert("Rodzic: " + LOGGER.getParent() + " Dzieci: " + LOGGER.getChildren());
+        LOGGER.alert("Rodzic: " + LOGGER.getParent() + " Dzieci: " + LOGGER.getChildren());
+        LOGGER2.alert("Rodzic: " + LOGGER2.getParent() + " Dzieci: " + LOGGER2.getChildren());
+        LOGGER2.getParent().info("Uzywam rodzica");
     }
 
     public static void dateUtilTest() {

@@ -37,6 +37,18 @@ public abstract class Logger {
         this.initializeLogFile();
     }
 
+    public Logger prefixed(final String loggerPrefix) {
+        return new Logger(this) {
+            @Override
+            protected void updatePrefix() {
+                final String logStateColor = this.logState.getColorCode();
+                this.prefix = "&a[" + DateUtil.getTimeHMSMS() + "] &e[&7" +
+                        Thread.currentThread().getName() + "&r&e] (&f" + loggerPrefix + "&e) "
+                        + logStateColor + this.logState.name().toUpperCase() + " &r";
+            }
+        };
+    }
+
     protected void updatePrefix() {
         final String logStateColor = this.logState.getColorCode();
         this.prefix = "&a[" + DateUtil.getTimeHMSMS() + "] &e[&7" +
