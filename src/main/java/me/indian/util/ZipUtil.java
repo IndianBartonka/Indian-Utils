@@ -30,7 +30,7 @@ public final class ZipUtil {
      * @param logger The Logger instance to use for logging.
      */
     public static void init(final Logger logger) {
-        LOGGER = logger;
+        LOGGER = logger.prefixed("ZipUtil");
     }
 
     /**
