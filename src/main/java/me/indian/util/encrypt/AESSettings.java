@@ -17,11 +17,11 @@ public final class AESSettings {
 
     public enum AESMode {
         ECB("ECB", 0),
-        CBC("CBC", 16), // Typowa długość IV dla CBC, CFB, OFB
+        CBC("CBC", 16),
         CFB("CFB", 16),
         OFB("OFB", 16),
         CTR("CTR", 16),
-        GCM("GCM", 12); // Typowa długość IV dla GCM
+        GCM("GCM", 12);
 
         private final String mode;
         private final int ivSize;
@@ -104,13 +104,11 @@ public final class AESSettings {
     }
 
     public static String encodeKey(final SecretKey key) {
-        final byte[] keyBytes = key.getEncoded();
-        return Base64.getEncoder().encodeToString(keyBytes);
+        return Base64.getEncoder().encodeToString(key.getEncoded());
     }
 
     public static SecretKey decodeKey(final String base64Key) {
-        final byte[] keyBytes = Base64.getDecoder().decode(base64Key);
-        return new SecretKeySpec(keyBytes, "AES");
+        return new SecretKeySpec(Base64.getDecoder().decode(base64Key), "AES");
     }
 
     public static IvParameterSpec generateIV(final AESMode mode) {
@@ -128,11 +126,18 @@ public final class AESSettings {
         if (mode == AESMode.ECB) {
             cipher.init(encryptMode, key);
         } else if (mode == AESMode.GCM) {
-            final GCMParameterSpec gcmSpec = new GCMParameterSpec(128, ivSpec.getIV()); // Długość tagu 128-bitowego
-            cipher.init(encryptMode, key, gcmSpec);
+            cipher.init(encryptMode, key, new GCMParameterSpec(128, ivSpec.getIV()));
         } else {
             cipher.init(encryptMode, key, ivSpec);
         }
         return cipher;
+    }
+
+    public static byte[] decodeIv(final String ivBase64) {
+        return Base64.getDecoder().decode(ivBase64);
+    }
+
+    public static String encodeIv(final byte[] iv) {
+        return Base64.getEncoder().encodeToString(iv);
     }
 }
