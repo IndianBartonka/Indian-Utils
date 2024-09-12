@@ -18,7 +18,7 @@ import javax.crypto.SecretKey;
 import javax.crypto.spec.IvParameterSpec;
 import me.indian.util.logger.Logger;
 
-public final class AESEncryptor {
+public final class AESEncryptor implements Encryptor {
 
     private AESSettings.AESMode aesMode;
     private AESSettings.AESPadding aesPadding;
