@@ -24,7 +24,7 @@ public final class AESEncryptor implements Encryptor {
     private AESSettings.AESMode aesMode;
     private AESSettings.AESPadding aesPadding;
     private IvParameterSpec ivParameterSpec;
-    public String encryptedDir, userDir;
+    private String encryptedDir, userDir;
     private Logger logger;
 
     public AESEncryptor(final AESSettings.AESMode aesMode, final AESSettings.AESPadding aesPadding, final IvParameterSpec ivParameterSpec) {
@@ -131,5 +131,15 @@ public final class AESEncryptor implements Encryptor {
         this.userDir = userDir;
 
         Files.createDirectories(Path.of(userDir));
+    }
+
+    @Override
+    public String getEncryptedDir() {
+        return this.encryptedDir;
+    }
+
+    @Override
+    public String getUserDir() {
+        return this.userDir;
     }
 }

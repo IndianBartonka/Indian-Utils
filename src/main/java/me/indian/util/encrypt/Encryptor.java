@@ -25,4 +25,8 @@ public interface Encryptor {
     void setEncryptedDir(String encryptedDir) throws IOException;
 
     void setUserDir(String userDir) throws IOException;
+
+    String getEncryptedDir();
+
+    String getUserDir();
 }
