@@ -33,6 +33,13 @@ public final class AESEncryptor implements Encryptor {
         this.ivParameterSpec = ivParameterSpec;
         this.encryptedDir = System.getProperty("user.dir") + File.separator + "encrypted_dir" + File.separator;
         this.userDir = System.getProperty("user.dir") + File.separator;
+
+        try {
+            Files.createDirectories(Path.of(this.userDir));
+            Files.createDirectories(Path.of(this.encryptedDir));
+        } catch (final IOException ioException) {
+            throw new RuntimeException(ioException);
+        }
     }
 
     @Override
