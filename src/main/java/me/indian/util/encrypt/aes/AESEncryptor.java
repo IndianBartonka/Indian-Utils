@@ -97,7 +97,7 @@ public final class AESEncryptor implements Encryptor {
 
     @Override
     public void setLogger(final Logger logger) {
-        if (this.logger == null) this.logger = logger.prefixed("Encryptor");
+        if (this.logger == null) this.logger = logger.prefixed("AESEncryptor");
     }
 
     public AESSettings.AESMode getAesMode() {
