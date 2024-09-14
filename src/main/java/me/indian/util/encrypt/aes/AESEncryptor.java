@@ -1,4 +1,4 @@
-package me.indian.util.encrypt;
+package me.indian.util.encrypt.aes;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -16,6 +16,7 @@ import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
 import javax.crypto.SecretKey;
 import javax.crypto.spec.IvParameterSpec;
+import me.indian.util.encrypt.Encryptor;
 import me.indian.util.logger.Logger;
 
 public final class AESEncryptor implements Encryptor {
@@ -34,6 +35,7 @@ public final class AESEncryptor implements Encryptor {
         this.userDir = System.getProperty("user.dir") + File.separator;
     }
 
+    @Override
     public File encryptFile(final File inputFile, final SecretKey key) throws Exception {
         final File encryptedFile = new File(this.encryptedDir, inputFile.getName());
         final Cipher cipher = AESSettings.createCipher(this.aesMode, this.aesPadding, key, this.ivParameterSpec, true);
@@ -43,6 +45,7 @@ public final class AESEncryptor implements Encryptor {
         return encryptedFile;
     }
 
+    @Override
     public File decryptFile(final File inputFile, final SecretKey key) throws Exception {
         final File decryptedFile = new File(this.userDir, inputFile.getName());
         final Cipher cipher = AESSettings.createCipher(this.aesMode, this.aesPadding, key, this.ivParameterSpec, false);
@@ -70,12 +73,14 @@ public final class AESEncryptor implements Encryptor {
         }
     }
 
+    @Override
     public String encryptText(final String text, final SecretKey key) throws Exception {
         final Cipher cipher = AESSettings.createCipher(this.aesMode, this.aesPadding, key, this.ivParameterSpec, true);
         final byte[] encryptedBytes = cipher.doFinal(text.getBytes());
         return Base64.getEncoder().encodeToString(encryptedBytes);
     }
 
+    @Override
     public String decryptText(final String encryptedText, final SecretKey key) throws NoSuchAlgorithmException, InvalidKeyException, IllegalBlockSizeException, BadPaddingException, InvalidAlgorithmParameterException, NoSuchPaddingException {
         final Cipher cipher = AESSettings.createCipher(this.aesMode, this.aesPadding, key, this.ivParameterSpec, false);
         final byte[] decodedBytes = Base64.getDecoder().decode(encryptedText);
@@ -83,6 +88,7 @@ public final class AESEncryptor implements Encryptor {
         return new String(decryptedBytes);
     }
 
+    @Override
     public void setLogger(final Logger logger) {
         if (this.logger == null) this.logger = logger.prefixed("Encryptor");
     }
@@ -95,10 +101,12 @@ public final class AESEncryptor implements Encryptor {
         this.aesMode = aesMode;
     }
 
+    @Override
     public IvParameterSpec getIvParameterSpec() {
         return this.ivParameterSpec;
     }
 
+    @Override
     public void setIvParameterSpec(final IvParameterSpec ivParameterSpec) {
         this.ivParameterSpec = ivParameterSpec;
     }
@@ -111,12 +119,14 @@ public final class AESEncryptor implements Encryptor {
         this.aesPadding = aesPadding;
     }
 
+    @Override
     public void setEncryptedDir(final String encryptedDir) throws IOException {
         this.encryptedDir = encryptedDir;
 
         Files.createDirectories(Path.of(encryptedDir));
     }
 
+    @Override
     public void setUserDir(final String userDir) throws IOException {
         this.userDir = userDir;
 

@@ -1,4 +1,4 @@
-package me.indian.util.encrypt;
+package me.indian.util.encrypt.aes;
 
 import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
