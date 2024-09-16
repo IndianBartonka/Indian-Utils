@@ -113,7 +113,7 @@ public final class Main {
             }
 
             @Override
-            public void onTimeout() {
+            public void onTimeout(int timeOutSeconds) {
                 LOGGER.info("TimeOut");
             }
 

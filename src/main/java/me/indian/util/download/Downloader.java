@@ -68,7 +68,7 @@ public final class Downloader {
                 }
 
                 if (timeOutSeconds != -1 && System.currentTimeMillis() - lastActivityTime > inactivityTimeoutMillis) {
-                    if (downloadListener != null) downloadListener.onTimeout();
+                    if (downloadListener != null) downloadListener.onTimeout(timeOutSeconds);
                     throw new TimeoutException();
                 }
             }

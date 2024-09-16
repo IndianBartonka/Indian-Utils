@@ -10,7 +10,7 @@ public interface DownloadListener {
 
     void onProgress(int progress, double formatedSpeed, String remainingTimeString);
 
-    void onTimeout();
+    void onTimeout(int timeOutSeconds);
 
     void onEnd(File outputFile);
 
