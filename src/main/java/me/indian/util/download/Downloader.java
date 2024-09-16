@@ -25,7 +25,7 @@ public final class Downloader {
 
         try (final FileOutputStream fileOutputStream = new FileOutputStream(outputFile)) {
             final int definedBuffer = defineBuffer(downloadBuffer, fileSize);
-            final byte[] buffer = new byte[definedBuffer];
+            byte[] buffer = new byte[definedBuffer];
 
             if (downloadListener != null) downloadListener.onStart(downloadBuffer, definedBuffer, outputFile);
 
@@ -73,6 +73,9 @@ public final class Downloader {
                 }
             }
 
+            //Ustawieie bufferu na null aby garbage collectro go usunoł
+            buffer = null;
+
             inputStream.close();
 
             if (downloadListener != null) downloadListener.onEnd(outputFile);
@@ -91,12 +94,8 @@ public final class Downloader {
         final long bufferPerRequest = ((OperatingSystemMXBean) ManagementFactory.getOperatingSystemMXBean()).getFreeMemorySize() / 5;
         final long bufferSize = Math.min(calculatedBufferSize, bufferPerRequest);
 
-        if (bufferSize > maxBufferSize) {
-            return maxBufferSize;
-        } else if (bufferSize < DownloadBuffer.ONE_MB.getBuffer()) {
-            return DownloadBuffer.ONE_MB.getBuffer();
-        }
-
+        if (bufferSize > maxBufferSize) return maxBufferSize;
+        
         return (int) bufferSize;
     }
 }

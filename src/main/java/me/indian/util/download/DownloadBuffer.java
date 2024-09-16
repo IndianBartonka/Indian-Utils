@@ -3,6 +3,15 @@ package me.indian.util.download;
 public enum DownloadBuffer {
 
     DYNAMIC(-1),
+
+    FOUR_KB(4_096),
+    EIGHT_KB(8_192),
+    SIXTEEN_KB(16_384),
+    THIRTY_TWO_KB(32_768),
+    SIXTY_FOUR_KB(65_536),
+    ONE_HUNDRED_TWENTY_EIGHT_KB(131_072),
+    TWO_FIFTY_SIX_KB(262_144),
+    FIVE_HUNDRED_TWELVE_KB(524_288),
     ONE_MB(1_048_576),
     TWO_MB(2_097_152),
     THREE_MB(3_145_728),
