@@ -7,8 +7,9 @@
 
 [![](https://jitpack.io/v/IndianBartonka/Indian-Utils.svg)](https://jitpack.io/#IndianBartonka/Indian-Utils)
 
+### Przykłady użycja
 
-
+Przykłady użycja znajdziecie w klasie [Main.java](src%2Fmain%2Fjava%2Fme%2Findian%2Futil%2FMain.java)
 ### Zaneżności Maven
 
 ```xml
@@ -25,4 +26,3 @@
     <version>TAG</version>
 </dependency>
 ```
-
