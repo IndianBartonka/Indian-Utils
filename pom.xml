@@ -6,7 +6,7 @@
 
     <groupId>me.indian.util</groupId>
     <artifactId>utils</artifactId>
-    <version>0.0.4.1</version>
+    <version>0.0.4.2</version>
 
     <properties>
         <maven.compiler.source>17</maven.compiler.source>

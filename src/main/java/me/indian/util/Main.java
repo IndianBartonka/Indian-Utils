@@ -1,7 +1,14 @@
 package me.indian.util;
 
 import java.io.File;
+import java.io.IOException;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.Random;
+import java.util.concurrent.TimeoutException;
+import me.indian.util.download.DownloadBuffer;
+import me.indian.util.download.DownloadListener;
+import me.indian.util.download.Downloader;
 import me.indian.util.logger.Logger;
 import me.indian.util.logger.LoggerConfiguration;
 import me.indian.util.system.SystemUtil;
@@ -78,8 +85,66 @@ public final class Main {
         LOGGER.info(query);
     }
 
+    public static void encryptorTest() {
+        //TODO: Dodać tak owy
+    }
 
-    public static void main(final String[] args) {
+    public static void downloadFileTest() throws IOException {
+        final HttpURLConnection connection = (HttpURLConnection) new URL("https://minecraft.azureedge.net/bin-win/bedrock-server-1.21.23.01.zip").openConnection();
+        connection.setRequestMethod("GET");
+
+        final int responseCode = connection.getResponseCode();
+
+        final DownloadListener downloadListener = new DownloadListener() {
+            @Override
+            public void onStart(final int definedBuffer, final File outputFile) {
+                LOGGER.info("Pobieranie:&a " + outputFile.getName());
+                LOGGER.info("Ustalony buffer dla naszego pliku to:&a " + DownloadBuffer.defineBuffer(definedBuffer));
+            }
+
+            @Override
+            public void onSecond(final int progress, final double formatedSpeed, final String remainingTimeString) {
+                //Kod wykonuje się co każdą sekunde
+            }
+
+            @Override
+            public void onProgress(final int progress, final double formatedSpeed, final String remainingTimeString) {
+                LOGGER.info(progress + "%&a " + formatedSpeed + "MB/s &c" + remainingTimeString);
+            }
+
+            @Override
+            public void onTimeout() {
+                LOGGER.info("TimeOut");
+            }
+
+            @Override
+            public void onEnd(final File outputFile) {
+                LOGGER.info("Pobrano:&a " + outputFile.getName());
+            }
+        };
+
+        if (responseCode == HttpURLConnection.HTTP_OK) {
+            try {
+                final long start = System.currentTimeMillis();
+
+                Downloader.downloadFile(connection.getInputStream(), new File("Bedrock.zip"),
+                        connection.getContentLength(),
+                        DownloadBuffer.DYNAMIC,
+                        30,
+                        downloadListener
+                );
+
+                LOGGER.info("Pobrano w:&b " + DateUtil.formatTimeDynamic(System.currentTimeMillis() - start, true));
+            } catch (final TimeoutException e) {
+                throw new RuntimeException(e);
+            }
+
+        } else {
+            LOGGER.info("Server zwrócił kod:&a " + responseCode);
+        }
+    }
+
+    public static void main(final String[] args) throws IOException {
         loggerTest();
         LOGGER.print("==================");
 
@@ -94,6 +159,11 @@ public final class Main {
 
         dateUtilTest();
         LOGGER.print("==================");
-    }
 
+        encryptorTest();
+        LOGGER.print("==================");
+
+        downloadFileTest();
+        LOGGER.print("==================");
+    }
 }
