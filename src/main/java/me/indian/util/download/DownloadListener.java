@@ -4,7 +4,7 @@ import java.io.File;
 
 public interface DownloadListener {
 
-    void onStart(int definedBuffer, File outputFile);
+    void onStart(DownloadBuffer downloadBuffer, int definedBuffer, File outputFile);
 
     void onSecond(int progress, double formatedSpeed, String remainingTimeString);
 

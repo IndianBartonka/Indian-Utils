@@ -97,9 +97,10 @@ public final class Main {
 
         final DownloadListener downloadListener = new DownloadListener() {
             @Override
-            public void onStart(final int definedBuffer, final File outputFile) {
+            public void onStart(final DownloadBuffer downloadBuffer, final int definedBuffer, final File outputFile) {
                 LOGGER.info("Pobieranie:&a " + outputFile.getName());
                 LOGGER.info("Ustalony buffer dla naszego pliku to:&a " + DownloadBuffer.defineBuffer(definedBuffer));
+                LOGGER.info("Domyślny buffer to:&a " + downloadBuffer);
             }
 
             @Override
@@ -113,7 +114,7 @@ public final class Main {
             }
 
             @Override
-            public void onTimeout(int timeOutSeconds) {
+            public void onTimeout(final int timeOutSeconds) {
                 LOGGER.info("TimeOut");
             }
 

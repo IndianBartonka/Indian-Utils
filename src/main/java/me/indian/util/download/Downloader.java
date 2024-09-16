@@ -24,10 +24,10 @@ public final class Downloader {
         long lastActivityTime;
 
         try (final FileOutputStream fileOutputStream = new FileOutputStream(outputFile)) {
-            final int definedBuffer = defineBuffer(downloadBuffer);
+            final int definedBuffer = defineBuffer(downloadBuffer, fileSize);
             final byte[] buffer = new byte[definedBuffer];
 
-            if (downloadListener != null) downloadListener.onStart(definedBuffer, outputFile);
+            if (downloadListener != null) downloadListener.onStart(downloadBuffer, definedBuffer, outputFile);
 
             int bytesRead;
             long totalBytesRead = 0;
@@ -79,21 +79,24 @@ public final class Downloader {
         }
     }
 
-    private static int defineBuffer(final DownloadBuffer downloadBuffer) {
-        if (downloadBuffer == DownloadBuffer.DYNAMIC) return calculateOptimalBufferSize();
+    private static int defineBuffer(final DownloadBuffer downloadBuffer, final long fileSize) {
+        if (downloadBuffer == DownloadBuffer.DYNAMIC) return calculateOptimalBufferSize(fileSize);
 
         return downloadBuffer.getBuffer();
     }
 
-    private static int calculateOptimalBufferSize() {
+    private static int calculateOptimalBufferSize(final long fileSize) {
+        final int maxBufferSize = DownloadBuffer.SIXTEEN_MB.getBuffer();
+        final long calculatedBufferSize = (long) (fileSize *  0.1);
         final long bufferPerRequest = ((OperatingSystemMXBean) ManagementFactory.getOperatingSystemMXBean()).getFreeMemorySize() / 5;
+        final long bufferSize = Math.min(calculatedBufferSize, bufferPerRequest);
 
-        if (bufferPerRequest > DownloadBuffer.SIXTEEN_MB.getBuffer()) {
-            return DownloadBuffer.SIXTEEN_MB.getBuffer();
-        } else if (bufferPerRequest < DownloadBuffer.ONE_MB.getBuffer()) {
+        if (bufferSize > maxBufferSize) {
+            return maxBufferSize;
+        } else if (bufferSize < DownloadBuffer.ONE_MB.getBuffer()) {
             return DownloadBuffer.ONE_MB.getBuffer();
         }
 
-        return (int) bufferPerRequest;
+        return (int) bufferSize;
     }
 }

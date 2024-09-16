@@ -31,10 +31,19 @@ public enum DownloadBuffer {
     }
 
     public static DownloadBuffer defineBuffer(final int buffer) {
-        for (final DownloadBuffer downloadBuffer : values()) {
-            if (downloadBuffer.getBuffer() == buffer) return downloadBuffer;
+        DownloadBuffer closestBuffer = DownloadBuffer.DYNAMIC;
+        int minDifference = Integer.MAX_VALUE;
+
+        for (final DownloadBuffer downloadBuffer : DownloadBuffer.values()) {
+            final int currentBufferSize = downloadBuffer.getBuffer();
+            final int difference = Math.abs(currentBufferSize - buffer);
+
+            if (difference < minDifference) {
+                minDifference = difference;
+                closestBuffer = downloadBuffer;
+            }
         }
 
-        return DYNAMIC;
+        return closestBuffer;
     }
 }
