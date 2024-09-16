@@ -95,6 +95,7 @@ public final class Downloader {
         final long bufferSize = Math.min(calculatedBufferSize, bufferPerRequest);
 
         if (bufferSize > maxBufferSize) return maxBufferSize;
+        if (bufferSize < DownloaderBuffer.FOUR_KB.getBuffer()) return DownloaderBuffer.FOUR_KB.getBuffer();
         
         return (int) bufferSize;
     }
