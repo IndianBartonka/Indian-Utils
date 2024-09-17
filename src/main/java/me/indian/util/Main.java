@@ -6,7 +6,6 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.Random;
 import java.util.concurrent.TimeoutException;
-import me.indian.util.download.DownloadBuffer;
 import me.indian.util.download.DownloadListener;
 import me.indian.util.download.Downloader;
 import me.indian.util.logger.Logger;
@@ -97,9 +96,9 @@ public final class Main {
 
         final DownloadListener downloadListener = new DownloadListener() {
             @Override
-            public void onStart(final DownloadBuffer downloadBuffer, final int definedBuffer, final File outputFile) {
+            public void onStart(final BufferUtil.DownloadBuffer downloadBuffer, final int definedBuffer, final File outputFile) {
                 LOGGER.info("Pobieranie:&a " + outputFile.getName());
-                LOGGER.info("Ustalony buffer dla naszego pliku to:&a " + DownloadBuffer.defineBuffer(definedBuffer));
+                LOGGER.info("Ustalony buffer dla naszego pliku to:&a " + BufferUtil.findBuffer(definedBuffer));
                 LOGGER.info("Domyślny buffer to:&a " + downloadBuffer);
             }
 
@@ -130,7 +129,7 @@ public final class Main {
 
                 Downloader.downloadFile(connection.getInputStream(), new File("Bedrock.zip"),
                         connection.getContentLength(),
-                        DownloadBuffer.DYNAMIC,
+                        BufferUtil.DownloadBuffer.DYNAMIC,
                         30,
                         downloadListener
                 );

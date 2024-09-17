@@ -1,10 +1,11 @@
 package me.indian.util.download;
 
 import java.io.File;
+import me.indian.util.BufferUtil;
 
 public interface DownloadListener {
 
-    void onStart(DownloadBuffer downloadBuffer, int definedBuffer, File outputFile);
+    void onStart(BufferUtil.DownloadBuffer downloadBuffer, int definedBuffer, File outputFile);
 
     void onSecond(int progress, double formatedSpeed, String remainingTimeString);
 
