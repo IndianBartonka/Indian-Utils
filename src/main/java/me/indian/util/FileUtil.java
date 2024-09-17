@@ -111,8 +111,10 @@ public final class FileUtil {
         }
     }
 
-    public static long getFolderSize(final File folder) {
-        long size = 0;
+    public static long getFileSize(final File folder) {
+        long size = folder.lenght;
+        //TODO: Fix that
+        if(folder.isDirectory()){
         final File[] files = folder.listFiles();
 
         if (files != null) {
@@ -123,6 +125,7 @@ public final class FileUtil {
                     size += getFolderSize(file);
                 }
             }
+        }
         }
 
         return size;
