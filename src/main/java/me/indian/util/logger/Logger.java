@@ -17,6 +17,7 @@ public abstract class Logger {
     protected LogState logState;
     protected PrintStream printStream;
     private Logger parent;
+    protected boolean removed;
 
     public Logger(final Logger parent) {
         this.parent = parent;
@@ -39,6 +40,18 @@ public abstract class Logger {
 
     public Logger prefixed(final String loggerPrefix) {
         return new Logger(this) {
+            @Override
+            protected void updatePrefix() {
+                final String logStateColor = this.logState.getColorCode();
+                this.prefix = "&a[" + DateUtil.getTimeHMSMS() + "] &e[&7" +
+                        Thread.currentThread().getName() + "&r&e] (&f" + loggerPrefix + "&e) "
+                        + logStateColor + this.logState.name().toUpperCase() + " &r";
+            }
+        };
+    }
+
+    public Logger tempLogger(final String loggerPrefix) {
+        return new Logger(this.configuration) {
             @Override
             protected void updatePrefix() {
                 final String logStateColor = this.logState.getColorCode();

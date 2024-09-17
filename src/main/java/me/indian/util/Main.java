@@ -92,34 +92,38 @@ public final class Main {
         final HttpURLConnection connection = (HttpURLConnection) new URL("https://minecraft.azureedge.net/bin-win/bedrock-server-1.21.23.01.zip").openConnection();
         connection.setRequestMethod("GET");
 
+        final String fileName = "Bedrock.zip";
         final int responseCode = connection.getResponseCode();
 
         final DownloadListener downloadListener = new DownloadListener() {
+            final Logger tempLogger = LOGGER.tempLogger(fileName);
+
             @Override
             public void onStart(final BufferUtil.DownloadBuffer downloadBuffer, final int definedBuffer, final File outputFile) {
-                LOGGER.info("Pobieranie:&a " + outputFile.getName());
-                LOGGER.info("Ustalony buffer dla naszego pliku to:&a " + BufferUtil.findBuffer(definedBuffer));
-                LOGGER.info("Domyślny buffer to:&a " + downloadBuffer);
+                this.tempLogger.info("Pobieranie:&a " + outputFile.getName());
+                this.tempLogger.info("Ustalony buffer dla naszego pliku to:&a " + BufferUtil.findBuffer(definedBuffer));
+                this.tempLogger.info("Domyślny buffer to:&a " + downloadBuffer);
             }
 
             @Override
             public void onSecond(final int progress, final double formatedSpeed, final String remainingTimeString) {
                 //Kod wykonuje się co każdą sekunde
+                this.tempLogger.info(progress + "%&a " + formatedSpeed + "MB/s &c" + remainingTimeString);
             }
 
             @Override
             public void onProgress(final int progress, final double formatedSpeed, final String remainingTimeString) {
-                LOGGER.info(progress + "%&a " + formatedSpeed + "MB/s &c" + remainingTimeString);
+//                tempLogger.info(progress + "%&a " + formatedSpeed + "MB/s &c" + remainingTimeString);
             }
 
             @Override
             public void onTimeout(final int timeOutSeconds) {
-                LOGGER.info("TimeOut");
+                this.tempLogger.info("TimeOut");
             }
 
             @Override
             public void onEnd(final File outputFile) {
-                LOGGER.info("Pobrano:&a " + outputFile.getName());
+                this.tempLogger.info("Pobrano:&a " + outputFile.getName());
             }
         };
 
@@ -127,7 +131,7 @@ public final class Main {
             try {
                 final long start = System.currentTimeMillis();
 
-                Downloader.downloadFile(connection.getInputStream(), new File("Bedrock.zip"),
+                Downloader.downloadFile(connection.getInputStream(), new File(fileName),
                         connection.getContentLength(),
                         BufferUtil.DownloadBuffer.DYNAMIC,
                         30,
