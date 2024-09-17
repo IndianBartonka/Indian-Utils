@@ -64,7 +64,7 @@ public final class ZipUtil {
                 try (final FileInputStream fis = new FileInputStream(srcFile)) {
                     final ZipEntry zipEntry = new ZipEntry(srcFile.getName());
                     zipOut.putNextEntry(zipEntry);
-                    final byte[] bytes = new byte[1024];
+                    final byte[] bytes = new byte[BufferUtil.defineBuffer(BufferUtil.DownloadBuffer.DYNAMIC, FileUtil.getFileSize(srcFile))];
                     int length;
                     while ((length = fis.read(bytes)) >= 0) {
                         zipOut.write(bytes, 0, length);

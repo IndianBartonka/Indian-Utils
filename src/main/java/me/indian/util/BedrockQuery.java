@@ -35,7 +35,7 @@ public record BedrockQuery(String serverAddress, String hostAddress, boolean onl
             dataOutputStream.writeLong(dialerID++);
 
             final byte[] requestData = outputStream.toByteArray();
-            final byte[] responseData = new byte[1024 * 1024 * 4];
+            final byte[] responseData = new byte[BufferUtil.DownloadBuffer.FOUR_MB.getBuffer()];
 
             final DatagramSocket socket = new DatagramSocket();
             final DatagramPacket requestPacket = new DatagramPacket(requestData, requestData.length, address, port);

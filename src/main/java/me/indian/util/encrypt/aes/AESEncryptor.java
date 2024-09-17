@@ -16,6 +16,8 @@ import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
 import javax.crypto.SecretKey;
 import javax.crypto.spec.IvParameterSpec;
+import me.indian.util.BufferUtil;
+import me.indian.util.FileUtil;
 import me.indian.util.encrypt.Encryptor;
 import me.indian.util.logger.Logger;
 
@@ -65,7 +67,7 @@ public final class AESEncryptor implements Encryptor {
     private void processFile(final Cipher cipher, final File inputFile, final File outputFile) throws Exception {
         try (final FileInputStream in = new FileInputStream(inputFile);
              final FileOutputStream out = new FileOutputStream(outputFile)) {
-            final byte[] inputBytes = new byte[64];
+            final byte[] inputBytes = new byte[BufferUtil.defineBuffer(BufferUtil.DownloadBuffer.DYNAMIC, FileUtil.getFileSize(inputFile))];
             int bytesRead;
             while ((bytesRead = in.read(inputBytes)) != -1) {
                 final byte[] outputBytes = cipher.update(inputBytes, 0, bytesRead);
