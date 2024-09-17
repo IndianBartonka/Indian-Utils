@@ -167,6 +167,7 @@ public final class ZipUtil {
      */
     private static void addFileToZip(final File file, final String folderName, final ZipOutputStream zos) throws Exception {
         final byte[] buffer = new byte[1024];
+        //TODO: Użyć obliczania buffor DownloadBuffer
         try (final FileInputStream fis = new FileInputStream(file)) {
             final String entryPath = folderName + File.separator + file.getName();
             zos.putNextEntry(new ZipEntry(entryPath));
