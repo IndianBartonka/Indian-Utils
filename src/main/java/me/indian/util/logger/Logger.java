@@ -17,7 +17,6 @@ public abstract class Logger {
     protected LogState logState;
     protected PrintStream printStream;
     private Logger parent;
-    protected boolean removed;
 
     public Logger(final Logger parent) {
         this.parent = parent;
