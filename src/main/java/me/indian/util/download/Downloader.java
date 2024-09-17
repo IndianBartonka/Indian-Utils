@@ -46,7 +46,7 @@ public final class Downloader {
                 if (elapsedTime >= 1.0) {
                     final long bytesSinceLastTime = totalBytesRead - lastBytesRead;
                     final double speedBytesPerSecond = (double) bytesSinceLastTime / elapsedTime;
-                    final double speedMBps = speedBytesPerSecond / (1024.0 * 1024.0);
+                    final double speedMBps = speedBytesPerSecond / DownloadBuffer.ONE_MB.getBuffer();
                     lastTime = currentTime;
                     lastBytesRead = totalBytesRead;
 
