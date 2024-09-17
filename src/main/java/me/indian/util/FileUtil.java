@@ -111,21 +111,21 @@ public final class FileUtil {
         }
     }
 
-    public static long getFileSize(final File folder) {
-        long size = folder.lenght;
-        //TODO: Fix that
-        if(folder.isDirectory()){
-        final File[] files = folder.listFiles();
+    public static long getFileSize(final File file) {
+        long size = file.length();
 
-        if (files != null) {
-            for (final File file : files) {
-                if (file.isFile()) {
-                    size += file.length();
-                } else {
-                    size += getFolderSize(file);
+        if (file.isDirectory()) {
+            final File[] files = file.listFiles();
+
+            if (files != null) {
+                for (final File file1 : files) {
+                    if (file1.isFile()) {
+                        size += file1.length();
+                    } else {
+                        size += getFileSize(file1);
+                    }
                 }
             }
-        }
         }
 
         return size;
