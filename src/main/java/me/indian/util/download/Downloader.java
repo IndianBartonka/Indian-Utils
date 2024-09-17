@@ -92,6 +92,8 @@ public final class Downloader {
     private static int calculateOptimalBufferSize(final long fileSize) {
         final int maxBufferSize = DownloadBuffer.SIXTEEN_MB.getBuffer();
         final long bufferPerRequest = ((OperatingSystemMXBean) ManagementFactory.getOperatingSystemMXBean()).getFreeMemorySize() / 5;
+
+        //Zamiast robić te ifiy to użyj mi tu MathUtil aby wybrać nie większą niż ale też nie mniejszą niż 
         final long bufferSize = Math.min((long) (fileSize *  0.1), bufferPerRequest);
 
         if (bufferSize > maxBufferSize) return maxBufferSize;
