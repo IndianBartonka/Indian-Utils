@@ -87,12 +87,12 @@ public final class Downloader {
 
         return downloadBuffer.getBuffer();
     }
+    //TODO: Przenies to do klasy buffer 
 
     private static int calculateOptimalBufferSize(final long fileSize) {
         final int maxBufferSize = DownloadBuffer.SIXTEEN_MB.getBuffer();
-        final long calculatedBufferSize = (long) (fileSize *  0.1);
         final long bufferPerRequest = ((OperatingSystemMXBean) ManagementFactory.getOperatingSystemMXBean()).getFreeMemorySize() / 5;
-        final long bufferSize = Math.min(calculatedBufferSize, bufferPerRequest);
+        final long bufferSize = Math.min((long) (fileSize *  0.1), bufferPerRequest);
 
         if (bufferSize > maxBufferSize) return maxBufferSize;
         if (bufferSize < DownloaderBuffer.FOUR_KB.getBuffer()) return DownloaderBuffer.FOUR_KB.getBuffer();
