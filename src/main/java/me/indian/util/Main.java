@@ -148,6 +148,27 @@ public final class Main {
         }
     }
 
+    public static void zipTest() {
+        ZipUtil.init(LOGGER);
+        final File file = new File("logs");
+
+        if (!file.exists()) return;
+
+        final File zipFile;
+
+        try {
+            zipFile = ZipUtil.zipFiles(file.listFiles(), "logs.zip");
+        } catch (final IOException e) {
+            throw new RuntimeException(e);
+        }
+
+        try {
+            ZipUtil.unzipFile(zipFile.getPath(), "siur", true);
+        } catch (final IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     public static void main(final String[] args) throws IOException {
         loggerTest();
         LOGGER.print("==================");
@@ -168,6 +189,9 @@ public final class Main {
         LOGGER.print("==================");
 
         downloadFileTest();
+        LOGGER.print("==================");
+
+        zipTest();
         LOGGER.print("==================");
     }
 }
