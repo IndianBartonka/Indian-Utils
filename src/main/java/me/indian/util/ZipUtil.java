@@ -119,7 +119,7 @@ public final class ZipUtil {
                     outputFile.mkdirs();
                 } else {
                     try (final FileOutputStream outputStream = new FileOutputStream(outputFile)) {
-                        final byte[] buffer = new byte[1024];
+                        final byte[] buffer = new byte[BufferUtil.defineBuffer(BufferUtil.DownloadBuffer.DYNAMIC, FileUtil.getFileSize(outputFile))];
                         int length;
                         while ((length = zipInputStream.read(buffer)) > 0) {
                             outputStream.write(buffer, 0, length);
@@ -166,8 +166,8 @@ public final class ZipUtil {
      * @throws Exception If an error occurs during the zipping process.
      */
     private static void addFileToZip(final File file, final String folderName, final ZipOutputStream zos) throws Exception {
-        final byte[] buffer = new byte[1024];
-        //TODO: Użyć obliczania buffor DownloadBuffer
+        final byte[] buffer = new byte[BufferUtil.defineBuffer(BufferUtil.DownloadBuffer.DYNAMIC, FileUtil.getFileSize(file))];
+
         try (final FileInputStream fis = new FileInputStream(file)) {
             final String entryPath = folderName + File.separator + file.getName();
             zos.putNextEntry(new ZipEntry(entryPath));
