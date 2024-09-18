@@ -10,6 +10,8 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.NoSuchFileException;
 import java.nio.file.Path;
+import java.nio.file.attribute.BasicFileAttributes;
+import java.nio.file.attribute.FileOwnerAttributeView;
 import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.List;
@@ -49,11 +51,7 @@ public final class FileUtil {
     }
 
     public static boolean canExecute(final String filePath) {
-        try {
-            return Files.isExecutable(Path.of(URLDecoder.decode(filePath.replace("/C", "C"), StandardCharsets.UTF_8)));
-        } catch (final Exception exception) {
-            throw new RuntimeException(exception);
-        }
+        return Files.isExecutable(Path.of(URLDecoder.decode(filePath.replace("/C", "C"), StandardCharsets.UTF_8)));
     }
 
     public static boolean directoryIsEmpty(final File directory) {
@@ -92,23 +90,24 @@ public final class FileUtil {
         }
     }
 
-    public static boolean addExecutePerm(final String filePath) {
-        try {
-            final File file = new File(filePath);
-            if (!file.exists()) throw new NoSuchFileException(file.toString());
-            return file.setExecutable(true, false);
-        } catch (final Exception exception) {
-            throw new RuntimeException(exception);
-        }
+    public static String getFileOwner(final File file) throws IOException {
+        final FileOwnerAttributeView view = Files.getFileAttributeView(file.toPath(), FileOwnerAttributeView.class);
+        return view.getOwner().getName();
     }
 
-    public static boolean renameFolder(final Path oldPath, final Path newPath) {
-        try {
-            Files.move(oldPath, newPath);
-            return true;
-        } catch (final IOException ioException) {
-            throw new RuntimeException(ioException);
-        }
+    public static long getCreationTime(final File file) throws IOException {
+        final BasicFileAttributes attrs = Files.readAttributes(file.toPath(), BasicFileAttributes.class);
+        return attrs.creationTime().toMillis();
+    }
+
+    public static boolean addExecutePerm(final String filePath) throws NoSuchFileException {
+        final File file = new File(filePath);
+        if (!file.exists()) throw new NoSuchFileException(file.toString());
+        return file.setExecutable(true, false);
+    }
+
+    public static void renameFolder(final Path oldPath, final Path newPath) throws IOException {
+        Files.move(oldPath, newPath);
     }
 
     public static long getFileSize(final File file) {
