@@ -100,6 +100,49 @@ public final class FileUtil {
         return attrs.creationTime().toMillis();
     }
 
+    public static String getFileExtensionInfo(final String fileName) {
+        final int dotIndex = fileName.lastIndexOf('.');
+
+        final String fileExtension = ((dotIndex > 0) ? fileName.substring(dotIndex + 1) : "Unknown");
+        return switch (fileExtension.toLowerCase()) {
+            case "exe" -> "Aplikacja";
+            case "md" -> "MarkDown";
+            case "txt" -> "Text File";
+            case "json" -> "Json File";
+            case "jpg", "jpeg" -> "JPEG Image";
+            case "png" -> "PNG Image";
+            case "gif" -> "GIF Image";
+            case "svg" -> "SVG Image";
+            case "mp4" -> "MP4 Video";
+            case "avi" -> "AVI Video";
+            case "mkv" -> "MKV Video";
+            case "mp3" -> "MP3 Audio";
+            case "wav" -> "WAV Audio";
+            case "flac" -> "FLAC Audio";
+            case "pdf" -> "PDF Document";
+            case "docx" -> "Word Document";
+            case "xlsx" -> "Excel Spreadsheet";
+            case "zip" -> "ZIP Archive";
+            case "rar" -> "RAR Archive";
+            case "tar" -> "TAR Archive";
+            case "gz" -> "GZ Compressed Archive";
+            case "csv" -> "CSV File";
+            case "sql" -> "SQL File";
+            case "xml" -> "XML File";
+            case "pptx" -> "PowerPoint Presentation";
+            case "sh" -> "Bash Script";
+            case "ps1" -> "PowerShell Script";
+            case "yaml", "yml" -> "YAML File";
+            case "ini" -> "INI Configuration File";
+            case "bz2" -> "BZ2 Compressed Archive";
+            case "java" -> "Java Source Code";
+            case "py" -> "Python Source Code";
+            case "html" -> "HTML Document";
+
+            default -> fileExtension;
+        };
+    }
+
     public static boolean addExecutePerm(final String filePath) throws NoSuchFileException {
         final File file = new File(filePath);
         if (!file.exists()) throw new NoSuchFileException(file.toString());
