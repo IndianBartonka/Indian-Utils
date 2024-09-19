@@ -110,6 +110,30 @@ public class DownloadTask {
         }
     }
 
+    public InputStream getInputStream() {
+        return this.inputStream;
+    }
+
+    public File getOutputFile() {
+        return this.outputFile;
+    }
+
+    public long getFileSize() {
+        return this.fileSize;
+    }
+
+    public BufferUtil.DownloadBuffer getDownloadBuffer() {
+        return this.downloadBuffer;
+    }
+
+    public int getTimeOutSeconds() {
+        return this.timeOutSeconds;
+    }
+
+    public DownloadListener getDownloadListener() {
+        return this.downloadListener;
+    }
+
     public boolean isCanDownload() {
         return this.canDownload;
     }
