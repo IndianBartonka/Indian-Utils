@@ -7,7 +7,7 @@ import java.net.URL;
 import java.util.Random;
 import java.util.concurrent.TimeoutException;
 import me.indian.util.download.DownloadListener;
-import me.indian.util.download.Downloader;
+import me.indian.util.download.DownloadTask;
 import me.indian.util.logger.Logger;
 import me.indian.util.logger.LoggerConfiguration;
 import me.indian.util.system.SystemUtil;
@@ -17,7 +17,7 @@ public final class Main {
     private static final Logger LOGGER = new Logger(new LoggerConfiguration(true, System.getProperty("user.dir") + File.separator + "logs", true)) {
     };
     private static final Logger LOGGER2 = LOGGER.prefixed("Logger 2");
-//    private static final Logger LOGGER = new Logger(new LoggerConfiguration(true,
+    //    private static final Logger LOGGER = new Logger(new LoggerConfiguration(true,
 //            System.getProperty("user.dir") + File.separator + "logs", DateUtil.getFixedDate())) {};
     private static final long START_TIME = System.currentTimeMillis();
     private static final Random RANDOM = new Random(Integer.MAX_VALUE);
@@ -131,12 +131,26 @@ public final class Main {
             try {
                 final long start = System.currentTimeMillis();
 
-                Downloader.downloadFile(connection.getInputStream(), new File(fileName),
+                final DownloadTask downloadTask = new DownloadTask(connection.getInputStream(), new File(fileName),
                         connection.getContentLength(),
                         BufferUtil.DownloadBuffer.DYNAMIC,
                         30,
                         downloadListener
                 );
+
+                LOGGER.info(downloadTask);
+
+                new Thread(() -> {
+                    ThreadUtil.sleep(5);
+                    LOGGER.info("Zatrzymywanie pobierania:&b " + fileName);
+                    try {
+                        downloadTask.stopDownload();
+                    } catch (final IOException e) {
+                        throw new RuntimeException(e);
+                    }
+                }).start();
+
+                downloadTask.downloadFile();
 
                 LOGGER.info("Pobrano w:&b " + DateUtil.formatTimeDynamic(System.currentTimeMillis() - start, true));
             } catch (final TimeoutException e) {
