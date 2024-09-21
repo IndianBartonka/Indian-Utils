@@ -84,7 +84,7 @@ public class WebHookSender {
                 jsonPayload.addProperty("tts", false);
 
                 if (message.isEmpty()) {
-                    logger.error("Nie można wysłać pustej wiadomości webhookiem!");
+                    this.logger.error("Nie można wysłać pustej wiadomości webhookiem!");
                     return;
                 }
 
@@ -202,7 +202,8 @@ public class WebHookSender {
     private void handleHttpCode(final int code) {
         switch (code) {
             case HttpURLConnection.HTTP_NO_CONTENT -> this.requests++;
-            case HttpURLConnection.HTTP_BAD_REQUEST -> this.logger.error("Kod odpowiedzi: " + code + " Oznacza to że dane twojego webhook są błędne");
+            case HttpURLConnection.HTTP_BAD_REQUEST ->
+                    this.logger.error("Kod odpowiedzi: " + code + " Oznacza to że dane twojego webhook są błędne");
             default -> this.logger.debug("Kod odpowiedzi: " + code);
         }
     }

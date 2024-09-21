@@ -22,11 +22,11 @@ public interface Encryptor {
 
     void setIvParameterSpec(IvParameterSpec ivParameterSpec);
 
-    void setEncryptedDir(String encryptedDir) throws IOException;
-
-    void setUserDir(String userDir) throws IOException;
-
     String getEncryptedDir();
 
+    void setEncryptedDir(String encryptedDir) throws IOException;
+
     String getUserDir();
+
+    void setUserDir(String userDir) throws IOException;
 }

@@ -123,20 +123,6 @@ public final class AESEncryptor implements Encryptor {
         this.aesPadding = aesPadding;
     }
 
-    @Override
-    public void setEncryptedDir(final String encryptedDir) throws IOException {
-        this.encryptedDir = encryptedDir;
-
-        Files.createDirectories(Path.of(encryptedDir));
-    }
-
-    @Override
-    public void setUserDir(final String userDir) throws IOException {
-        this.userDir = userDir;
-
-        Files.createDirectories(Path.of(userDir));
-    }
-
     private void createMissingDirs() throws IOException {
         Files.createDirectories(Path.of(this.userDir));
         Files.createDirectories(Path.of(this.encryptedDir));
@@ -148,7 +134,21 @@ public final class AESEncryptor implements Encryptor {
     }
 
     @Override
+    public void setEncryptedDir(final String encryptedDir) throws IOException {
+        this.encryptedDir = encryptedDir;
+
+        Files.createDirectories(Path.of(encryptedDir));
+    }
+
+    @Override
     public String getUserDir() {
         return this.userDir;
+    }
+
+    @Override
+    public void setUserDir(final String userDir) throws IOException {
+        this.userDir = userDir;
+
+        Files.createDirectories(Path.of(userDir));
     }
 }

@@ -77,7 +77,7 @@ public abstract class Logger {
         }
 
         final File logsDir = new File(this.configuration.getLogsPath());
-        
+
         if (!logsDir.exists()) {
             if (!logsDir.mkdir()) if (logsDir.mkdirs()) {
                 throw new RuntimeException("Nie można utworzyć miejsca na logi");
