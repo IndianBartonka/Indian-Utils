@@ -107,6 +107,11 @@ public class DownloadTask {
         } finally {
             this.downloading = false;
             this.finished = true;
+            try {
+                this.inputStream.close();
+            } catch (final IOException ignore) {
+
+            }
         }
     }
 
@@ -146,7 +151,7 @@ public class DownloadTask {
         return this.finished;
     }
 
-    public void stopDownload() throws IOException {
+    public void stopDownload() {
         if (!this.downloading) throw new IllegalStateException("Brak aktywnego pobierania.");
         this.canDownload = false;
     }
