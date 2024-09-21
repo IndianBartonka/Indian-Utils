@@ -19,6 +19,8 @@ import java.util.stream.Stream;
 
 public final class FileUtil {
 
+    private static final File FILE = new File(File.separator);
+
     private FileUtil() {
     }
 
@@ -48,6 +50,19 @@ public final class FileUtil {
 
     public static void writeText(final File file, final List<String> lines) throws IOException {
         writeText(file, lines, true);
+    }
+
+
+    public static long availableDiskSpace() {
+        return (FILE.exists() ? FILE.getUsableSpace() : 0);
+    }
+
+    public static long maxDiskSpace() {
+        return (FILE.exists() ? FILE.getTotalSpace() : 0);
+    }
+
+    public static long usedDiskSpace() {
+        return (maxDiskSpace() - availableDiskSpace());
     }
 
     public static boolean canExecute(final String filePath) {
@@ -100,6 +115,7 @@ public final class FileUtil {
         return attrs.creationTime().toMillis();
     }
 
+    //TODO: Zaktualizowac to
     public static String getFileExtensionInfo(final String fileName) {
         final int dotIndex = fileName.lastIndexOf('.');
 

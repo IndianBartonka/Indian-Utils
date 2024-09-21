@@ -45,6 +45,17 @@ public final class Main {
         LOGGER2.getParent().info("Uzywam rodzica");
     }
 
+    private static void fileUtilTest() {
+
+
+        LOGGER.info("Dostępne: " + MathUtil.formatBytesDynamic(FileUtil.availableDiskSpace(), false));
+        LOGGER.info("Użyte: " + MathUtil.formatBytesDynamic(FileUtil.usedDiskSpace(), false));
+        LOGGER.info("Maksymalne: " + MathUtil.formatBytesDynamic(FileUtil.maxDiskSpace(), false));
+
+
+//TODO: Dodać więcej przykładów użycia FileUtil
+    }
+
     public static void dateUtilTest() {
         LOGGER.info("Date Util Test");
         LOGGER.info(DateUtil.getDate());
@@ -86,6 +97,7 @@ public final class Main {
 
     public static void encryptorTest() {
         //TODO: Dodać tak owy
+        LOGGER.info("Dodac encryptor Test");
     }
 
     public static void downloadFileTest() throws IOException {
@@ -185,6 +197,9 @@ public final class Main {
 
     public static void main(final String[] args) throws IOException {
         loggerTest();
+        LOGGER.print("==================");
+
+        fileUtilTest();
         LOGGER.print("==================");
 
         mathUtilTest();
