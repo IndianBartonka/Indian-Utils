@@ -149,7 +149,6 @@ public class DownloadTask {
     public void stopDownload() throws IOException {
         if (!this.downloading) throw new IllegalStateException("Brak aktywnego pobierania.");
         this.canDownload = false;
-        this.inputStream.close();
     }
 
     @Override
