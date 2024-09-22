@@ -307,10 +307,7 @@ public final class FileUtil {
                     final List<File> filesList = new ArrayList<>();
                     filesList.add(file);
                     if (file.isDirectory()) {
-                        final File[] fileFiles = file.listFiles();
-                        if (fileFiles != null) {
-                            filesList.addAll(getFiles(Arrays.asList(fileFiles)));
-                        }
+                            filesList.addAll(getFiles(file));
                     }
                     return filesList.stream();
                 }).collect(Collectors.toList());
