@@ -98,7 +98,7 @@ public final class FileUtil {
                             try {
                                 Files.delete(path);
                             } catch (final IOException exception) {
-                                exception.printStackTrace();
+                                throw new RuntimeException(exception);
                             }
                         });
             }
