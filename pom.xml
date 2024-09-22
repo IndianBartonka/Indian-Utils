@@ -5,8 +5,8 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>me.indian.util</groupId>
-    <artifactId>utils</artifactId>
-    <version>0.0.5.3</version>
+    <artifactId>IndianUtils</artifactId>
+    <version>0.0.6</version>
 
     <properties>
         <maven.compiler.source>17</maven.compiler.source>
