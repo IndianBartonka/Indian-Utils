@@ -155,11 +155,7 @@ public final class Main {
                 new Thread(() -> {
                     ThreadUtil.sleep(5);
                     LOGGER.info("Zatrzymywanie pobierania:&b " + fileName);
-                    try {
-                        downloadTask.stopDownload();
-                    } catch (final IOException e) {
-                        throw new RuntimeException(e);
-                    }
+                    downloadTask.stopDownload();
                 }).start();
 
                 downloadTask.downloadFile();
@@ -194,7 +190,7 @@ public final class Main {
             throw new RuntimeException(e);
         }
     }
-
+    
     public static void main(final String[] args) throws IOException {
         loggerTest();
         LOGGER.print("==================");
