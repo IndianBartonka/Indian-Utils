@@ -12,9 +12,12 @@ import java.nio.file.NoSuchFileException;
 import java.nio.file.Path;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.nio.file.attribute.FileOwnerAttributeView;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public final class FileUtil {
@@ -288,5 +291,28 @@ public final class FileUtil {
         }
 
         return size;
+    }
+
+    public static List<File> getFiles(final File file) {
+        final File[] files = file.listFiles();
+
+        if (files == null) return new ArrayList<>();
+
+        return getFiles(Arrays.asList(files));
+    }
+
+    public static List<File> getFiles(final List<File> files) {
+        return files.stream()
+                .flatMap(file -> {
+                    final List<File> filesList = new ArrayList<>();
+                    filesList.add(file);
+                    if (file.isDirectory()) {
+                        final File[] fileFiles = file.listFiles();
+                        if (fileFiles != null) {
+                            filesList.addAll(getFiles(Arrays.asList(fileFiles)));
+                        }
+                    }
+                    return filesList.stream();
+                }).collect(Collectors.toList());
     }
 }
