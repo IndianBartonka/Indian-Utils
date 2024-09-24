@@ -69,6 +69,7 @@ public final class FileUtil {
     }
 
     public static boolean directoryIsEmpty(final File directory) {
+        if (!directory.exists()) return false;
         if (!directory.isDirectory()) {
             throw new IllegalArgumentException("Provided file is not a directory.");
         }
