@@ -190,7 +190,7 @@ public final class Main {
             throw new RuntimeException(e);
         }
     }
-    
+
     public static void main(final String[] args) throws IOException {
         loggerTest();
         LOGGER.print("==================");
