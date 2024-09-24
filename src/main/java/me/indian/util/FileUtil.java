@@ -249,6 +249,7 @@ public final class FileUtil {
 
 
             // Configuration Files
+                //TODO: Dac tą metodę na sam dół i dodac "Lang"
             case "yaml", "yml" -> "YAML File";
             case "ini" -> "INI Configuration File";
             case "properties", "props" -> "Properties Configuration File";
