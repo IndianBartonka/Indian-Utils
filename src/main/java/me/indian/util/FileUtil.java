@@ -148,7 +148,7 @@ public final class FileUtil {
     public static String getFileType(final String fileName) {
         final int dotIndex = fileName.lastIndexOf('.');
 
-        final String fileExtension = ((dotIndex > 0) ? fileName.substring(dotIndex + 1) : "Unknown");
+        final String fileExtension = ((dotIndex > 0) ? fileName.substring(dotIndex + 1) : fileName);
         return switch (fileExtension.toLowerCase()) {
             // Executable Files
             case "exe" -> "Windows Executable";
