@@ -39,7 +39,6 @@ public final class AESEncryptor implements Encryptor {
 
     @Override
     public File encryptFile(final File inputFile, final SecretKey key) throws Exception {
-        this.createMissingDirs();
         final File encryptedFile = new File(this.encryptedDir, inputFile.getName());
         final Cipher cipher = AESSettings.createCipher(this.aesMode, this.aesPadding, key, this.ivParameterSpec, true);
         if (this.logger != null) this.logger.debug("Szyfrowanie pliku: " + inputFile.getPath());
@@ -50,7 +49,6 @@ public final class AESEncryptor implements Encryptor {
 
     @Override
     public File decryptFile(final File inputFile, final SecretKey key) throws Exception {
-        this.createMissingDirs();
         final File decryptedFile = new File(this.userDir, inputFile.getName());
         final Cipher cipher = AESSettings.createCipher(this.aesMode, this.aesPadding, key, this.ivParameterSpec, false);
         if (this.logger != null) this.logger.debug("Odszyfrowanie pliku: " + inputFile.getPath());
@@ -123,7 +121,7 @@ public final class AESEncryptor implements Encryptor {
         this.aesPadding = aesPadding;
     }
 
-    private void createMissingDirs() throws IOException {
+    public void createMissingDirs() throws IOException {
         Files.createDirectories(Path.of(this.userDir));
         Files.createDirectories(Path.of(this.encryptedDir));
     }
