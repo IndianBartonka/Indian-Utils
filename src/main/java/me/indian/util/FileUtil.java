@@ -269,11 +269,11 @@ public final class FileUtil {
             case "awk" -> "AWK Script";
             case "cpp" -> "C++ Source File";
             case "c" -> "C Source File";
+            case "h" -> "C/C++ Header File";
             case "cs" -> "C# Source File";
             case "fs" -> "F# Source File";
             case "fsx" -> "F# Script File";
             case "fsi" -> "F# Interface File";
-
 
             // Configuration Files
             case "lang" -> "Language File";
