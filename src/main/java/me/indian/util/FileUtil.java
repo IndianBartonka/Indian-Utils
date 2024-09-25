@@ -172,38 +172,53 @@ public final class FileUtil {
             // Text Files
             case "txt" -> "Text File";
             case "log" -> "Log File";
-            case "rtf" -> "Rich Text Format file";
+            case "rtf" -> "Rich Text Format File";
 
             // Documents
             case "pdf" -> "PDF Document";
-            case "docx" -> "Word Document";
-            case "xlsx" -> "Excel Spreadsheet";
-            case "pptx" -> "PowerPoint Presentation";
-            case "odt" -> "Open Document Text File";
             case "doc" -> "Microsoft Word Document";
+            case "docx" -> "Word Document";
+            case "odt" -> "Open Document Text File";
             case "wps" -> "Microsoft Works Document";
             case "html", "htm" -> "HTML Document";
             case "xhtml" -> "XHTML Document";
+            case "xlsx" -> "Excel Spreadsheet";
+            case "pptx" -> "PowerPoint Presentation";
 
-            //Minecraft
+            // Minecraft
             case "mcaddon" -> "Minecraft Addon";
             case "mcpack" -> "Minecraft Resource/Behavior Pack";
-            case "mcmeta" -> "Minecraft Resource Pack Configuration File.";
+            case "mcmeta" -> "Minecraft Resource Pack Configuration File";
             case "mcproject" -> "Minecraft Editor File";
             case "mcstructure" -> "Minecraft Structure File";
             case "mctemplate" -> "Minecraft World Template";
             case "mcworld" -> "Minecraft World";
 
             // Data Files
-            case "json" -> "Json File";
+            case "json" -> "JSON File";
             case "csv" -> "CSV File";
             case "sql" -> "SQL File";
             case "xml" -> "XML File";
-            case "xps" -> "XML-based document";
+            case "xps" -> "XML-based Document";
+            case "db" -> "Database File";
             case "dat", "data" -> "Data File";
+            case "sqlite" -> "SQLite Database File";
             case "ldb" -> "LevelDB File";
-            case "tmp" -> "Temporary data file";
+            case "tmp" -> "Temporary Data File";
             case "list" -> "List File";
+            case "resources" -> "Resource File";
+            case "asset", "assets" -> "Asset File";
+            case "vdf" -> "Valve Data File";
+            case "pak" -> "Package File";
+            case "bundle" -> "Bundle File";
+            case "pdb" -> "Program Database File";
+
+            // Git Files
+            case "git" -> "Git Directory";
+            case "gitattributes" -> "Git Attributes File";
+            case "gitignore" -> "Git Ignore File";
+            case "gitmodules" -> "Git Submodule File";
+            case "patch" -> "Patch File";
 
             // Images
             case "jpg", "jpeg" -> "JPEG Image";
@@ -236,11 +251,12 @@ public final class FileUtil {
             case "gz" -> "GZ Compressed Archive";
             case "bz2" -> "BZ2 Compressed Archive";
             case "7z" -> "7-Zip Archive";
+            case "unity3d" -> "Unity3D Asset Archive";
 
             // Disk Images
             case "iso" -> "ISO Disk Image";
             case "img" -> "Disk Image";
-            case "dmg" -> "MacOS Disk Image";
+            case "dmg" -> "macOS Disk Image";
             case "bin" -> "Binary File";
             case "cue" -> "Cue Sheet";
             case "mdf" -> "Media Descriptor File";
@@ -261,6 +277,33 @@ public final class FileUtil {
             // Backup Files
             case "bak" -> "Backup File";
             case "old" -> "Old File Version";
+
+            // Downloading Files
+            case "crdownload" -> "Chrome Downloading File";
+            case "part" -> "Partial Download File";
+            case "temp" -> "Temporary File";
+            case "download" -> "Firefox Downloading File";
+            case "partial" -> "Partial Download File";
+
+            // Browser-Related Files
+            case "maff" -> "Mozilla Archive Format File";
+            case "webarchive" -> "Web Archive File";
+            case "mht" -> "MHTML File";
+
+            // Configuration Files
+            case "lang" -> "Language File";
+            case "yaml", "yml" -> "YAML File";
+            case "ini" -> "INI Configuration File";
+            case "properties", "props", "prop" -> "Properties Configuration File";
+            case "toml" -> "TOML Configuration File";
+            case "conf", "config", "cfg" -> "Configuration File";
+            case "env" -> "Environment File";
+            case "plist" -> "macOS Property List File";
+            case "rc" -> "Resource Configuration File";
+            case "desktop" -> "Desktop Entry File";
+            //TODO: Dowiedziec się
+            case "epage" -> "TellTale Save File";
+            case "estore" -> "TellTale Save File";
 
             // Scripts
             case "sh" -> "Bash Script";
@@ -310,18 +353,6 @@ public final class FileUtil {
             case "erl" -> "Erlang Source File";
             case "ex" -> "Elixir Source File";
             case "exs" -> "Elixir Script";
-
-            // Configuration Files
-            case "lang" -> "Language File";
-            case "yaml", "yml" -> "YAML File";
-            case "ini" -> "INI Configuration File";
-            case "properties", "props" -> "Properties Configuration File";
-            case "toml" -> "TOML Configuration File";
-            case "conf", "config", "cfg" -> "Configuration File";
-            case "env" -> "Environment File";
-            case "plist" -> "macOS Property List File";
-            case "rc" -> "Resource Configuration File";
-            case "desktop" -> "Desktop Entry File";
 
             default -> fileExtension;
         };
