@@ -157,10 +157,14 @@ public final class FileUtil {
             case "out" -> "Java Executable";
             case "jar" -> "Java Architecture File";
             case "app" -> "macOS Executable";
+            case "pkg" -> "macOS Package";
             case "elf" -> "Linux Executable";
             case "deb" -> "Debian Package";
             case "rpm" -> "RedHat Package";
             case "apk" -> "Android Application Package";
+            case "ipa" -> "iOS App Store Package";
+            case "sys" -> "System File";
+            case "dll" -> "Dynamic Link Library File";
 
             // Markdown
             case "md", "markdown", "mdown", "mkd", "mkdn", "mdtxt" -> "Markdown File";
@@ -169,6 +173,17 @@ public final class FileUtil {
             case "txt" -> "Text File";
             case "log" -> "Log File";
             case "rtf" -> "Rich Text Format file";
+
+            // Documents
+            case "pdf" -> "PDF Document";
+            case "docx" -> "Word Document";
+            case "xlsx" -> "Excel Spreadsheet";
+            case "pptx" -> "PowerPoint Presentation";
+            case "odt" -> "Open Document Text File";
+            case "doc" -> "Microsoft Word Document";
+            case "wps" -> "Microsoft Works Document";
+            case "html", "htm" -> "HTML Document";
+            case "xhtml" -> "XHTML Document";
 
             //Minecraft
             case "mcaddon" -> "Minecraft Addon";
@@ -214,14 +229,6 @@ public final class FileUtil {
             case "m4a" -> "M4A Audio";
             case "alac" -> "Apple Lossless Audio Codec";
 
-            // Documents
-            case "pdf" -> "PDF Document";
-            case "docx" -> "Word Document";
-            case "xlsx" -> "Excel Spreadsheet";
-            case "pptx" -> "PowerPoint Presentation";
-            case "html", "htm" -> "HTML Document";
-            case "xhtml" -> "XHTML Document";
-
             // Archives
             case "zip" -> "ZIP Archive";
             case "rar" -> "RAR Archive";
@@ -238,6 +245,22 @@ public final class FileUtil {
             case "cue" -> "Cue Sheet";
             case "mdf" -> "Media Descriptor File";
             case "nrg" -> "Nero Disk Image";
+
+            // 3D Model Files
+            case "obj" -> "Wavefront 3D Object File";
+            case "fbx" -> "Filmbox 3D Model File";
+            case "stl" -> "Stereolithography 3D Model File";
+            case "3ds" -> "3D Studio Model File";
+            case "blend" -> "Blender 3D Model File";
+            case "dae" -> "COLLADA 3D Model File";
+            case "bbmodel" -> "Blockbench Model File";
+            case "gltf" -> "GL Transmission Format Model File";
+            case "glb" -> "GLB Binary Format Model File";
+            case "usdz" -> "Universal Scene Description Zip File";
+
+            // Backup Files
+            case "bak" -> "Backup File";
+            case "old" -> "Old File Version";
 
             // Scripts
             case "sh" -> "Bash Script";
