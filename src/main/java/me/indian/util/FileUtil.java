@@ -188,6 +188,7 @@ public final class FileUtil {
             case "dat", "data" -> "Data File";
             case "ldb" -> "LevelDB File";
             case "tmp" -> "Temporary data file";
+            case "list" -> "List File";
 
             // Images
             case "jpg", "jpeg" -> "JPEG Image";
