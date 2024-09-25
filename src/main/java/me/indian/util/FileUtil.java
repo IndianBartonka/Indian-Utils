@@ -253,6 +253,8 @@ public final class FileUtil {
             case "kt" -> "Kotlin Source File";
             case "scala" -> "Scala Source File";
             case "groovy" -> "Groovy Script";
+            case "class" -> "Java Bytecode Class File";
+            case "jsp" -> "JavaServer Pages File";
             case "rb" -> "Ruby Script";
             case "go" -> "Go Source File";
             case "js" -> "JavaScript File";
