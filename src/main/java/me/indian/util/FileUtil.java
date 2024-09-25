@@ -219,6 +219,7 @@ public final class FileUtil {
             case "xlsx" -> "Excel Spreadsheet";
             case "pptx" -> "PowerPoint Presentation";
             case "html", "htm" -> "HTML Document";
+            case "xhtml" -> "XHTML Document";
 
             // Archives
             case "zip" -> "ZIP Archive";
@@ -274,6 +275,15 @@ public final class FileUtil {
             case "fs" -> "F# Source File";
             case "fsx" -> "F# Script File";
             case "fsi" -> "F# Interface File";
+            case "jsx" -> "React JSX File";
+            case "tsx" -> "React TypeScript File";
+            case "scss" -> "Sass Stylesheet";
+            case "less" -> "Less Stylesheet";
+            case "tex" -> "LaTeX Document";
+            case "rkt" -> "Racket Source File";
+            case "erl" -> "Erlang Source File";
+            case "ex" -> "Elixir Source File";
+            case "exs" -> "Elixir Script";
 
             // Configuration Files
             case "lang" -> "Language File";
