@@ -53,10 +53,8 @@ public final class SystemUtil {
     }
 
     public static String getLinuxDistribution() {
-        final String releaseFilePath = "/etc/os-release";
-
         try {
-            final Path path = Paths.get(releaseFilePath);
+            final Path path = Paths.get("/etc/os-release");
             final List<String> lines = Files.readAllLines(path);
 
             for (final String line : lines) {

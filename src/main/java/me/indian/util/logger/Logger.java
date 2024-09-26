@@ -88,10 +88,8 @@ public abstract class Logger {
             if (this.configuration.isOneLog()) {
                 this.logFile = new File(logsDir, "Latest.log");
 
-                if (this.logFile.exists()) {
-                    if (!this.logFile.delete()) {
-                        FileUtil.writeText(this.logFile, List.of(""));
-                    }
+                if (this.logFile.exists() && !this.logFile.delete()) {
+                    FileUtil.writeText(this.logFile, List.of(""));
                 }
 
             } else {

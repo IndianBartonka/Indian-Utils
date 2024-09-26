@@ -67,6 +67,7 @@ public final class ThreadUtil implements ThreadFactory {
         try {
             Thread.sleep(1000L * seconds);
         } catch (final InterruptedException exception) {
+            Thread.currentThread().interrupt();
             throw new RuntimeException(exception);
         }
     }
@@ -80,6 +81,7 @@ public final class ThreadUtil implements ThreadFactory {
         try {
             Thread.sleep(millis);
         } catch (final InterruptedException exception) {
+            Thread.currentThread().interrupt();
             throw new RuntimeException(exception);
         }
     }

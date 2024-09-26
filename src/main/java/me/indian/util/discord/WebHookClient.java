@@ -171,6 +171,10 @@ public class WebHookClient {
             this.logger.info("Zamknięto wątki Webhooku");
         } catch (final Exception exception) {
             this.logger.critical("Wstąpił błąd przy próbie zamknięcia webhooku ", exception);
+
+            if(exception instanceof InterruptedException){
+                Thread.currentThread().interrupt();
+            }
         }
     }
 

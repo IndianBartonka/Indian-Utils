@@ -20,7 +20,7 @@ public class DownloadTask {
     private final DownloadListener downloadListener;
     private boolean stopped, downloading, finished;
 
-    public DownloadTask(final InputStream inputStream, final File outputFile, final long fileSize, final BufferUtil.DownloadBuffer downloadBuffer, final int timeOutSeconds, @Nullable final DownloadListener downloadListener) throws IOException, TimeoutException {
+    public DownloadTask(final InputStream inputStream, final File outputFile, final long fileSize, final BufferUtil.DownloadBuffer downloadBuffer, final int timeOutSeconds, @Nullable final DownloadListener downloadListener) {
         this.inputStream = inputStream;
         this.outputFile = outputFile;
         this.fileSize = fileSize;
@@ -31,7 +31,7 @@ public class DownloadTask {
         this.downloading = false;
     }
 
-    public DownloadTask(final InputStream inputStream, final File outputFile, final long fileSize, final BufferUtil.DownloadBuffer downloadBuffer, final int timeOutSeconds) throws IOException, TimeoutException {
+    public DownloadTask(final InputStream inputStream, final File outputFile, final long fileSize, final BufferUtil.DownloadBuffer downloadBuffer, final int timeOutSeconds) {
         this.inputStream = inputStream;
         this.outputFile = outputFile;
         this.fileSize = fileSize;
@@ -73,7 +73,7 @@ public class DownloadTask {
                 final double elapsedTime = (currentTime - lastTime) / 1000.0;
                 if (elapsedTime >= 1.0) {
                     final long bytesSinceLastTime = totalBytesRead - lastBytesRead;
-                    final double speedBytesPerSecond = (double) bytesSinceLastTime / elapsedTime;
+                    final double speedBytesPerSecond = bytesSinceLastTime / elapsedTime;
                     final double speedMBps = speedBytesPerSecond / BufferUtil.DownloadBuffer.ONE_MB.getBuffer();
                     lastTime = currentTime;
                     lastBytesRead = totalBytesRead;

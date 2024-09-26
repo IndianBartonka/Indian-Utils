@@ -57,7 +57,7 @@ public final class AESEncryptor implements Encryptor {
         return decryptedFile;
     }
 
-    private void processFile(final Cipher cipher, final File inputFile, final File outputFile) throws Exception {
+    private void processFile(final Cipher cipher, final File inputFile, final File outputFile) throws IOException, IllegalBlockSizeException, BadPaddingException {
         try (final FileInputStream in = new FileInputStream(inputFile);
              final FileOutputStream out = new FileOutputStream(outputFile)) {
             final byte[] inputBytes = new byte[BufferUtil.defineBuffer(BufferUtil.DownloadBuffer.DYNAMIC, FileUtil.getFileSize(inputFile))];

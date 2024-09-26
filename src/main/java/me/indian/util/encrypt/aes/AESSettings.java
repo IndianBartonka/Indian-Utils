@@ -96,8 +96,9 @@ public final class AESSettings {
         final KeyGenerator keyGen;
         try {
             keyGen = KeyGenerator.getInstance("AES");
-        } catch (final NoSuchAlgorithmException e) {
-            throw new RuntimeException(e);
+        } catch (final NoSuchAlgorithmException ignored) {
+            //Algorytm AES jest istniejącym algorytmem
+            return null;
         }
         keyGen.init(keySize.getKeySize());
         return keyGen.generateKey();

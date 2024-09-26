@@ -8,8 +8,8 @@ import java.util.TreeMap;
 public final class ConsoleColors {
 
     private static final Map<String, String> COLOR_MAP = new HashMap<>();
-    private final static Map<String, Color> COLORS = new HashMap<>();
-    private final static TreeMap<Double, String> CLOSEST = new TreeMap<>();
+    private static final Map<String, Color> COLORS = new HashMap<>();
+    private static final TreeMap<Double, String> CLOSEST = new TreeMap<>();
 
     private static final String RESET = "\u001B[0m";
     private static final String BOLD = "\033[1m";
@@ -33,9 +33,9 @@ public final class ConsoleColors {
 
     private static final String BRIGHT_RED = "\u001B[91m";
     private static final String BRIGHT_GREEN = "\u001B[92m";
-    private static final String BRIGHT_PURPLE = "\u001B[95m";
+    //    private static final String BRIGHT_PURPLE = "\u001B[95m";
     private static final String BRIGHT_CYAN = "\u001B[96m";
-    private static final String BRIGHT_WHITE = "\u001B[97m";
+    //    private static final String BRIGHT_WHITE = "\u001B[97m";
     private static final String BRIGHT_GRAY = "\u001B[37m";
 
     private static final String DARK_GRAY = "\u001B[90m";
@@ -50,12 +50,12 @@ public final class ConsoleColors {
     private static final String BLUE_BACKGROUND = "\u001B[44m";
     private static final String PURPLE_BACKGROUND = "\u001B[45m";
     private static final String CYAN_BACKGROUND = "\u001B[46m";
-    private static final String WHITE_BACKGROUND = "\u001B[47m";
+    //    private static final String WHITE_BACKGROUND = "\u001B[47m";
     private static final String BRIGHT_BLACK_BACKGROUND = "\u001B[100m";
     private static final String BRIGHT_RED_BACKGROUND = "\u001B[101m";
     private static final String BRIGHT_GREEN_BACKGROUND = "\u001B[102m";
     private static final String BRIGHT_YELLOW_BACKGROUND = "\u001B[103m";
-    private static final String BRIGHT_BLUE_BACKGROUND = "\u001B[104m";
+    //    private static final String BRIGHT_BLUE_BACKGROUND = "\u001B[104m";
     private static final String DARK_GRAY_BACKGROUND = "\u001B[100m";
     private static final String BRIGHT_PURPLE_BACKGROUND = "\u001B[105m";
     private static final String BRIGHT_CYAN_BACKGROUND = "\u001B[106m";
@@ -123,6 +123,10 @@ public final class ConsoleColors {
         COLORS.put(YELLOW, new Color(255, 255, 85));
         COLORS.put(BRIGHT_GREEN, new Color(0, 238, 43));
         COLORS.put(GREEN, new Color(0, 128, 0));
+    }
+
+    private ConsoleColors() {
+
     }
 
     public static String getMinecraftColorFromANSI(final String ansi) {
