@@ -21,7 +21,8 @@ import java.util.stream.Stream;
 public final class FileUtil {
 
     private static final File FILE = new File(File.separator);
-    private static final Map<String, String> EXTENSIONS_MAP = new FileExtensionMap().getExtensionsMap();
+    private static final FileExtensionMap FILE_EXTENSION_MAP = new FileExtensionMap();
+    private static final Map<String, String> EXTENSIONS_MAP = FILE_EXTENSION_MAP.getExtensionsMap();
 
     private FileUtil() {
     }
@@ -147,14 +148,18 @@ public final class FileUtil {
         return size;
     }
 
-    public static String getFileType(final String fileName) {
+    public static String getFileTypeInfo(final String fileName) {
         final int dotIndex = fileName.lastIndexOf('.');
         final String fileExtension = ((dotIndex > 0) ? fileName.substring(dotIndex + 1) : fileName);
 
-        return EXTENSIONS_MAP.getOrDefault(fileExtension, fileExtension);
+        return EXTENSIONS_MAP.getOrDefault(fileExtension.toLowerCase(), fileExtension);
     }
 
     public static void addExtensionName(final String extensionName, final String description) {
-        EXTENSIONS_MAP.putIfAbsent(extensionName, description);
+        FILE_EXTENSION_MAP.addExtension(extensionName, description);
+    }
+
+    public static void addExtensionName(final List<String> extensions, final String description) {
+        FILE_EXTENSION_MAP.addExtension(extensions, description);
     }
 }

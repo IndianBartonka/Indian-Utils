@@ -47,14 +47,20 @@ public final class Main {
     }
 
     private static void fileUtilTest() {
-
-
         LOGGER.info("Dostępne: " + MathUtil.formatBytesDynamic(FileUtil.availableDiskSpace(), false));
         LOGGER.info("Użyte: " + MathUtil.formatBytesDynamic(FileUtil.usedDiskSpace(), false));
         LOGGER.info("Maksymalne: " + MathUtil.formatBytesDynamic(FileUtil.maxDiskSpace(), false));
 
+        LOGGER.print();
 
-//TODO: Dodać więcej przykładów użycia FileUtil
+        final File[] files = new File(System.getProperty("user.dir")).listFiles();
+        if (files != null) {
+            for (final File file : files) {
+                LOGGER.info(file.getName() + " = " + FileUtil.getFileTypeInfo(file.getName()));
+            }
+        }
+
+        //TODO: Dodać więcej przykładów użycia FileUtil
     }
 
     public static void dateUtilTest() {
