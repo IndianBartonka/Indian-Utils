@@ -129,6 +129,8 @@ public class FileExtensionMap {
         this.addExtension("tiff", "Tagged Image File Format");
         this.addExtension("bmp", "Bitmap Image File");
         this.addExtension("ico", "Icon File");
+        this.addExtension("pdn", "Paint.NET Image");
+        this.addExtension("xcf", "GIMP Image File");
 
         // Video Files
         this.addExtension("mp4", "MP4 Video");
