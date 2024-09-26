@@ -6,7 +6,7 @@ import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.List;
 import me.indian.util.DateUtil;
-import me.indian.util.FileUtil;
+import me.indian.util.file.FileUtil;
 
 public abstract class Logger {
 

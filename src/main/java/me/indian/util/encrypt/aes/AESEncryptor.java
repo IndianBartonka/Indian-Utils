@@ -17,7 +17,7 @@ import javax.crypto.NoSuchPaddingException;
 import javax.crypto.SecretKey;
 import javax.crypto.spec.IvParameterSpec;
 import me.indian.util.BufferUtil;
-import me.indian.util.FileUtil;
+import me.indian.util.file.FileUtil;
 import me.indian.util.encrypt.Encryptor;
 import me.indian.util.logger.Logger;
 
