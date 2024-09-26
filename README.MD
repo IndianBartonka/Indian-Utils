@@ -10,8 +10,8 @@
 ### Przykłady użycja
 
 Przykłady użycja znajdziecie w klasie [Main.java](src%2Fmain%2Fjava%2Fme%2Findian%2Futil%2FMain.java)
-### Zaneżności Maven
 
+## Maven `pom.xml`
 ```xml
 <repository>
     <id>jitpack.io</id>
@@ -25,4 +25,27 @@ Przykłady użycja znajdziecie w klasie [Main.java](src%2Fmain%2Fjava%2Fme%2Find
     <artifactId>Indian-Utils</artifactId>
     <version>TAG</version>
 </dependency>
+```
+
+## Gradle `build.gradle`
+
+```groovy
+repositories {
+    mavenCentral()
+    maven { url 'https://jitpack.io' }
+}
+
+dependencies {
+    implementation 'com.github.IndianBartonka:Indian-Utils:TAG'
+}
+```
+
+## SBT `build.sbt`
+
+```sbt
+resolvers += "jitpack" at "https://jitpack.io"
+```
+
+```sbt
+libraryDependencies += "com.github.IndianBartonka" % "Indian-Utils" % "Tag"	
 ```
