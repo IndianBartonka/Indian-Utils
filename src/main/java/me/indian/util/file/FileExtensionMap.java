@@ -6,7 +6,7 @@ import java.util.Map;
 
 public class FileExtensionMap {
 
-    private final Map<String,String> extensionsMap;
+    private final Map<String, String> extensionsMap;
 
     public FileExtensionMap() {
         this.extensionsMap = new HashMap<>();
@@ -27,7 +27,7 @@ public class FileExtensionMap {
         return this.extensionsMap;
     }
 
-    private void init(){
+    private void init() {
         // Executable Files
         this.addExtension("exe", "Windows Executable");
         this.addExtension("msi", "Windows Installer Package");
@@ -54,7 +54,7 @@ public class FileExtensionMap {
 
         // Documents
         this.addExtension("odg", "Open Document Graphics File");
-        this.addExtension("pdf", "PDF Document");
+        this.addExtension("pdf", "Portable Document Format Document");
         this.addExtension("doc", "Microsoft Word Document");
         this.addExtension("docx", "Word Document");
         this.addExtension("odt", "Open Document Text File");
@@ -240,6 +240,7 @@ public class FileExtensionMap {
         this.addExtension("scala", "Scala Source File");
         this.addExtension("groovy", "Groovy Script");
         this.addExtension("class", "Java Bytecode Class File");
+        this.addExtension("O", "Object File");
         this.addExtension("jsp", "JavaServer Pages File");
         this.addExtension("rb", "Ruby Script");
         this.addExtension("go", "Go Source File");
