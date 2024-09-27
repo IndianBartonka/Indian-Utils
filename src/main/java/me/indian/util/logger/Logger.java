@@ -16,6 +16,7 @@ public abstract class Logger {
     protected String prefix;
     protected LogState logState;
     protected PrintStream printStream;
+    protected boolean temporary;
     private Logger parent;
 
     public Logger(final Logger parent) {
@@ -50,7 +51,14 @@ public abstract class Logger {
     }
 
     public Logger tempLogger(final String loggerPrefix) {
-        return new Logger(this.configuration) {
+        return new Logger(Logger.this.configuration) {
+
+            @Override
+            protected void initializeLogFile() {
+                this.temporary = true;
+                super.initializeLogFile();
+            }
+
             @Override
             protected void updatePrefix() {
                 final String logStateColor = this.logState.getColorCode();
@@ -68,7 +76,7 @@ public abstract class Logger {
                 + logStateColor + this.logState.name().toUpperCase() + " &r";
     }
 
-    private void initializeLogFile() {
+    protected void initializeLogFile() {
         final Logger parent = this.getParent();
         if (parent != null) {
             this.logFile = parent.getLogFile();
@@ -88,7 +96,7 @@ public abstract class Logger {
             if (this.configuration.isOneLog()) {
                 this.logFile = new File(logsDir, "Latest.log");
 
-                if (this.logFile.exists() && !this.logFile.delete()) {
+                if (this.logFile.exists() && !this.temporary && !this.logFile.delete()) {
                     FileUtil.writeText(this.logFile, List.of(""));
                 }
 
@@ -219,7 +227,7 @@ public abstract class Logger {
 
     private void logToFile(final Object log) {
         if (this.printStream != null) {
-            this.printStream.println(ConsoleColors.removeColors(this.prefix) + ConsoleColors.removeColors(log));
+            this.printStream.println(ConsoleColors.removeColors(this.prefix + log));
         }
     }
 
