@@ -109,11 +109,7 @@ public class DownloadTask {
         } finally {
             this.downloading = false;
             this.finished = true;
-            try {
-                this.inputStream.close();
-            } catch (final IOException ignore) {
-
-            }
+            this.inputStream.close();
         }
     }
 
