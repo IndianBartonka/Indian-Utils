@@ -178,21 +178,23 @@ public final class Main {
     }
 
     public static void zipTest() {
-        ZipUtil.init(LOGGER);
+        ZipUtil.init(LOGGER, 9);
         final File file = new File("logs");
+
+        LOGGER.info("Aktualny poziom kompresij to:&b "+ ZipUtil.getCompressionLevel());
 
         if (!file.exists()) return;
 
         final File zipFile;
 
         try {
-            zipFile = ZipUtil.zipFiles(file.listFiles(), "logs.zip");
+            zipFile = ZipUtil.zipFolder(file.getPath(), "logs.zip");
         } catch (final IOException e) {
             throw new RuntimeException(e);
         }
 
         try {
-            ZipUtil.unzipFile(zipFile.getPath(), "siur", true);
+            ZipUtil.unzipFile(zipFile.getPath(), "siur", false);
         } catch (final IOException e) {
             throw new RuntimeException(e);
         }

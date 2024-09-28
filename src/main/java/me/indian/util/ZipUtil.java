@@ -16,11 +16,12 @@ import me.indian.util.logger.Logger;
 /**
  * Utility class for creating and extracting ZIP files.
  * Provides methods to zip folders and files, and to unzip files.
- * <p>Writed with Chat-GTP</p>
+ * <p>Written with Chat-GTP</p>
  */
 public final class ZipUtil {
 
     private static Logger LOGGER;
+    private static int COMPRESSION_LEVEL = 5;
 
     // Private constructor to prevent instantiation
     private ZipUtil() {
@@ -30,9 +31,11 @@ public final class ZipUtil {
      * Initializes the ZipUtil class with a logger instance.
      *
      * @param logger The Logger instance to use for logging.
+     * @param compressionLevel The compression level to be used (0-9).
      */
-    public static void init(final Logger logger) {
+    public static void init(final Logger logger, final int compressionLevel) {
         LOGGER = logger.prefixed("ZipUtil");
+        COMPRESSION_LEVEL = MathUtil.getCorrectNumber(compressionLevel, 0, 9);
     }
 
     /**
@@ -41,13 +44,23 @@ public final class ZipUtil {
      * @param sourceFolderPath The path to the folder to be zipped.
      * @param zipFilePath      The path where the ZIP file will be created.
      * @throws IOException If an error occurs during the zipping process.
+     * @throws IllegalArgumentException If the source folder is empty.
      */
-    public static void zipFolder(final String sourceFolderPath, final String zipFilePath) throws IOException {
+    public static File zipFolder(final String sourceFolderPath, final String zipFilePath) throws IOException {
         final File sourceFolder = new File(sourceFolderPath);
-        try (final FileOutputStream fos = new FileOutputStream(zipFilePath);
-             final ZipOutputStream zos = new ZipOutputStream(fos)) {
-            addFolderToZip(sourceFolder, sourceFolder.getName(), zos);
+        final File zipFile = new File(zipFilePath);
+
+        if (FileUtil.directoryIsEmpty(sourceFolder)) {
+            throw new IllegalArgumentException("You can't pack empty folders.");
         }
+
+        try (final FileOutputStream fos = new FileOutputStream(zipFile);
+             final ZipOutputStream zipOut = new ZipOutputStream(fos)) {
+            zipOut.setLevel(COMPRESSION_LEVEL);
+            addDirectoryToZip(sourceFolder, sourceFolder.getName(), zipOut);
+        }
+
+        return zipFile;
     }
 
     /**
@@ -60,6 +73,7 @@ public final class ZipUtil {
     public static File zipFiles(final File[] srcFiles, final String zipFilePath) throws IOException {
         try (final FileOutputStream fos = new FileOutputStream(zipFilePath);
              final ZipOutputStream zipOut = new ZipOutputStream(fos)) {
+            zipOut.setLevel(COMPRESSION_LEVEL);
             for (final File srcFile : srcFiles) {
                 if (srcFile.exists()) {
                     if (srcFile.isDirectory()) {
@@ -74,6 +88,23 @@ public final class ZipUtil {
     }
 
     /**
+     * Returns the compression level used in zip operations.
+     *
+     * <p>
+     * This method allows users to obtain the current compression level
+     * that is used for compressing files and folders. The compression level
+     * can be set in the range from 0 (no compression) to 9 (maximum
+     * compression).
+     * </p>
+     *
+     * @return The compression level used in zip operations.
+     * @see #init(Logger, int)
+     */
+    public static int getCompressionLevel() {
+        return COMPRESSION_LEVEL;
+    }
+
+    /**
      * Adds a directory and its contents to the ZIP output stream.
      *
      * @param folder     The directory to add.
@@ -82,6 +113,8 @@ public final class ZipUtil {
      * @throws IOException If an error occurs during the zipping process.
      */
     private static void addDirectoryToZip(final File folder, final String parentName, final ZipOutputStream zos) throws IOException {
+        if (LOGGER != null) LOGGER.debug("Packing: " + folder.getPath());
+
         final File[] files = folder.listFiles();
         if (files != null) {
             for (final File file : files) {
@@ -89,27 +122,6 @@ public final class ZipUtil {
                     addDirectoryToZip(file, parentName + File.separator + file.getName(), zos);
                 } else {
                     addFileToZip(file, parentName, zos);
-                }
-            }
-        }
-    }
-
-    /**
-     * Adds a folder and its contents to the ZIP output stream.
-     *
-     * @param folder     The folder to add.
-     * @param folderName The name of the folder in the ZIP file.
-     * @param zos        The ZipOutputStream to write to.
-     * @throws IOException If an error occurs during the zipping process.
-     */
-    private static void addFolderToZip(final File folder, final String folderName, final ZipOutputStream zos) throws IOException {
-        final File[] files = folder.listFiles();
-        if (files != null) {
-            for (final File file : files) {
-                if (file.isDirectory()) {
-                    addFolderToZip(file, folderName + File.separator + file.getName(), zos);
-                } else {
-                    addFileToZip(file, folderName, zos);
                 }
             }
         }
@@ -151,7 +163,7 @@ public final class ZipUtil {
 
                 // Skip files specified in the skipFiles list
                 if (outputFile.exists() && skipFiles != null && skipFiles.contains(outputFile.getAbsolutePath())) {
-                    if (LOGGER != null) LOGGER.info("Omijam plik: " + outputFile.getAbsolutePath());
+                    if (LOGGER != null) LOGGER.info("Skipping file: " + outputFile.getAbsolutePath());
                     continue;
                 }
 
@@ -185,7 +197,6 @@ public final class ZipUtil {
         }
     }
 
-
     /**
      * Adds a file to the ZIP output stream.
      *
@@ -194,6 +205,8 @@ public final class ZipUtil {
      * @throws IOException If an error occurs during the zipping process.
      */
     private static void addFileToZip(final File file, final ZipOutputStream zos) throws IOException {
+        if (LOGGER != null) LOGGER.debug("Packing: " + file.getPath());
+
         final byte[] buffer = new byte[BufferUtil.defineBuffer(BufferUtil.DownloadBuffer.DYNAMIC, FileUtil.getFileSize(file))];
 
         try (final FileInputStream fis = new FileInputStream(file)) {
@@ -229,11 +242,15 @@ public final class ZipUtil {
         }
     }
 
-    private static void createDirectoryIfNotExists(final Path path) {
-        try {
+    /**
+     * Creates a directory if it does not already exist.
+     *
+     * @param path The path to the directory.
+     * @throws IOException If an error occurs during directory creation.
+     */
+    private static void createDirectoryIfNotExists(final Path path) throws IOException {
+        if (Files.notExists(path)) {
             Files.createDirectories(path);
-        } catch (final Exception e) {
-            if (LOGGER != null) LOGGER.debug("", e);
         }
     }
 }
