@@ -172,7 +172,7 @@ public class WebHookClient {
         } catch (final Exception exception) {
             this.logger.critical("Wstąpił błąd przy próbie zamknięcia webhooku ", exception);
 
-            if(exception instanceof InterruptedException){
+            if (exception instanceof InterruptedException) {
                 Thread.currentThread().interrupt();
             }
         }
