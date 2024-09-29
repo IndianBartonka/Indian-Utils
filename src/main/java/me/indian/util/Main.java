@@ -9,6 +9,8 @@ import java.util.concurrent.TimeoutException;
 import me.indian.util.download.DownloadListener;
 import me.indian.util.download.DownloadTask;
 import me.indian.util.file.FileUtil;
+import me.indian.util.language.Language;
+import me.indian.util.language.LanguageManager;
 import me.indian.util.logger.Logger;
 import me.indian.util.logger.LoggerConfiguration;
 import me.indian.util.system.SystemUtil;
@@ -22,6 +24,79 @@ public final class Main {
 //            System.getProperty("user.dir") + File.separator + "logs", DateUtil.getFixedDate())) {};
     private static final long START_TIME = System.currentTimeMillis();
     private static final Random RANDOM = new Random(Integer.MAX_VALUE);
+
+    private static void languagesTest() throws IOException {
+        // Inicjalizacja LanguageManager z lokalizacją plików językowych
+        // Jeśli folder nie może zostać utworzony, metoda wyrzuci IOException
+        final LanguageManager languageManager = new LanguageManager(
+                LOGGER, System.getProperty("user.dir") + File.separator + "langs" + File.separator
+        );
+
+        // Tworzenie instancji klas językowych dla polskiego i angielskiego
+        final Language polish = new Language("pl_PL", languageManager) {
+        };
+        final Language english = new Language("en_EN", languageManager) {
+        };
+
+        // Dodawanie wiadomości do języka polskiego, jeśli plik nie istnieje
+        if (!polish.getLangFile().exists()) {
+            // Dodanie wiadomości "Siema %s %s" do pliku językowego
+            polish.addMessage("message.hello", "Siema %s %s");
+            // Zapisanie języka polskiego do pliku
+            languageManager.saveLanguage(polish);
+        }
+
+        // Dodawanie wiadomości do języka angielskiego, jeśli plik nie istnieje
+        if (!english.getLangFile().exists()) {
+            // Dodanie wiadomości "Hello %s %s" oraz "Kotek" do pliku językowego
+            english.addMessage("message.hello", "Hello %s %s");
+            english.addMessage("cat.exe", "Kotek");
+            // Zapisanie języka angielskiego do pliku
+            //Nie trzeba ręcznie ładować języka jesli jest on zapisywany bądź ładowany za pomoc LanguageManager
+            languageManager.saveLanguage(english);
+
+        } else {
+            // Jeśli plik istnieje, ładujemy wiadomości z pliku
+            //Nie trzeba ręcznie ładować języka jesli jest on zapisywany bądź ładowany za pomoc LanguageManager
+            languageManager.loadLanguageFromFile(english);
+        }
+
+        //Jeśli chcesz dodac nowe wartości do pliku języka zrób to po załadowaniu pliku, w przeciwym razie wiadomości nie zostaną dodane jeśli plik istniał
+        polish.addMessage("country.germany", "Niemcy");
+
+        // Ustawienie języka polskiego jako domyślnego
+        // Nie trzeba ręcznie ładować domyślnego języka, ponieważ zostanie on automatycznie załadowany
+        languageManager.setDefaultLanguage(polish);
+
+        // Logowanie domyślnego języka
+        LOGGER.info("Default: " + languageManager.getDefaultLanguage().getLanguageCodeName());
+
+        // Pobieranie wiadomości "message.hello" z domyślnego języka
+        LOGGER.info(languageManager.getMessage("message.hello"));
+
+        // Formatowanie wiadomości z jednym argumentem
+        // Otrzymamy "Siema Neighbor %s" ponieważ "message.hello" formatuje dwie zmienne, a my podajemy jedną
+        LOGGER.info(languageManager.getMessage("message.hello", "Neighbor"));
+
+        // Formatowanie wiadomości z dwoma argumentami
+        // Otrzymamy "Siema Neighbor WORD"
+        LOGGER.info(languageManager.getMessage("message.hello", "Neighbor", "WORD"));
+
+        // Pobranie wiadomości "cat.exe" z języka polskiego, zwraca wartość, jeśli istnieje
+        LOGGER.info(languageManager.getMessage("cat.exe", polish));
+
+        // Domyślny język to polski, ale zwraca wartość z języka angielskiego, jeśli polski nie zawiera klucza
+        LOGGER.info(languageManager.getMessage("cat.exe"));
+
+        // Zapis wszystkich dostępnych języków do plików
+        languageManager.saveLanguages(true);
+
+        // Dodanie nowej wiadomości do języka polskiego
+        polish.addMessage("polska.message", "Polska gruom");
+
+        // Zapisanie zmian do pliku językowego
+        polish.saveToFile();
+    }
 
     public static void loggerTest() {
         LOGGER.info("Logger Test");
@@ -181,7 +256,7 @@ public final class Main {
         ZipUtil.init(LOGGER, 9);
         final File file = new File("logs");
 
-        LOGGER.info("Aktualny poziom kompresij to:&b "+ ZipUtil.getCompressionLevel());
+        LOGGER.info("Aktualny poziom kompresij to:&b " + ZipUtil.getCompressionLevel());
 
         if (!file.exists()) return;
 
@@ -201,6 +276,9 @@ public final class Main {
     }
 
     public static void main(final String[] args) throws IOException {
+        languagesTest();
+        LOGGER.print("==================");
+
         loggerTest();
         LOGGER.print("==================");
 
