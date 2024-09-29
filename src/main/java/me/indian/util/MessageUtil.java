@@ -37,6 +37,14 @@ public final class MessageUtil {
         return message.toString().trim();
     }
 
+    public static String formatMessage(String message, final Object... formatArgs) {
+        for (final Object object : formatArgs) {
+            message = message.replaceFirst("%s", object.toString());
+        }
+
+        return message;
+    }
+
     public static String[] stringToArgs(final String input) {
         return input.split("\\s+");
     }
