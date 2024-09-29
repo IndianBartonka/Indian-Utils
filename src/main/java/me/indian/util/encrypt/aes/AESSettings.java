@@ -3,6 +3,7 @@ package me.indian.util.encrypt.aes;
 import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
+import java.security.NoSuchProviderException;
 import java.security.SecureRandom;
 import java.util.Base64;
 import javax.crypto.Cipher;
@@ -119,11 +120,28 @@ public final class AESSettings {
         return new IvParameterSpec(iv);
     }
 
-    public static Cipher createCipher(final AESMode mode, final AESPadding padding, final SecretKey key, final IvParameterSpec ivSpec, final boolean encrypt) throws NoSuchPaddingException, NoSuchAlgorithmException, InvalidKeyException, InvalidAlgorithmParameterException {
+    public static Cipher createCipher(final AESMode mode, final AESPadding padding, final SecretKey key,
+                                      final IvParameterSpec ivSpec, final String provider, final boolean encrypt)
+            throws NoSuchPaddingException, NoSuchAlgorithmException, InvalidKeyException,
+            InvalidAlgorithmParameterException, NoSuchProviderException {
+
+        // Define the encryption transformation
         final String transformation = "AES/" + mode.getMode() + "/" + padding.getPadding();
-        final Cipher cipher = Cipher.getInstance(transformation);
+
+        // Validate the provider argument
+        if (provider != null && provider.trim().isEmpty()) {
+            throw new IllegalArgumentException("Provider cannot be an empty string.");
+        }
+
+        // Create the Cipher object
+        final Cipher cipher = (provider == null) ?
+                Cipher.getInstance(transformation) :
+                Cipher.getInstance(transformation, provider);
+
+        // Set the mode to encrypt or decrypt
         final int encryptMode = (encrypt ? Cipher.ENCRYPT_MODE : Cipher.DECRYPT_MODE);
 
+        // Initialize the Cipher based on the mode
         if (mode == AESMode.ECB) {
             cipher.init(encryptMode, key);
         } else if (mode == AESMode.GCM) {
@@ -131,8 +149,18 @@ public final class AESSettings {
         } else {
             cipher.init(encryptMode, key, ivSpec);
         }
+
         return cipher;
     }
+
+    public static Cipher createCipher(final AESMode mode, final AESPadding padding, final SecretKey key,
+                                      final IvParameterSpec ivSpec, final boolean encrypt)
+            throws NoSuchPaddingException, NoSuchAlgorithmException, InvalidKeyException,
+            InvalidAlgorithmParameterException, NoSuchProviderException {
+
+        return createCipher(mode, padding, key, ivSpec, null, encrypt);
+    }
+
 
     public static byte[] decodeIv(final String ivBase64) {
         return Base64.getDecoder().decode(ivBase64);

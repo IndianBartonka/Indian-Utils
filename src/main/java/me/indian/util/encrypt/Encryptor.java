@@ -22,6 +22,10 @@ public interface Encryptor {
 
     void setIvParameterSpec(IvParameterSpec ivParameterSpec);
 
+    String getProvider();
+
+    void setProvider(String provider);
+
     String getEncryptedDir();
 
     void setEncryptedDir(String encryptedDir) throws IOException;
