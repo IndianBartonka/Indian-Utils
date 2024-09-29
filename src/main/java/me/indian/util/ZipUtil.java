@@ -16,7 +16,7 @@ import me.indian.util.logger.Logger;
 /**
  * Utility class for creating and extracting ZIP files.
  * Provides methods to zip folders and files, and to unzip files.
- * <p>Written with Chat-GTP</p>
+ * <p>Written with Chat-GPT</p>
  */
 public final class ZipUtil {
 
@@ -30,7 +30,7 @@ public final class ZipUtil {
     /**
      * Initializes the ZipUtil class with a logger instance.
      *
-     * @param logger The Logger instance to use for logging.
+     * @param logger           The Logger instance to use for logging.
      * @param compressionLevel The compression level to be used (0-9).
      */
     public static void init(final Logger logger, final int compressionLevel) {
@@ -43,7 +43,7 @@ public final class ZipUtil {
      *
      * @param sourceFolderPath The path to the folder to be zipped.
      * @param zipFilePath      The path where the ZIP file will be created.
-     * @throws IOException If an error occurs during the zipping process.
+     * @throws IOException              If an error occurs during the zipping process.
      * @throws IllegalArgumentException If the source folder is empty.
      */
     public static File zipFolder(final String sourceFolderPath, final String zipFilePath) throws IOException {

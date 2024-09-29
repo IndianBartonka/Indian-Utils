@@ -7,7 +7,7 @@ import org.jetbrains.annotations.NotNull;
 
 /**
  * Utility class for thread management and creation.
- * Documents written by Chat-GTP
+ * Documents written by Chat-GPT
  */
 public final class ThreadUtil implements ThreadFactory {
 

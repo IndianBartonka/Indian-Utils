@@ -14,14 +14,9 @@ import java.util.concurrent.TimeUnit;
 /**
  * Utility class for date and time operations.
  * Provides methods for formatting and converting between different time units.
- * Documents written by Chat-GTP
+ * Documents written by Chat-GPT
  */
 public final class DateUtil {
-
-    /**
-     * The time zone used for date and time operations (Europe/Warsaw).
-     */
-    public static ZoneId DEFAULT_ZONE = ZoneId.systemDefault();
 
     /**
      * Some EU time zones
@@ -54,11 +49,14 @@ public final class DateUtil {
     public static final ZoneId VILNIUS_ZONE = ZoneId.of("Europe/Vilnius");
     public static final ZoneId TALLINN_ZONE = ZoneId.of("Europe/Tallinn");
     public static final ZoneId RIGA_ZONE = ZoneId.of("Europe/Riga");
-
     /**
      * Map for storing time unit strings.
      */
     private static final Map<Character, String> UNIT_MAP = new HashMap<>();
+    /**
+     * The time zone used for date and time operations (Europe/Warsaw).
+     */
+    public static ZoneId DEFAULT_ZONE = ZoneId.systemDefault();
 
     // Private constructor to prevent instantiation
     private DateUtil() {

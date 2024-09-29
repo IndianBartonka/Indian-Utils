@@ -5,7 +5,7 @@ import java.util.Scanner;
 /**
  * Utility class for handling user input through a {@link Scanner}.
  * Provides methods to ask various types of questions and process the user's responses.
- * Documents written by Chat-GTP
+ * Documents written by Chat-GPT
  */
 public final class ScannerUtil {
 
