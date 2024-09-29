@@ -13,6 +13,7 @@ import java.security.NoSuchProviderException;
 import java.util.Base64;
 import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;
+import javax.crypto.CipherInputStream;
 import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
 import javax.crypto.SecretKey;
@@ -45,7 +46,7 @@ public final class AESEncryptor implements Encryptor {
     }
 
     @Override
-    public File encryptFile(final File inputFile, final SecretKey key) throws NoSuchAlgorithmException, InvalidKeyException, IllegalBlockSizeException, BadPaddingException, InvalidAlgorithmParameterException, NoSuchPaddingException, NoSuchProviderException, IOException {
+    public File encryptFile(final File inputFile, final SecretKey key) throws NoSuchAlgorithmException, InvalidKeyException, InvalidAlgorithmParameterException, NoSuchPaddingException, NoSuchProviderException, IOException {
         final File encryptedFile = new File(this.encryptedDir, inputFile.getName());
         final Cipher cipher = AESSettings.createCipher(this.aesMode, this.aesPadding, key, this.ivParameterSpec, this.provider, true);
         if (this.logger != null) this.logger.debug("Szyfrowanie pliku: " + inputFile.getPath());
@@ -55,7 +56,7 @@ public final class AESEncryptor implements Encryptor {
     }
 
     @Override
-    public File decryptFile(final File inputFile, final SecretKey key) throws NoSuchAlgorithmException, InvalidKeyException, IllegalBlockSizeException, BadPaddingException, InvalidAlgorithmParameterException, NoSuchPaddingException, NoSuchProviderException, IOException {
+    public File decryptFile(final File inputFile, final SecretKey key) throws NoSuchAlgorithmException, InvalidKeyException, InvalidAlgorithmParameterException, NoSuchPaddingException, NoSuchProviderException, IOException {
         final File decryptedFile = new File(this.userDir, inputFile.getName());
         final Cipher cipher = AESSettings.createCipher(this.aesMode, this.aesPadding, key, this.ivParameterSpec, this.provider, false);
         if (this.logger != null) this.logger.debug("Odszyfrowanie pliku: " + inputFile.getPath());
@@ -64,20 +65,16 @@ public final class AESEncryptor implements Encryptor {
         return decryptedFile;
     }
 
-    private void processFile(final Cipher cipher, final File inputFile, final File outputFile) throws IOException, IllegalBlockSizeException, BadPaddingException {
+    private void processFile(final Cipher cipher, final File inputFile, final File outputFile) throws IOException {
         try (final FileInputStream in = new FileInputStream(inputFile);
+             final CipherInputStream cipherIn = new CipherInputStream(in, cipher);
              final FileOutputStream out = new FileOutputStream(outputFile)) {
-            final byte[] inputBytes = new byte[BufferUtil.defineBuffer(BufferUtil.DownloadBuffer.DYNAMIC, FileUtil.getFileSize(inputFile))];
+
+            final byte[] buffer = new byte[BufferUtil.defineBuffer(BufferUtil.DownloadBuffer.DYNAMIC, FileUtil.getFileSize(inputFile))];
             int bytesRead;
-            while ((bytesRead = in.read(inputBytes)) != -1) {
-                final byte[] outputBytes = cipher.update(inputBytes, 0, bytesRead);
-                if (outputBytes != null) {
-                    out.write(outputBytes);
-                }
-            }
-            final byte[] outputBytes = cipher.doFinal();
-            if (outputBytes != null) {
-                out.write(outputBytes);
+
+            while ((bytesRead = cipherIn.read(buffer)) != -1) {
+                out.write(buffer, 0, bytesRead);
             }
         }
     }
