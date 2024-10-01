@@ -175,6 +175,7 @@ public final class LanguageManager {
      * @throws IOException if an I/O error occurs while loading
      */
     public void loadLanguageFromFile(final Language language) throws IOException {
+       //TODO: Dodac opcje ładowania języka z pliku 
         language.loadFromFile();
         this.addLanguage(language);
     }
