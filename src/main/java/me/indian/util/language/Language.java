@@ -12,7 +12,7 @@ import java.util.Properties;
 public abstract class Language {
 
     private final String languageCodeName;
-    private final File langFile;
+    protected final File langFile;
     protected Properties messages;
 
     protected Language(final String languageCodeName, final LanguageManager languageManager) {
