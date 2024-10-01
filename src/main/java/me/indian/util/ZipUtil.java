@@ -155,13 +155,10 @@ public final class ZipUtil {
         try (final ZipInputStream zipInputStream = new ZipInputStream(Files.newInputStream(path))) {
             ZipEntry zipEntry;
             while ((zipEntry = zipInputStream.getNextEntry()) != null) {
-                final String entryName = zipEntry.getName();
+                final String entryName = zipEntry.getName().replace("/", File.separator);
                 final File outputFile = new File(targetDirectory + File.separator + entryName);
 
-                // Skip files in ".git" directories
-                if (outputFile.getPath().contains(File.separator + ".git")) continue;
-
-                // Skip files specified in the skipFiles list
+                //  Skip files specified in the skipFiles list
                 if (outputFile.exists() && skipFiles != null && skipFiles.contains(outputFile.getAbsolutePath())) {
                     if (LOGGER != null) LOGGER.info("Skipping file: " + outputFile.getAbsolutePath());
                     continue;
@@ -178,7 +175,7 @@ public final class ZipUtil {
                     }
 
                     try (final FileOutputStream outputStream = new FileOutputStream(outputFile)) {
-                        final byte[] buffer = new byte[BufferUtil.defineBuffer(BufferUtil.DownloadBuffer.DYNAMIC, FileUtil.getFileSize(outputFile))];
+                        final byte[] buffer = new byte[BufferUtil.defineBuffer(BufferUtil.DownloadBuffer.DYNAMIC, zipEntry.getSize())];
                         int length;
                         while ((length = zipInputStream.read(buffer)) > 0) {
                             outputStream.write(buffer, 0, length);
@@ -196,6 +193,7 @@ public final class ZipUtil {
             }
         }
     }
+
 
     /**
      * Adds a file to the ZIP output stream.
@@ -232,7 +230,8 @@ public final class ZipUtil {
         final byte[] buffer = new byte[BufferUtil.defineBuffer(BufferUtil.DownloadBuffer.DYNAMIC, FileUtil.getFileSize(file))];
 
         try (final FileInputStream fis = new FileInputStream(file)) {
-            final ZipEntry zipEntry = new ZipEntry(folderName + File.separator + file.getName());
+            final ZipEntry zipEntry = new ZipEntry(folderName.replace("\\", "/") + "/" + file.getName());
+
             zos.putNextEntry(zipEntry);
             int length;
             while ((length = fis.read(buffer)) > 0) {
