@@ -63,7 +63,10 @@ public class DownloadTask {
             int lastProgress = -1;
 
             while ((bytesRead = this.inputStream.read(buffer)) != -1) {
-                if (this.stopped) break;
+                if (this.stopped) {
+                    if (this.downloadListener != null) this.downloadListener.onDownloadStop();
+                    break;
+                }
 
                 lastActivityTime = System.currentTimeMillis();
                 fileOutputStream.write(buffer, 0, bytesRead);

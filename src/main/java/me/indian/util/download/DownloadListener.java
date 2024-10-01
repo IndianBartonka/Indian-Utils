@@ -15,4 +15,5 @@ public interface DownloadListener {
 
     void onEnd(File outputFile);
 
+    void onDownloadStop();
 }

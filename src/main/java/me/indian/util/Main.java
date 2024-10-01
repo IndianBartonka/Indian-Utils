@@ -219,6 +219,11 @@ public final class Main {
             public void onEnd(final File outputFile) {
                 this.tempLogger.info("Pobrano:&a " + outputFile.getName());
             }
+
+            @Override
+            public void onDownloadStop() {
+                this.tempLogger.alert("Zatrzymano pobieranie!");
+            }
         };
 
         if (responseCode == HttpURLConnection.HTTP_OK) {
