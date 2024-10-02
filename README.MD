@@ -3,9 +3,11 @@
 # Indian Utils
  Utile używane w różnych projektach przez Indiana
 
+[![](https://jitpack.io/v/IndianBartonka/Indian-Utils.svg)](https://jitpack.io/#IndianBartonka/Indian-Utils)
 </div>
 
-[![](https://jitpack.io/v/IndianBartonka/Indian-Utils.svg)](https://jitpack.io/#IndianBartonka/Indian-Utils)
+## Wymagania
+**Java**: 17+
 
 ### Przykłady użycja
 
