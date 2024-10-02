@@ -175,7 +175,7 @@ public final class ZipUtil {
                     }
 
                     try (final FileOutputStream outputStream = new FileOutputStream(outputFile)) {
-                        final byte[] buffer = new byte[BufferUtil.defineBuffer(BufferUtil.DownloadBuffer.DYNAMIC, zipEntry.getSize())];
+                        final byte[] buffer = new byte[BufferUtil.calculateOptimalBufferSize(zipEntry.getSize())];
                         int length;
                         while ((length = zipInputStream.read(buffer)) > 0) {
                             outputStream.write(buffer, 0, length);
@@ -205,7 +205,7 @@ public final class ZipUtil {
     private static void addFileToZip(final File file, final ZipOutputStream zos) throws IOException {
         if (LOGGER != null) LOGGER.debug("Packing: " + file.getPath());
 
-        final byte[] buffer = new byte[BufferUtil.defineBuffer(BufferUtil.DownloadBuffer.DYNAMIC, FileUtil.getFileSize(file))];
+        final byte[] buffer = new byte[BufferUtil.calculateOptimalBufferSize(FileUtil.getFileSize(file))];
 
         try (final FileInputStream fis = new FileInputStream(file)) {
             final ZipEntry zipEntry = new ZipEntry(file.getName());
@@ -227,7 +227,9 @@ public final class ZipUtil {
      * @throws IOException If an error occurs during the zipping process.
      */
     private static void addFileToZip(final File file, final String folderName, final ZipOutputStream zos) throws IOException {
-        final byte[] buffer = new byte[BufferUtil.defineBuffer(BufferUtil.DownloadBuffer.DYNAMIC, FileUtil.getFileSize(file))];
+        if (LOGGER != null) LOGGER.debug("Packing: " + file.getPath());
+
+        final byte[] buffer = new byte[BufferUtil.calculateOptimalBufferSize(FileUtil.getFileSize(file))];
 
         try (final FileInputStream fis = new FileInputStream(file)) {
             final ZipEntry zipEntry = new ZipEntry(folderName.replace("\\", "/") + "/" + file.getName());

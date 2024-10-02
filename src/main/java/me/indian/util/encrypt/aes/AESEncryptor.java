@@ -70,7 +70,7 @@ public final class AESEncryptor implements Encryptor {
              final CipherInputStream cipherIn = new CipherInputStream(in, cipher);
              final FileOutputStream out = new FileOutputStream(outputFile)) {
 
-            final byte[] buffer = new byte[BufferUtil.defineBuffer(BufferUtil.DownloadBuffer.DYNAMIC, FileUtil.getFileSize(inputFile))];
+            final byte[] buffer = new byte[BufferUtil.calculateOptimalBufferSize(FileUtil.getFileSize(inputFile))];
             int bytesRead;
 
             while ((bytesRead = cipherIn.read(buffer)) != -1) {

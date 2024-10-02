@@ -171,7 +171,6 @@ public final class Main {
         LOGGER.info(SystemUtil.getCurrentArch() + " (" + SystemUtil.getFullyArchCode() + ")");
     }
 
-
     public static void bedrockQueryTest() {
         LOGGER.info("BedrockQuery Test");
         final BedrockQuery query = BedrockQuery.create("play.skyblockpe.com", 19132);
@@ -282,8 +281,23 @@ public final class Main {
         }
     }
 
+    public static void bufferTest() {
+
+        final File[] files = new File(System.getProperty("user.dir")).listFiles();
+        if (files != null) {
+            for (final File file : files) {
+                final int buffer = BufferUtil.calculateOptimalBufferSize(FileUtil.getFileSize(file));
+                LOGGER.info(file.getName() + " = " + buffer + " | " + BufferUtil.findBuffer(buffer));
+            }
+        }
+
+    }
+
     public static void main(final String[] args) throws IOException {
         languagesTest();
+        LOGGER.print("==================");
+
+        bufferTest();
         LOGGER.print("==================");
 
         loggerTest();
