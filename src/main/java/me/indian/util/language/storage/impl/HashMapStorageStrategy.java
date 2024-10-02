@@ -46,7 +46,9 @@ public class HashMapStorageStrategy implements StorageStrategy {
             while ((line = reader.readLine()) != null) {
                 final String[] parts = line.split("=", 2);
                 if (parts.length == 2) {
-                    this.messages.put(parts[0].trim(), parts[1].trim());
+                    final String value = parts[1].trim().replace("\\n", "\n").replace("\\t", "\t");
+                    
+                    this.messages.put(parts[0].trim(), value);
                 }
             }
         }
@@ -56,7 +58,9 @@ public class HashMapStorageStrategy implements StorageStrategy {
     public void save(final File langFile) throws IOException {
         try (final BufferedWriter writer = new BufferedWriter(new FileWriter(langFile))) {
             for (final Map.Entry<String, String> entry : this.messages.entrySet()) {
-                writer.write(entry.getKey() + "=" + entry.getValue());
+                final String value = entry.getValue().replace("\n", "\\n").replace("\t", "\\t");
+
+                writer.write(entry.getKey() + "=" + value);
                 writer.newLine();
             }
         }
@@ -71,7 +75,6 @@ public class HashMapStorageStrategy implements StorageStrategy {
     public void clear() {
         this.messages.clear();
     }
-
 
     @Override
     public String toString() {

@@ -30,12 +30,22 @@ public class PropertiesStorageStrategy implements StorageStrategy {
 
     @Override
     public void setMessage(final String key, final String message) {
-        this.properties.setProperty(key, message);
+        this.properties.setProperty(key,
+                message.replace("\n", "\\n")
+                        .replace("\t", "\\t")
+        );
     }
 
     @Override
     public String getMessage(final String key) {
-        return this.properties.getProperty(key);
+        String message = this.properties.getProperty(key);
+
+        if (message != null) {
+            message += message.replace("\\n", "\n")
+                    .replace("\\t", "\t");
+        }
+
+        return message;
     }
 
     @Override
@@ -69,7 +79,6 @@ public class PropertiesStorageStrategy implements StorageStrategy {
     public void clear() {
         this.properties.clear();
     }
-
 
     @Override
     public String toString() {
