@@ -40,7 +40,7 @@ dependencies {
 }
 ```
 
-## SBT `build.sbt`
+## Sinple Build Tool `build.sbt`
 
 ```sbt
 resolvers += "jitpack" at "https://jitpack.io"
