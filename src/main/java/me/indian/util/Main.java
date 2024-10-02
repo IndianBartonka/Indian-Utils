@@ -287,10 +287,9 @@ public final class Main {
         if (files != null) {
             for (final File file : files) {
                 final int buffer = BufferUtil.calculateOptimalBufferSize(FileUtil.getFileSize(file));
-                LOGGER.info(file.getName() + " = " + buffer + " | " + BufferUtil.findBuffer(buffer));
+                LOGGER.info(file.getName() + " = " + MathUtil.formatBytesDynamic(buffer, false) + " | " + BufferUtil.findBuffer(buffer));
             }
         }
-
     }
 
     public static void main(final String[] args) throws IOException {
