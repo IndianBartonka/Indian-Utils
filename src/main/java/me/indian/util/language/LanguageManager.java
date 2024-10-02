@@ -15,7 +15,7 @@ import org.jetbrains.annotations.Nullable;
  * It allows adding languages, retrieving messages based on keys, and loading or saving languages to files.
  * Docs written by ChatGPT
  */
-public final class LanguageManager {
+public class LanguageManager {
 
     private final Logger logger;
     private final String languagesDir;
@@ -175,7 +175,7 @@ public final class LanguageManager {
      * @throws IOException if an I/O error occurs while loading
      */
     public void loadLanguageFromFile(final Language language) throws IOException {
-       //TODO: Dodac opcje ładowania języka z pliku 
+       //TODO: Dodac opcje ładowania języka z pliku
         language.loadFromFile();
         this.addLanguage(language);
     }
