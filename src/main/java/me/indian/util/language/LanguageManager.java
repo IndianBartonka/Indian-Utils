@@ -24,7 +24,6 @@ public class LanguageManager {
 
     private final Logger logger;
     private final String languagesDir;
-    private final StorageStrategy storageStrategy;
     private final Map<String, Language> languages;
     private Language defaultLanguage;
 
@@ -37,15 +36,13 @@ public class LanguageManager {
      * already exist and sets the storage strategy to be used for storing and retrieving
      * language messages.</p>
      *
-     * @param logger          the logger used for logging messages
-     * @param languagesDir    the directory where language files are stored
-     * @param storageStrategy the strategy to be used for storing and retrieving messages
+     * @param logger       the logger used for logging messages
+     * @param languagesDir the directory where language files are stored
      * @throws IOException if an I/O error occurs while creating the directory
      */
-    public LanguageManager(final Logger logger, final String languagesDir, final StorageStrategy storageStrategy) throws IOException {
+    public LanguageManager(final Logger logger, final String languagesDir) throws IOException {
         this.logger = logger;
         this.languagesDir = languagesDir;
-        this.storageStrategy = storageStrategy;
         this.languages = new ConcurrentHashMap<>();
 
         Files.createDirectories(Path.of(languagesDir));
@@ -161,13 +158,18 @@ public class LanguageManager {
      * @param info if true, logs the saving of each language
      */
     public void saveLanguages(final boolean info) {
-        if (!this.storageStrategy.saveIsSupported()) {
-            if (info) this.logger.error(this.getMessage("language.saving.unsupported", this.storageStrategy));
-        }
-
         for (final Map.Entry<String, Language> entry : this.languages.entrySet()) {
             try {
-                entry.getValue().saveToFile();
+                final Language language = entry.getValue();
+                final StorageStrategy storageStrategy = language.getStorageStrategy();
+                if (!storageStrategy.saveIsSupported()) {
+                    if (info) {
+                        this.logger.error(this.getMessage("language.saving.unsupported", storageStrategy.getStrategyName()));
+                    }
+                    return;
+                }
+
+                language.saveToFile();
                 if (info) this.logger.info(this.getMessage("language.saving.success", entry.getKey()));
             } catch (final Exception exception) {
                 this.logger.error(this.getMessage("language.saving.fail"), exception);
@@ -205,20 +207,6 @@ public class LanguageManager {
      */
     public String getLanguagesDir() {
         return this.languagesDir;
-    }
-
-    /**
-     * Retrieves the current storage strategy used by the language manager.
-     *
-     * <p>This method returns an instance of {@link StorageStrategy} that defines
-     * how language messages are stored and retrieved. The storage strategy can be
-     * customized to implement different behaviors, such as using a HashMap or
-     * Properties for storage.</p>
-     *
-     * @return the {@link StorageStrategy} currently in use by this language manager.
-     */
-    public StorageStrategy getStorageStrategy() {
-        return this.storageStrategy;
     }
 
     /**

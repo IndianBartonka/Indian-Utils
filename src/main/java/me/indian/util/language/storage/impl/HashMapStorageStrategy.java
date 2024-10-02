@@ -47,7 +47,7 @@ public class HashMapStorageStrategy implements StorageStrategy {
                 final String[] parts = line.split("=", 2);
                 if (parts.length == 2) {
                     final String value = parts[1].trim().replace("\\n", "\n").replace("\\t", "\t");
-                    
+
                     this.messages.put(parts[0].trim(), value);
                 }
             }

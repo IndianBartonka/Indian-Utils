@@ -11,9 +11,9 @@ public abstract class Language {
     private final String languageCodeName;
     protected StorageStrategy storageStrategy;
 
-    protected Language(final String languageCodeName, final LanguageManager languageManager) {
+    protected Language(final String languageCodeName, final LanguageManager languageManager, final StorageStrategy storageStrategy) {
         this.languageCodeName = languageCodeName;
-        this.storageStrategy = languageManager.getStorageStrategy();
+        this.storageStrategy = storageStrategy;
         this.langFile = new File(languageManager.getLanguagesDir() + File.separator + (this.languageCodeName + ".lang"));
     }
 

@@ -27,17 +27,17 @@ public final class Main {
     private static final Random RANDOM = new Random(Integer.MAX_VALUE);
 
     private static void languagesTest() throws IOException {
-        // Inicjalizacja LanguageManager z lokalizacją plików językowych i strategią zapisywania ich dostępne są `HashMapStorageStrategy` i `PropertiesStorageStrategy`, lecz możesz dodać własną implementacje
+        // Inicjalizacja LanguageManager z lokalizacją plików językowych
         // Jeśli folder nie może zostać utworzony, metoda wyrzuci IOException
         final LanguageManager languageManager = new LanguageManager(
-                LOGGER, System.getProperty("user.dir") + File.separator + "langs" + File.separator,
-                new HashMapStorageStrategy()
+                LOGGER, System.getProperty("user.dir") + File.separator + "langs" + File.separator
         );
 
-        // Tworzenie instancji klas językowych dla polskiego i angielskiego
-        final Language polish = new Language("pl_PL", languageManager) {
+        // Tworzenie instancji klas językowych dla polskiego i angielskiego i strategią zapisywania ich dostępne są `HashMapStorageStrategy` i `PropertiesStorageStrategy`, lecz możesz dodać własną implementacje
+        //Każdy język powinien mieć oddzielną instancje strategi
+        final Language polish = new Language("pl_PL", languageManager, new HashMapStorageStrategy()) {
         };
-        final Language english = new Language("en_EN", languageManager) {
+        final Language english = new Language("en_EN", languageManager, new HashMapStorageStrategy()) {
         };
 
         // Dodawanie wiadomości do języka polskiego, jeśli plik nie istnieje
