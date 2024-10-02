@@ -314,9 +314,6 @@ public final class Main {
         bedrockQueryTest();
         LOGGER.print("==================");
 
-        dateUtilTest();
-        LOGGER.print("==================");
-
         encryptorTest();
         LOGGER.print("==================");
 
@@ -324,6 +321,9 @@ public final class Main {
         LOGGER.print("==================");
 
         zipTest();
+        LOGGER.print("==================");
+
+        dateUtilTest();
         LOGGER.print("==================");
     }
 }

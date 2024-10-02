@@ -247,7 +247,7 @@ public class LanguageManager {
      * @throws IOException if an I/O error occurs while loading the language from its file
      */
     public void setDefaultLanguage(final Language defaultLanguage) throws IOException {
-        if(defaultLanguage == null) return;
+        if (defaultLanguage == null) return;
         this.defaultLanguage = defaultLanguage;
 
         this.loadLanguage(defaultLanguage);
