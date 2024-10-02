@@ -60,7 +60,7 @@ public final class Main {
         } else {
             // Jeśli plik istnieje, ładujemy wiadomości z pliku
             //Nie trzeba ręcznie ładować języka jesli jest on zapisywany bądź ładowany za pomoc LanguageManager
-            languageManager.loadLanguageFromFile(english);
+            languageManager.loadLanguage(english);
         }
 
         //Jeśli chcesz dodac nowe wartości do pliku języka zrób to po załadowaniu pliku, w przeciwym razie wiadomości nie zostaną dodane jeśli plik istniał

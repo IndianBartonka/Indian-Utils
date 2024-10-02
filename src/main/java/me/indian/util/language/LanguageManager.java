@@ -192,7 +192,7 @@ public class LanguageManager {
      * @param language the Language object to be loaded
      * @throws IOException if an I/O error occurs while loading
      */
-    public void loadLanguageFromFile(final Language language) throws IOException {
+    public void loadLanguage(final Language language) throws IOException {
         // TODO: Add option to load language from file
         language.loadFromFile();
         this.addLanguage(language);
@@ -250,7 +250,7 @@ public class LanguageManager {
         if(defaultLanguage == null) return;
         this.defaultLanguage = defaultLanguage;
 
-        this.loadLanguageFromFile(defaultLanguage);
+        this.loadLanguage(defaultLanguage);
 
         defaultLanguage.addMessage("language.saving.success", "&aSaved language:&b %s");
         defaultLanguage.addMessage("language.saving.failed", "&cFailed to save language:&b %s");
