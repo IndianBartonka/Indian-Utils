@@ -1,49 +1,42 @@
 package me.indian.util.language;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
-import java.nio.charset.StandardCharsets;
-import java.util.Properties;
+import java.util.Map;
+import me.indian.util.language.storage.StorageStrategy;
 
 public abstract class Language {
 
-    private final String languageCodeName;
     protected final File langFile;
-    protected Properties messages;
+    private final String languageCodeName;
+    protected StorageStrategy storageStrategy;
 
     protected Language(final String languageCodeName, final LanguageManager languageManager) {
         this.languageCodeName = languageCodeName;
-        this.messages = new Properties();
+        this.storageStrategy = languageManager.getStorageStrategy();
         this.langFile = new File(languageManager.getLanguagesDir() + File.separator + (this.languageCodeName + ".lang"));
     }
 
     public void addMessage(final String key, final String message) {
-        if (!this.messages.containsKey(key)) {
-            this.messages.setProperty(key, message);
+        if (!this.storageStrategy.containsKey(key)) {
+            this.storageStrategy.setMessage(key, message);
         }
     }
 
     public String getMessage(final String key) {
-        return this.messages.getProperty(key);
+        return this.storageStrategy.getMessage(key);
     }
 
     public void saveToFile() throws IOException {
-        try (final OutputStreamWriter writer = new OutputStreamWriter(new FileOutputStream(this.langFile), StandardCharsets.UTF_8)) {
-            this.messages.store(writer, null);
-        }
+        if (!this.storageStrategy.saveIsSupported()) return;
+        this.storageStrategy.save(this.langFile);
     }
 
     public void loadFromFile() throws IOException {
-        if (!this.langFile.exists()) return;
+        if (!this.langFile.exists() || !this.storageStrategy.saveIsSupported()) return;
 
-        this.messages.clear();
-        try (final InputStreamReader input = new InputStreamReader(new FileInputStream(this.langFile), StandardCharsets.UTF_8)) {
-            this.messages.load(input);
-        }
+        this.storageStrategy.clear();
+        this.storageStrategy.load(this.langFile);
     }
 
     public final String getLanguageCodeName() {
@@ -54,8 +47,12 @@ public abstract class Language {
         return this.langFile;
     }
 
-    public final Properties getMessages() {
-        return this.messages;
+    public Map<String, String> getMessages() {
+        return this.storageStrategy.getMessages();
+    }
+
+    public final StorageStrategy getStorageStrategy() {
+        return this.storageStrategy;
     }
 
     @Override
@@ -63,7 +60,7 @@ public abstract class Language {
         return "Language(" +
                 "languageCodeName='" + this.languageCodeName + '\'' +
                 ", langFile=" + this.langFile +
-                ", messages=" + this.messages +
+                ", storageStrategy=" + this.storageStrategy +
                 ')';
     }
 }

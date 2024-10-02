@@ -11,6 +11,7 @@ import me.indian.util.download.DownloadTask;
 import me.indian.util.file.FileUtil;
 import me.indian.util.language.Language;
 import me.indian.util.language.LanguageManager;
+import me.indian.util.language.storage.impl.HashMapStorageStrategy;
 import me.indian.util.logger.Logger;
 import me.indian.util.logger.LoggerConfiguration;
 import me.indian.util.system.SystemUtil;
@@ -26,10 +27,11 @@ public final class Main {
     private static final Random RANDOM = new Random(Integer.MAX_VALUE);
 
     private static void languagesTest() throws IOException {
-        // Inicjalizacja LanguageManager z lokalizacją plików językowych
+        // Inicjalizacja LanguageManager z lokalizacją plików językowych i strategią zapisywania ich dostępne są `HashMapStorageStrategy` i `PropertiesStorageStrategy`, lecz możesz dodać własną implementacje
         // Jeśli folder nie może zostać utworzony, metoda wyrzuci IOException
         final LanguageManager languageManager = new LanguageManager(
-                LOGGER, System.getProperty("user.dir") + File.separator + "langs" + File.separator
+                LOGGER, System.getProperty("user.dir") + File.separator + "langs" + File.separator,
+                new HashMapStorageStrategy()
         );
 
         // Tworzenie instancji klas językowych dla polskiego i angielskiego

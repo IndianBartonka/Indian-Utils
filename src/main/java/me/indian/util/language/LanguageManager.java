@@ -7,31 +7,45 @@ import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import me.indian.util.MessageUtil;
+import me.indian.util.language.storage.StorageStrategy;
 import me.indian.util.logger.Logger;
 import org.jetbrains.annotations.Nullable;
 
 /**
  * The LanguageManager class is responsible for managing multiple language translations.
  * It allows adding languages, retrieving messages based on keys, and loading or saving languages to files.
+ * <p>
+ * This class provides functionality to work with language files and manage translations,
+ * ensuring that messages can be easily retrieved and modified.
+ * </p>
  * Docs written by ChatGPT
  */
 public class LanguageManager {
 
     private final Logger logger;
     private final String languagesDir;
+    private final StorageStrategy storageStrategy;
     private final Map<String, Language> languages;
     private Language defaultLanguage;
 
     /**
-     * Constructs a LanguageManager with the specified logger and directory for languages.
+     * Constructs a LanguageManager with the specified logger, directory for languages,
+     * and storage strategy.
      *
-     * @param logger       the logger used for logging messages
-     * @param languagesDir the directory where language files are stored
+     * <p>This constructor initializes a LanguageManager instance that manages
+     * multiple language translations. It creates the specified directory if it does not
+     * already exist and sets the storage strategy to be used for storing and retrieving
+     * language messages.</p>
+     *
+     * @param logger          the logger used for logging messages
+     * @param languagesDir    the directory where language files are stored
+     * @param storageStrategy the strategy to be used for storing and retrieving messages
      * @throws IOException if an I/O error occurs while creating the directory
      */
-    public LanguageManager(final Logger logger, final String languagesDir) throws IOException {
+    public LanguageManager(final Logger logger, final String languagesDir, final StorageStrategy storageStrategy) throws IOException {
         this.logger = logger;
         this.languagesDir = languagesDir;
+        this.storageStrategy = storageStrategy;
         this.languages = new ConcurrentHashMap<>();
 
         Files.createDirectories(Path.of(languagesDir));
@@ -147,6 +161,10 @@ public class LanguageManager {
      * @param info if true, logs the saving of each language
      */
     public void saveLanguages(final boolean info) {
+        if (!this.storageStrategy.saveIsSupported()) {
+            if (info) this.logger.error(this.getMessage("language.saving.unsupported", this.storageStrategy));
+        }
+
         for (final Map.Entry<String, Language> entry : this.languages.entrySet()) {
             try {
                 entry.getValue().saveToFile();
@@ -175,7 +193,7 @@ public class LanguageManager {
      * @throws IOException if an I/O error occurs while loading
      */
     public void loadLanguageFromFile(final Language language) throws IOException {
-       //TODO: Dodac opcje ładowania języka z pliku
+        // TODO: Add option to load language from file
         language.loadFromFile();
         this.addLanguage(language);
     }
@@ -190,6 +208,20 @@ public class LanguageManager {
     }
 
     /**
+     * Retrieves the current storage strategy used by the language manager.
+     *
+     * <p>This method returns an instance of {@link StorageStrategy} that defines
+     * how language messages are stored and retrieved. The storage strategy can be
+     * customized to implement different behaviors, such as using a HashMap or
+     * Properties for storage.</p>
+     *
+     * @return the {@link StorageStrategy} currently in use by this language manager.
+     */
+    public StorageStrategy getStorageStrategy() {
+        return this.storageStrategy;
+    }
+
+    /**
      * Retrieves all loaded languages.
      *
      * @return a map of language codes to Language objects
@@ -201,25 +233,27 @@ public class LanguageManager {
     /**
      * Retrieves the default language.
      *
-     * @return the default Language object
+     * @return the default Language object, or null if not set
      */
+    @Nullable
     public Language getDefaultLanguage() {
         return this.defaultLanguage;
     }
 
     /**
-     * Sets the default language, loads its messages from the corresponding file
+     * Sets the default language and loads its messages from the corresponding file.
      *
      * @param defaultLanguage the Language object to be set as default
      * @throws IOException if an I/O error occurs while loading the language from its file
      */
     public void setDefaultLanguage(final Language defaultLanguage) throws IOException {
+        if(defaultLanguage == null) return;
         this.defaultLanguage = defaultLanguage;
 
         this.loadLanguageFromFile(defaultLanguage);
 
         defaultLanguage.addMessage("language.saving.success", "&aSaved language:&b %s");
         defaultLanguage.addMessage("language.saving.failed", "&cFailed to save language:&b %s");
+        defaultLanguage.addMessage("language.saving.unsupported", "&cStorage strategy:&b %s&r doesn't support saving to file");
     }
-
 }
