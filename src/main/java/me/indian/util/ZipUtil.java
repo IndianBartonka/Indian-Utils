@@ -205,7 +205,7 @@ public final class ZipUtil {
     private static void addFileToZip(final File file, final ZipOutputStream zos) throws IOException {
         if (LOGGER != null) LOGGER.debug("Packing: " + file.getPath());
 
-        final byte[] buffer = new byte[BufferUtil.calculateOptimalBufferSize(FileUtil.getFileSize(file))];
+        final byte[] buffer = new byte[BufferUtil.calculateOptimalBufferSize(file.lenght())];
 
         try (final FileInputStream fis = new FileInputStream(file)) {
             final ZipEntry zipEntry = new ZipEntry(file.getName());
@@ -229,7 +229,7 @@ public final class ZipUtil {
     private static void addFileToZip(final File file, final String folderName, final ZipOutputStream zos) throws IOException {
         if (LOGGER != null) LOGGER.debug("Packing: " + file.getPath());
 
-        final byte[] buffer = new byte[BufferUtil.calculateOptimalBufferSize(FileUtil.getFileSize(file))];
+        final byte[] buffer = new byte[BufferUtil.calculateOptimalBufferSize(file.lenght())];
 
         try (final FileInputStream fis = new FileInputStream(file)) {
             final ZipEntry zipEntry = new ZipEntry(folderName.replace("\\", "/") + "/" + file.getName());
