@@ -73,7 +73,7 @@ public final class SystemUtil {
         return switch (getSystem()) {
             case WINDOWS -> getMemoryUsageWindows(pid);
             case LINUX -> getMemoryUsageLinux(pid);
-            default -> throw new UnsupportedOperationException("Nie można pozyskać ilość ram dla wspieranego systemu");
+            default -> throw new UnsupportedOperationException("Nie można pozyskać ilość ram dla nie wspieranego systemu");
         };
     }
 
