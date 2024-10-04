@@ -47,6 +47,7 @@ public final class BufferUtil {
                 .orElse(-1);
     }
 
+    //TODO: Zmienić to na 'Buffer' i może dać do innej klasy że oddzielnej 
     public enum DownloadBuffer {
 
         DYNAMIC(-1), // Dynamiczny rozmiar bufora
