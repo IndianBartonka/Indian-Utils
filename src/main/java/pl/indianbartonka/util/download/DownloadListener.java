@@ -1,11 +1,10 @@
 package pl.indianbartonka.util.download;
 
 import java.io.File;
-import pl.indianbartonka.util.BufferUtil;
 
 public interface DownloadListener {
 
-    void onStart(BufferUtil.DownloadBuffer downloadBuffer, int definedBuffer, File outputFile);
+    void onStart(int definedBuffer, File outputFile);
 
     void onSecond(int progress, double formatedSpeed, String remainingTimeString);
 

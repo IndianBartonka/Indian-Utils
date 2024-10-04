@@ -10,10 +10,10 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.ReentrantLock;
 import javax.net.ssl.HttpsURLConnection;
+import org.jetbrains.annotations.Nullable;
 import pl.indianbartonka.util.ThreadUtil;
 import pl.indianbartonka.util.discord.embed.Embed;
 import pl.indianbartonka.util.logger.Logger;
-import org.jetbrains.annotations.Nullable;
 
 public class WebHookClient {
 

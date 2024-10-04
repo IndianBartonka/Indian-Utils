@@ -194,10 +194,9 @@ public final class Main {
             final Logger tempLogger = LOGGER.tempLogger(fileName);
 
             @Override
-            public void onStart(final BufferUtil.DownloadBuffer downloadBuffer, final int definedBuffer, final File outputFile) {
+            public void onStart(final int definedBuffer, final File outputFile) {
                 this.tempLogger.info("Pobieranie:&a " + outputFile.getName());
-                this.tempLogger.info("Ustalony buffer dla naszego pliku to:&a " + BufferUtil.findBuffer(definedBuffer));
-                this.tempLogger.info("Domyślny buffer to:&a " + downloadBuffer);
+                this.tempLogger.info("Ustalony buffer dla naszego pliku to:&a " + MathUtil.formatBytesDynamic(definedBuffer, false));
             }
 
             @Override
@@ -233,7 +232,6 @@ public final class Main {
 
                 final DownloadTask downloadTask = new DownloadTask(connection.getInputStream(), new File(fileName),
                         connection.getContentLength(),
-                        BufferUtil.DownloadBuffer.DYNAMIC,
                         30,
                         downloadListener
                 );
@@ -287,7 +285,7 @@ public final class Main {
         if (files != null) {
             for (final File file : files) {
                 final int buffer = BufferUtil.calculateOptimalBufferSize(FileUtil.getFileSize(file));
-                LOGGER.info(file.getName() + " = " + MathUtil.formatBytesDynamic(buffer, false) + " | " + BufferUtil.findBuffer(buffer));
+                LOGGER.info(file.getName() + " = " + MathUtil.formatBytesDynamic(buffer, false));
             }
         }
     }

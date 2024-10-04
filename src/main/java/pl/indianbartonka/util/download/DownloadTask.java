@@ -5,37 +5,34 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.concurrent.TimeoutException;
+import org.jetbrains.annotations.Nullable;
 import pl.indianbartonka.util.BufferUtil;
 import pl.indianbartonka.util.DateUtil;
 import pl.indianbartonka.util.MathUtil;
-import org.jetbrains.annotations.Nullable;
 
 public class DownloadTask {
 
     private final InputStream inputStream;
     private final File outputFile;
     private final long fileSize;
-    private final BufferUtil.DownloadBuffer downloadBuffer;
     private final int timeOutSeconds;
     private final DownloadListener downloadListener;
     private boolean stopped, downloading, finished;
 
-    public DownloadTask(final InputStream inputStream, final File outputFile, final long fileSize, final BufferUtil.DownloadBuffer downloadBuffer, final int timeOutSeconds, @Nullable final DownloadListener downloadListener) {
+    public DownloadTask(final InputStream inputStream, final File outputFile, final long fileSize, final int timeOutSeconds, @Nullable final DownloadListener downloadListener) {
         this.inputStream = inputStream;
         this.outputFile = outputFile;
         this.fileSize = fileSize;
-        this.downloadBuffer = downloadBuffer;
         this.timeOutSeconds = timeOutSeconds;
         this.downloadListener = downloadListener;
         this.stopped = false;
         this.downloading = false;
     }
 
-    public DownloadTask(final InputStream inputStream, final File outputFile, final long fileSize, final BufferUtil.DownloadBuffer downloadBuffer, final int timeOutSeconds) {
+    public DownloadTask(final InputStream inputStream, final File outputFile, final long fileSize, final int timeOutSeconds) {
         this.inputStream = inputStream;
         this.outputFile = outputFile;
         this.fileSize = fileSize;
-        this.downloadBuffer = downloadBuffer;
         this.timeOutSeconds = timeOutSeconds;
         this.downloadListener = null;
         this.stopped = false;
@@ -48,11 +45,12 @@ public class DownloadTask {
 
         try (final FileOutputStream fileOutputStream = new FileOutputStream(this.outputFile)) {
             this.downloading = true;
-            final int definedBuffer = BufferUtil.defineBuffer(this.downloadBuffer, this.fileSize);
+
+            final int definedBuffer = BufferUtil.calculateOptimalBufferSize(this.fileSize);
             final byte[] buffer = new byte[definedBuffer];
 
             if (this.downloadListener != null) {
-                this.downloadListener.onStart(this.downloadBuffer, definedBuffer, this.outputFile);
+                this.downloadListener.onStart(definedBuffer, this.outputFile);
             }
 
             int bytesRead;
@@ -77,7 +75,7 @@ public class DownloadTask {
                 if (elapsedTime >= 1.0) {
                     final long bytesSinceLastTime = totalBytesRead - lastBytesRead;
                     final double speedBytesPerSecond = bytesSinceLastTime / elapsedTime;
-                    final double speedMBps = speedBytesPerSecond / BufferUtil.DownloadBuffer.ONE_MB.getBuffer();
+                    final double speedMBps = speedBytesPerSecond / 1_048_576;
                     lastTime = currentTime;
                     lastBytesRead = totalBytesRead;
 
@@ -128,10 +126,6 @@ public class DownloadTask {
         return this.fileSize;
     }
 
-    public BufferUtil.DownloadBuffer getDownloadBuffer() {
-        return this.downloadBuffer;
-    }
-
     public int getTimeOutSeconds() {
         return this.timeOutSeconds;
     }
@@ -162,7 +156,6 @@ public class DownloadTask {
         return "DownloadTask (" +
                 "outputFile=" + this.outputFile.getPath() +
                 ", fileSize=" + this.fileSize +
-                ", downloadBuffer=" + this.downloadBuffer +
                 ", timeOutSeconds=" + this.timeOutSeconds +
                 ", stopped=" + this.stopped +
                 ", downloading=" + this.downloading +
