@@ -48,6 +48,7 @@ public final class BufferUtil {
     }
 
     //TODO: Zmienić to na 'Buffer' i może dać do innej klasy że oddzielnej 
+    // ewentualnie usunąć te enum i dodać po prostu że maksymalny buffer to 256mb a minimalny 8kb
     public enum DownloadBuffer {
 
         DYNAMIC(-1), // Dynamiczny rozmiar bufora
