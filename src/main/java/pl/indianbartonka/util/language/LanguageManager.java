@@ -169,6 +169,7 @@ public class LanguageManager {
                     return;
                 }
 
+                language.addMessage("storageStrategyName", language.getStorageStrategy().getStrategyName());
                 language.saveToFile();
                 if (info) this.logger.info(this.getMessage("language.saving.success", entry.getKey()));
             } catch (final Exception exception) {
