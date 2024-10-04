@@ -13,6 +13,10 @@
 
 Przykłady użycja znajdziecie w klasie [Main.java](src%2Fmain%2Fjava%2Fme%2Findian%2Futil%2FMain.java)
 
+# Przy projekcie pomagali 
+<iframe src="https://contrib.rocks/image?repo=IndianBartonka/Indian-Utils" width="600" height="400"></iframe>
+
+# Zależności 
 ## Maven `pom.xml`
 ```xml
 <repository>
