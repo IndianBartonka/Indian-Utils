@@ -53,7 +53,7 @@ public final class AESEncryptor implements Encryptor {
         if (this.logger != null) this.logger.debug("Szyfrowanie pliku: " + inputFile.getPath());
         this.processFile(cipher, inputFile, encryptedFile);
         if (this.logger != null) this.logger.debug("Zszyfrowna plik " + encryptedFile.getPath());
-        return new EncryptedFile(System.currentTimeMillis(), encryptedFile , "AES");
+        return new EncryptedFile(System.currentTimeMillis(), inputFile.length(), encryptedFile, "AES");
     }
 
     @Override
