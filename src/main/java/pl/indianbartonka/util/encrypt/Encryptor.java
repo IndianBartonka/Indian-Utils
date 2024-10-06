@@ -8,7 +8,7 @@ import pl.indianbartonka.util.logger.Logger;
 
 public interface Encryptor {
 
-    File encryptFile(File inputFile, SecretKey key) throws Exception;
+    EncryptedFile encryptFile(File inputFile, SecretKey key) throws Exception;
 
     File decryptFile(File inputFile, SecretKey key) throws Exception;
 

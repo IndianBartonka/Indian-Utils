@@ -19,6 +19,7 @@ import javax.crypto.NoSuchPaddingException;
 import javax.crypto.SecretKey;
 import javax.crypto.spec.IvParameterSpec;
 import pl.indianbartonka.util.BufferUtil;
+import pl.indianbartonka.util.encrypt.EncryptedFile;
 import pl.indianbartonka.util.encrypt.Encryptor;
 import pl.indianbartonka.util.file.FileUtil;
 import pl.indianbartonka.util.logger.Logger;
@@ -46,13 +47,13 @@ public final class AESEncryptor implements Encryptor {
     }
 
     @Override
-    public File encryptFile(final File inputFile, final SecretKey key) throws NoSuchAlgorithmException, InvalidKeyException, InvalidAlgorithmParameterException, NoSuchPaddingException, NoSuchProviderException, IOException {
+    public EncryptedFile encryptFile(final File inputFile, final SecretKey key) throws NoSuchAlgorithmException, InvalidKeyException, InvalidAlgorithmParameterException, NoSuchPaddingException, NoSuchProviderException, IOException {
         final File encryptedFile = new File(this.encryptedDir, inputFile.getName());
         final Cipher cipher = AESSettings.createCipher(this.aesMode, this.aesPadding, key, this.ivParameterSpec, this.provider, true);
         if (this.logger != null) this.logger.debug("Szyfrowanie pliku: " + inputFile.getPath());
         this.processFile(cipher, inputFile, encryptedFile);
         if (this.logger != null) this.logger.debug("Zszyfrowna plik " + encryptedFile.getPath());
-        return encryptedFile;
+        return new EncryptedFile(System.currentTimeMillis(), encryptedFile , "AES");
     }
 
     @Override
