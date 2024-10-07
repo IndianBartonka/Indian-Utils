@@ -18,6 +18,7 @@ Przykłady użycja znajdziecie w klasie [Main.java](src%2Fmain%2Fjava%2Fme%2Find
 ![Wykres kontrybucji](https://contrib.rocks/image?repo=IndianBartonka/Indian-Utils)
 
 # Zależności 
+//TODO: Dodać opis jakiś 
 ## Maven `pom.xml`
 ```xml
 <repository>
