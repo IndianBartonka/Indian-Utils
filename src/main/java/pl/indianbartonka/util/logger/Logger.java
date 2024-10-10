@@ -39,6 +39,7 @@ public abstract class Logger {
     }
 
     public Logger prefixed(final String loggerPrefix) {
+        //TODO: Szukaj w dzieciach już istniejącego loggeru x takim ptefixem
         return new Logger(this) {
             @Override
             protected void updatePrefix() {
@@ -111,6 +112,15 @@ public abstract class Logger {
         }
     }
 
+    private void initLoggerFile(){
+        //TODO: Przekieruj inne loggery do naszego pliku
+        java.util.logging.Logger rootLogger = Logger.getLogger("");
+        FileHandler fileHandler = new FileHandler("app.log", true);
+        fileHandler.setFormatter(new SimpleFormatter());
+        rootLogger.addHandler(fileHandler);
+
+    }
+    
     public void print() {
         this.print("");
     }
