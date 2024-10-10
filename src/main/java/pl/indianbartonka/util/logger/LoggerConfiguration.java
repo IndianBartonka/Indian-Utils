@@ -4,8 +4,8 @@ public class LoggerConfiguration {
 
     private final boolean debug;
     private final String logsPath;
-    private boolean oneLog;
     private final boolean logJULtoFile;
+    private boolean oneLog;
     private String logName;
 
     public LoggerConfiguration(final boolean debug, final String logsPath, final boolean logJULtoFile, final String logName) {

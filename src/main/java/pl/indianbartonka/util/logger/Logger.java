@@ -116,7 +116,7 @@ public abstract class Logger {
     }
 
     private void initLoggerFile(final File file) {
-        if(!this.configuration.isLogJULtoFile()) return;
+        if (!this.configuration.isLogJULtoFile()) return;
         try {
             final java.util.logging.Logger rootLogger = java.util.logging.Logger.getLogger("");
 
