@@ -2,9 +2,12 @@ package pl.indianbartonka.util.logger;
 
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.FileHandler;
+import java.util.logging.Handler;
 import pl.indianbartonka.util.DateUtil;
 import pl.indianbartonka.util.file.FileUtil;
 
@@ -107,20 +110,35 @@ public abstract class Logger {
 
             final FileOutputStream fileOutputStream = new FileOutputStream(this.logFile, true);
             this.printStream = new PrintStream(fileOutputStream);
+            this.initLoggerFile(this.logFile);
         } catch (final Exception exception) {
             this.error("Nie można utworzyć&1 PrintStreamu&r aby zapisywać logi do pliku ", exception);
         }
     }
 
-    private void initLoggerFile(){
-        //TODO: Przekieruj inne loggery do naszego pliku
-        java.util.logging.Logger rootLogger = Logger.getLogger("");
-        FileHandler fileHandler = new FileHandler("app.log", true);
-        fileHandler.setFormatter(new SimpleFormatter());
-        rootLogger.addHandler(fileHandler);
+    private void initLoggerFile(final File file) {
+        try {
+            final java.util.logging.Logger rootLogger = java.util.logging.Logger.getLogger("");
 
+            boolean hasFileHandler = false;
+
+            for (final Handler handler : rootLogger.getHandlers()) {
+                if (handler instanceof FileHandler) {
+                    hasFileHandler = true;
+                    break;
+                }
+            }
+
+            if (!hasFileHandler) {
+                final FileHandler fileHandler = new FileHandler(file.getAbsolutePath(), true);
+                fileHandler.setFormatter(new FileLogFormatter());
+                rootLogger.addHandler(fileHandler);
+            }
+        } catch (final IOException exception) {
+            this.debug("&cNie udało przekazac się logowania do pliku:&b " + file.getName(), exception);
+        }
     }
-    
+
     public void print() {
         this.print("");
     }
