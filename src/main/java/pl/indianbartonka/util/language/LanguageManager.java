@@ -1,5 +1,6 @@
 package pl.indianbartonka.util.language;
 
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -18,7 +19,9 @@ import pl.indianbartonka.util.logger.Logger;
  * This class provides functionality to work with language files and manage translations,
  * ensuring that messages can be easily retrieved and modified.
  * </p>
+ * <p>
  * Docs written by ChatGPT
+ * </p>
  */
 public class LanguageManager {
 
@@ -28,13 +31,11 @@ public class LanguageManager {
     private Language defaultLanguage;
 
     /**
-     * Constructs a LanguageManager with the specified logger, directory for languages,
-     * and storage strategy.
+     * Constructs a LanguageManager with the specified logger and directory for languages.
      *
      * <p>This constructor initializes a LanguageManager instance that manages
      * multiple language translations. It creates the specified directory if it does not
-     * already exist and sets the storage strategy to be used for storing and retrieving
-     * language messages.</p>
+     * already exist.</p>
      *
      * @param logger       the logger used for logging messages
      * @param languagesDir the directory where language files are stored
@@ -173,7 +174,7 @@ public class LanguageManager {
                 language.saveToFile();
                 if (info) this.logger.info(this.getMessage("language.saving.success", entry.getKey()));
             } catch (final Exception exception) {
-                this.logger.error(this.getMessage("language.saving.fail"), exception);
+                this.logger.error(this.getMessage("language.saving.failed", entry.getKey()), exception);
             }
         }
     }
@@ -196,9 +197,29 @@ public class LanguageManager {
      * @throws IOException if an I/O error occurs while loading
      */
     public void loadLanguage(final Language language) throws IOException {
-        // TODO: Add option to load language from file
         language.loadFromFile();
         this.addLanguage(language);
+    }
+
+    /**
+     * Loads a language from a file and adds it to the language manager.
+     *
+     * @param file            The file from which the language will be loaded. The file name should contain the language code (e.g., "pl.txt").
+     * @param storageStrategy The storage strategy used to load the language data.
+     * @return The {@link Language} object that has been loaded from the file.
+     * @throws IOException If the file cannot be read or an error occurs during loading.
+     */
+    public Language loadFromFile(final File file, final StorageStrategy storageStrategy) throws IOException {
+        final String languageCodeName = file.getName().split("\\.")[0];
+
+        final Language language = new Language(languageCodeName, this, storageStrategy) {
+        };
+
+        language.getStorageStrategy().load(file);
+
+        this.addLanguage(language);
+
+        return language;
     }
 
     /**

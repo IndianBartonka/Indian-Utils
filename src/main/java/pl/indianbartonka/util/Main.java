@@ -12,6 +12,7 @@ import pl.indianbartonka.util.file.FileUtil;
 import pl.indianbartonka.util.language.Language;
 import pl.indianbartonka.util.language.LanguageManager;
 import pl.indianbartonka.util.language.storage.impl.HashMapStorageStrategy;
+import pl.indianbartonka.util.language.storage.impl.PropertiesStorageStrategy;
 import pl.indianbartonka.util.logger.Logger;
 import pl.indianbartonka.util.logger.LoggerConfiguration;
 import pl.indianbartonka.util.system.SystemUtil;
@@ -37,7 +38,7 @@ public final class Main {
         //Każdy język powinien mieć oddzielną instancje strategi
         final Language polish = new Language("pl_PL", languageManager, new HashMapStorageStrategy()) {
         };
-        final Language english = new Language("en_EN", languageManager, new HashMapStorageStrategy()) {
+        final Language english = new Language("en_EN", languageManager, new PropertiesStorageStrategy()) {
         };
 
         // Dodawanie wiadomości do języka polskiego, jeśli plik nie istnieje
@@ -89,6 +90,14 @@ public final class Main {
 
         // Domyślny język to polski, ale zwraca wartość z języka angielskiego, jeśli polski nie zawiera klucza
         LOGGER.info(languageManager.getMessage("cat.exe"));
+
+        //Ładowanie Pliku jezykowego ręcznie
+        final File rusFile = new File(languageManager.getLanguagesDir() + "ru_Ru.lang");
+        final Language rusLang = languageManager.loadFromFile(rusFile, new HashMapStorageStrategy());
+        LOGGER.info("&aZaładowano język z pliku:&b " + rusFile.getPath());
+        LOGGER.info("LangaugeCodeName: " + rusLang.getLanguageCodeName());
+
+        LOGGER.info(languageManager.getMessage("russia.message"));
 
         // Zapis wszystkich dostępnych języków do plików
         languageManager.saveLanguages(true);
