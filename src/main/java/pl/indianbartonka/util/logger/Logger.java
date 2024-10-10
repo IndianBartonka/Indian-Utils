@@ -42,7 +42,6 @@ public abstract class Logger {
     }
 
     public Logger prefixed(final String loggerPrefix) {
-        //TODO: Szukaj w dzieciach już istniejącego loggeru x takim ptefixem
         return new Logger(this) {
             @Override
             protected void updatePrefix() {

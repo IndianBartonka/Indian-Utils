@@ -220,7 +220,6 @@ public class FileExtensionMap {
         this.addExtension("plist", "macOS Property List File");
         this.addExtension("rc", "Resource Configuration File");
         this.addExtension("desktop", "Desktop Entry File");
-        //TODO: Dowiedziec się
         this.addExtension("epage", "TellTale Save File");
         this.addExtension("estore", "TellTale Save File");
 
