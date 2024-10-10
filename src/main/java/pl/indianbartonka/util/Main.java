@@ -21,9 +21,9 @@ public final class Main {
 
     private static final Logger LOGGER = new Logger(new LoggerConfiguration(true, System.getProperty("user.dir") + File.separator + "logs", true)) {
     };
+    //Zaleca się tworzenie nowych loggerów na podstawie głównego
     private static final Logger LOGGER2 = LOGGER.prefixed("Logger 2");
-    //    private static final Logger LOGGER = new Logger(new LoggerConfiguration(true,
-//            System.getProperty("user.dir") + File.separator + "logs", DateUtil.getFixedDate())) {};
+
     private static final long START_TIME = System.currentTimeMillis();
     private static final Random RANDOM = new Random(Integer.MAX_VALUE);
 
@@ -132,16 +132,16 @@ public final class Main {
         LOGGER2.getParent().info("Uzywam rodzica");
 
         //Info z JUL tez jest wypisywane do naszego pliku z logami
+        //Można to wyłączyc tworząc odpowiadnią instancije `LoggerConfiguration` w głównym logerze np:
+        // new LoggerConfiguration(true, System.getProperty("user.dir") + File.separator + "logs", true, false)
         final java.util.logging.Logger logger = java.util.logging.Logger.getLogger("JUL");
 
         logger.info("okejjj");
 
-        final Random random = new Random();
+        LOGGER.tempLogger("temp1").info("spokoo " + RANDOM.nextInt(5));
+        LOGGER2.tempLogger("temp2").info("spokoo " + RANDOM.nextInt(8));
 
-        LOGGER.tempLogger("temp1").info("spokoo " + random.nextInt(5));
-        LOGGER2.tempLogger("temp2").info("spokoo "+ random.nextInt(8));
-
-        logger.info("okejjj " + random.nextInt(5));
+        logger.info("okejjj " + RANDOM.nextInt(5));
     }
 
     private static void fileUtilTest() {
