@@ -130,6 +130,18 @@ public final class Main {
         LOGGER.alert("Rodzic: " + LOGGER.getParent() + " Dzieci: " + LOGGER.getChildren());
         LOGGER2.alert("Rodzic: " + LOGGER2.getParent() + " Dzieci: " + LOGGER2.getChildren());
         LOGGER2.getParent().info("Uzywam rodzica");
+
+        //Info z JUL tez jest wypisywane do naszego pliku z logami
+        final java.util.logging.Logger logger = java.util.logging.Logger.getLogger("JUL");
+
+        logger.info("okejjj");
+
+        final Random random = new Random();
+
+        LOGGER.tempLogger("temp1").info("spokoo " + random.nextInt(5));
+        LOGGER2.tempLogger("temp2").info("spokoo "+ random.nextInt(8));
+
+        logger.info("okejjj " + random.nextInt(5));
     }
 
     private static void fileUtilTest() {
