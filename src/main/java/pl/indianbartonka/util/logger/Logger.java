@@ -19,7 +19,6 @@ public abstract class Logger {
     protected String prefix;
     protected LogState logState;
     protected PrintStream printStream;
-    protected boolean temporary;
     private Logger parent;
 
     public Logger(final Logger parent) {
@@ -54,12 +53,13 @@ public abstract class Logger {
     }
 
     public Logger tempLogger(final String loggerPrefix) {
+        final Logger parent = this;
         return new Logger(Logger.this.configuration) {
 
             @Override
             protected void initializeLogFile() {
-                this.temporary = true;
-                super.initializeLogFile();
+                this.logFile = parent.getLogFile();
+                this.printStream = parent.printStream;
             }
 
             @Override
@@ -99,7 +99,7 @@ public abstract class Logger {
             if (this.configuration.isOneLog()) {
                 this.logFile = new File(logsDir, "Latest.log");
 
-                if (this.logFile.exists() && !this.temporary && !this.logFile.delete()) {
+                if (this.logFile.exists() && !this.logFile.delete()) {
                     FileUtil.writeText(this.logFile, List.of(""));
                 }
 
