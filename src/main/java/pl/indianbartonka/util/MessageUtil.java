@@ -46,7 +46,7 @@ public final class MessageUtil {
     /**
      * Builds a message from an array of arguments, with optional inclusion/exclusion of specified arguments.
      *
-     * @param args The array of arguments to build the message from.
+     * @param args        The array of arguments to build the message from.
      * @param includeArgs The array of arguments to exclude.
      * @return The constructed message as a string.
      */
@@ -63,7 +63,7 @@ public final class MessageUtil {
     /**
      * Formats a message by replacing the first occurrence of "%s" with the provided arguments.
      *
-     * @param message The message to format.
+     * @param message    The message to format.
      * @param formatArgs The arguments to replace in the message.
      * @return The formatted message as a string.
      */
@@ -97,7 +97,7 @@ public final class MessageUtil {
     /**
      * Removes arguments starting from the specified index.
      *
-     * @param args The array of arguments.
+     * @param args      The array of arguments.
      * @param startFrom The index from which to start removing arguments.
      * @return An array of arguments after removal.
      */
@@ -109,7 +109,7 @@ public final class MessageUtil {
     /**
      * Removes from the array of arguments those that are present in the argsToRemove array.
      *
-     * @param args The array of arguments.
+     * @param args         The array of arguments.
      * @param argsToRemove The array of arguments to remove.
      * @return An array of arguments after removal.
      */
@@ -144,7 +144,7 @@ public final class MessageUtil {
     /**
      * Converts a list of strings into a single string, using the specified delimiter.
      *
-     * @param list The list of strings to join.
+     * @param list  The list of strings to join.
      * @param split The delimiter to use for joining.
      * @return The joined string.
      */
@@ -157,9 +157,9 @@ public final class MessageUtil {
     /**
      * Converts a list of objects into a single string, using the specified delimiter.
      *
-     * @param list The list of objects to join.
+     * @param list  The list of objects to join.
      * @param split The delimiter to use for joining.
-     * @param <T> The type of the objects in the list.
+     * @param <T>   The type of the objects in the list.
      * @return The joined string.
      */
     public static <T> String objectListToString(final List<T> list, String split) {
@@ -172,8 +172,8 @@ public final class MessageUtil {
      * Converts an EnumSet into a single string, using the specified delimiter.
      *
      * @param enumSet The EnumSet to convert.
-     * @param split The delimiter to use for joining.
-     * @param <E> The type of the enum.
+     * @param split   The delimiter to use for joining.
+     * @param <E>     The type of the enum.
      * @return The joined string.
      */
     public static <E extends Enum<E>> String enumSetToString(final EnumSet<E> enumSet, String split) {
@@ -185,7 +185,7 @@ public final class MessageUtil {
     /**
      * Converts a string into a list of strings based on the specified delimiter.
      *
-     * @param text The string to convert.
+     * @param text  The string to convert.
      * @param split The delimiter to use for splitting.
      * @return A list of strings.
      */
