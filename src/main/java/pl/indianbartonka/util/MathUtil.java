@@ -9,8 +9,12 @@ import java.util.Locale;
 import java.util.Map;
 
 /**
+ * <p>
  * Utility class providing mathematical operations, data conversions, and formatting functions.
- * Documents written by Chat-GPT
+ * </p>
+ * <p>
+ * Documents written by ChatGPT
+ * </p>
  */
 public final class MathUtil {
 

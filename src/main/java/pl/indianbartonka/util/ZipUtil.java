@@ -14,9 +14,13 @@ import pl.indianbartonka.util.file.FileUtil;
 import pl.indianbartonka.util.logger.Logger;
 
 /**
+ * <p>
  * Utility class for creating and extracting ZIP files.
  * Provides methods to zip folders and files, and to unzip files.
- * <p>Written with Chat-GPT</p>
+ * </p>
+ * <p>
+ * Docs written by ChatGPT
+ * </p>
  */
 public final class ZipUtil {
 

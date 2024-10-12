@@ -3,9 +3,13 @@ package pl.indianbartonka.util;
 import java.util.Scanner;
 
 /**
+ * <p>
  * Utility class for handling user input through a {@link Scanner}.
  * Provides methods to ask various types of questions and process the user's responses.
- * Documents written by Chat-GPT
+ * </p>
+ * <p>
+ * Documents written by ChatGPT
+ * </p>
  */
 public final class ScannerUtil {
 

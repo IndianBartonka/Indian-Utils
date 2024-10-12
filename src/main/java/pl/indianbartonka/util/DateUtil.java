@@ -12,9 +12,13 @@ import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 /**
+ * <p>
  * Utility class for date and time operations.
  * Provides methods for formatting and converting between different time units.
- * Documents written by Chat-GPT
+ * </p>
+ * <p>
+ * Documents written by ChatGPT
+ * </p>
  */
 public final class DateUtil {
 

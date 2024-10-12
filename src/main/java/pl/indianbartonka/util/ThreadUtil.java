@@ -6,8 +6,12 @@ import java.util.concurrent.atomic.AtomicInteger;
 import org.jetbrains.annotations.NotNull;
 
 /**
+ * <p>
  * Utility class for thread management and creation.
- * Documents written by Chat-GPT
+ * </p>
+ * <p>
+ * Documents written by ChatGPT
+ * </p>
  */
 public final class ThreadUtil implements ThreadFactory {
 
