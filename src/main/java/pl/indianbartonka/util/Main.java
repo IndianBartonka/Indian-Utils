@@ -211,9 +211,9 @@ public final class Main {
             LOGGER.info("Minecraft Version: " + query.minecraftVersion());
             LOGGER.info("Player Count: " + query.playerCount());
             LOGGER.info("Max Players: " + query.maxPlayers());
-            LOGGER.info("Server ID: " + query.serverID());
+            LOGGER.info("Server ID: " + query.serverId());
             LOGGER.info("Map Name: " + query.mapName());
-            LOGGER.info("Game Mode: " + query.gamemode());
+            LOGGER.info("Game Mode: " + query.gameMode());
             LOGGER.info("Port V4: " + query.portV4());
             LOGGER.info("Port V6: " + query.portV6());
         }
