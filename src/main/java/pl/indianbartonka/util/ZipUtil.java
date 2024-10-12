@@ -24,8 +24,8 @@ import pl.indianbartonka.util.logger.Logger;
  */
 public final class ZipUtil {
 
-    private static Logger LOGGER;
-    private static int COMPRESSION_LEVEL = 5;
+    private static Logger logger;
+    private static int compressionLevel = 5;
 
     // Private constructor to prevent instantiation
     private ZipUtil() {
@@ -38,8 +38,8 @@ public final class ZipUtil {
      * @param compressionLevel The compression level to be used (0-9).
      */
     public static void init(final Logger logger, final int compressionLevel) {
-        LOGGER = logger.prefixed("ZipUtil");
-        COMPRESSION_LEVEL = MathUtil.getCorrectNumber(compressionLevel, 0, 9);
+        ZipUtil.logger = logger.prefixed("ZipUtil");
+        ZipUtil.compressionLevel = MathUtil.getCorrectNumber(compressionLevel, 0, 9);
     }
 
     /**
@@ -60,7 +60,7 @@ public final class ZipUtil {
 
         try (final FileOutputStream fos = new FileOutputStream(zipFile);
              final ZipOutputStream zipOut = new ZipOutputStream(fos)) {
-            zipOut.setLevel(COMPRESSION_LEVEL);
+            zipOut.setLevel(compressionLevel);
             addDirectoryToZip(sourceFolder, sourceFolder.getName(), zipOut);
         }
 
@@ -77,7 +77,7 @@ public final class ZipUtil {
     public static File zipFiles(final File[] srcFiles, final String zipFilePath) throws IOException {
         try (final FileOutputStream fos = new FileOutputStream(zipFilePath);
              final ZipOutputStream zipOut = new ZipOutputStream(fos)) {
-            zipOut.setLevel(COMPRESSION_LEVEL);
+            zipOut.setLevel(compressionLevel);
             for (final File srcFile : srcFiles) {
                 if (srcFile.exists()) {
                     if (srcFile.isDirectory()) {
@@ -105,7 +105,7 @@ public final class ZipUtil {
      * @see #init(Logger, int)
      */
     public static int getCompressionLevel() {
-        return COMPRESSION_LEVEL;
+        return compressionLevel;
     }
 
     /**
@@ -117,7 +117,7 @@ public final class ZipUtil {
      * @throws IOException If an error occurs during the zipping process.
      */
     private static void addDirectoryToZip(final File folder, final String parentName, final ZipOutputStream zos) throws IOException {
-        if (LOGGER != null) LOGGER.debug("Packing: " + folder.getPath());
+        if (logger != null) logger.debug("Packing: " + folder.getPath());
 
         final File[] files = folder.listFiles();
         if (files != null) {
@@ -164,11 +164,11 @@ public final class ZipUtil {
 
                 //  Skip files specified in the skipFiles list
                 if (outputFile.exists() && skipFiles != null && skipFiles.contains(outputFile.getAbsolutePath())) {
-                    if (LOGGER != null) LOGGER.info("Skipping file: " + outputFile.getAbsolutePath());
+                    if (logger != null) logger.info("Skipping file: " + outputFile.getAbsolutePath());
                     continue;
                 }
 
-                if (LOGGER != null) LOGGER.debug("Extracting: " + outputFile.getAbsolutePath());
+                if (logger != null) logger.debug("Extracting: " + outputFile.getAbsolutePath());
 
                 if (zipEntry.isDirectory()) {
                     createDirectoryIfNotExists(outputFile.toPath());
@@ -207,7 +207,7 @@ public final class ZipUtil {
      * @throws IOException If an error occurs during the zipping process.
      */
     private static void addFileToZip(final File file, final ZipOutputStream zos) throws IOException {
-        if (LOGGER != null) LOGGER.debug("Packing: " + file.getPath());
+        if (logger != null) logger.debug("Packing: " + file.getPath());
 
         final byte[] buffer = new byte[BufferUtil.calculateOptimalBufferSize(file.length())];
 
@@ -231,7 +231,7 @@ public final class ZipUtil {
      * @throws IOException If an error occurs during the zipping process.
      */
     private static void addFileToZip(final File file, final String folderName, final ZipOutputStream zos) throws IOException {
-        if (LOGGER != null) LOGGER.debug("Packing: " + file.getPath());
+        if (logger != null) logger.debug("Packing: " + file.getPath());
 
         final byte[] buffer = new byte[BufferUtil.calculateOptimalBufferSize(file.length())];
 

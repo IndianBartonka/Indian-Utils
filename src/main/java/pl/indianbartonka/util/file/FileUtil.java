@@ -5,6 +5,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.UncheckedIOException;
 import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
@@ -101,7 +102,7 @@ public final class FileUtil {
                             try {
                                 Files.delete(path);
                             } catch (final IOException exception) {
-                                throw new RuntimeException(exception);
+                                throw new UncheckedIOException(exception);
                             }
                         });
             }

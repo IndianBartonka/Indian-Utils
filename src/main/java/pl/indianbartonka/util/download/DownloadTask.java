@@ -17,7 +17,9 @@ public class DownloadTask {
     private final long fileSize;
     private final int timeOutSeconds;
     private final DownloadListener downloadListener;
-    private boolean stopped, downloading, finished;
+    private boolean stopped;
+    private boolean downloading;
+    private boolean finished;
 
     public DownloadTask(final InputStream inputStream, final File outputFile, final long fileSize, final int timeOutSeconds, @Nullable final DownloadListener downloadListener) {
         this.inputStream = inputStream;

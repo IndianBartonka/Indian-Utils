@@ -30,7 +30,8 @@ public final class AESEncryptor implements Encryptor {
     private AESSettings.AESPadding aesPadding;
     private IvParameterSpec ivParameterSpec;
     private String provider;
-    private String encryptedDir, userDir;
+    private String encryptedDir;
+    private String userDir;
     private Logger logger;
 
     public AESEncryptor(final AESSettings.AESMode aesMode, final AESSettings.AESPadding aesPadding, final IvParameterSpec ivParameterSpec) {

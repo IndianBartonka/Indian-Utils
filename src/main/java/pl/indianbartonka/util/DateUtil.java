@@ -58,9 +58,9 @@ public final class DateUtil {
      */
     private static final Map<Character, String> UNIT_MAP = new HashMap<>();
     /**
-     * The time zone used for date and time operations (Europe/Warsaw).
+     * The time zone used for date and time operations.
      */
-    public static ZoneId DEFAULT_ZONE = ZoneId.systemDefault();
+    private static ZoneId defaultZone = ZoneId.systemDefault();
 
     // Private constructor to prevent instantiation
     private DateUtil() {
@@ -71,8 +71,8 @@ public final class DateUtil {
      *
      * @param zoneId - ID of zone
      */
-    private static void setZone(final ZoneId zoneId) {
-        DEFAULT_ZONE = zoneId;
+    public static void setZone(final ZoneId zoneId) {
+        defaultZone = zoneId;
     }
 
     /**
@@ -81,7 +81,7 @@ public final class DateUtil {
      * @return The formatted date and time as a string.
      */
     public static String getFixedDate() {
-        return LocalDateTime.now(DEFAULT_ZONE).format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")).replace(":", "-");
+        return LocalDateTime.now(defaultZone).format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")).replace(":", "-");
     }
 
     /**
@@ -90,7 +90,7 @@ public final class DateUtil {
      * @return The formatted date and time as a string.
      */
     public static String getDate() {
-        return LocalDateTime.now(DEFAULT_ZONE).format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+        return LocalDateTime.now(defaultZone).format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
     }
 
     /**
@@ -99,7 +99,7 @@ public final class DateUtil {
      * @return The formatted time as a string.
      */
     public static String getTimeHM() {
-        return LocalDateTime.now(DEFAULT_ZONE).format(DateTimeFormatter.ofPattern("HH:mm"));
+        return LocalDateTime.now(defaultZone).format(DateTimeFormatter.ofPattern("HH:mm"));
     }
 
     /**
@@ -108,7 +108,7 @@ public final class DateUtil {
      * @return The formatted time as a string.
      */
     public static String getTimeHMS() {
-        return LocalDateTime.now(DEFAULT_ZONE).format(DateTimeFormatter.ofPattern("HH:mm:ss"));
+        return LocalDateTime.now(defaultZone).format(DateTimeFormatter.ofPattern("HH:mm:ss"));
     }
 
     /**
@@ -117,7 +117,7 @@ public final class DateUtil {
      * @return The formatted time as a string.
      */
     public static String getTimeHMSMS() {
-        return LocalDateTime.now(DEFAULT_ZONE).format(DateTimeFormatter.ofPattern("HH:mm:ss:SSS"));
+        return LocalDateTime.now(defaultZone).format(DateTimeFormatter.ofPattern("HH:mm:ss:SSS"));
     }
 
     /**
@@ -127,7 +127,7 @@ public final class DateUtil {
      * @return The epoch seconds.
      */
     public static long localDateTimeToSeconds(final LocalDateTime localDateTime) {
-        return localDateTime.atZone(DEFAULT_ZONE).toEpochSecond();
+        return localDateTime.atZone(defaultZone).toEpochSecond();
     }
 
     /**
@@ -137,7 +137,7 @@ public final class DateUtil {
      * @return The epoch millis.
      */
     public static long localDateTimeToMillis(final LocalDateTime localDateTime) {
-        return localDateTime.atZone(DEFAULT_ZONE).toInstant().toEpochMilli();
+        return localDateTime.atZone(defaultZone).toInstant().toEpochMilli();
     }
 
     /**
@@ -147,7 +147,7 @@ public final class DateUtil {
      * @return The corresponding {@link LocalDateTime}.
      */
     public static LocalDateTime secondsToLocalDateTime(final long seconds) {
-        return Instant.ofEpochSecond(seconds).atZone(DEFAULT_ZONE).toLocalDateTime();
+        return Instant.ofEpochSecond(seconds).atZone(defaultZone).toLocalDateTime();
     }
 
     /**
@@ -159,7 +159,7 @@ public final class DateUtil {
     public static LocalDateTime millisToLocalDateTime(final long millis) {
         return LocalDateTime.ofInstant(
                 Instant.ofEpochMilli(millis),
-                DEFAULT_ZONE
+                defaultZone
         );
     }
 

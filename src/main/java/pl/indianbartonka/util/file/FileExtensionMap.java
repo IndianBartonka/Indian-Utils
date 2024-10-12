@@ -211,9 +211,7 @@ public class FileExtensionMap {
         this.addExtension("dconf", "Dconf Configuration File");
         this.addExtension("hocon", "Human-Optimized Config Object Notation File");
         this.addExtension("ini", "INI Configuration File");
-        this.addExtension("properties", "Properties Configuration File");
-        this.addExtension("props", "Properties Configuration File");
-        this.addExtension("prop", "Properties Configuration File");
+        this.addExtension(List.of("properties", "props", "prop"), "Properties Configuration File");
         this.addExtension("toml", "TOML Configuration File");
         this.addExtension(List.of("conf", "config", "cfg"), "Configuration File");
         this.addExtension("env", "Environment File");

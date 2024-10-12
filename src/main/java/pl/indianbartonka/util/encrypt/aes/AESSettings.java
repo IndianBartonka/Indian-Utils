@@ -128,9 +128,9 @@ public final class AESSettings {
     }
 
     public enum AESPadding {
-        NoPadding("NoPadding"),
-        PKCS5Padding("PKCS5Padding"),
-        PKCS7Padding("PKCS7Padding");
+        NO_PADDING("NoPadding"),
+        PKCS5_PADDING("PKCS5Padding"),
+        PKCS7_PADDING("PKCS7Padding");
 
         private final String padding;
 

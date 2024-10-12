@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.logging.FileHandler;
 import java.util.logging.Handler;
 import pl.indianbartonka.util.DateUtil;
+import pl.indianbartonka.util.exception.LoggerException;
 import pl.indianbartonka.util.file.FileUtil;
 
 public abstract class Logger {
@@ -21,7 +22,7 @@ public abstract class Logger {
     protected PrintStream printStream;
     private Logger parent;
 
-    public Logger(final Logger parent) {
+    protected Logger(final Logger parent) {
         this.parent = parent;
         this.configuration = parent.configuration;
         this.children = new ArrayList<>();
@@ -32,7 +33,7 @@ public abstract class Logger {
         parent.children.add(this);
     }
 
-    public Logger(final LoggerConfiguration loggerConfiguration) {
+    protected Logger(final LoggerConfiguration loggerConfiguration) {
         this.configuration = loggerConfiguration;
         this.children = new ArrayList<>();
         this.logState = LogState.NONE;
@@ -89,10 +90,8 @@ public abstract class Logger {
 
         final File logsDir = new File(this.configuration.getLogsPath());
 
-        if (!logsDir.exists()) {
-            if (!logsDir.mkdir()) if (logsDir.mkdirs()) {
-                throw new RuntimeException("Nie można utworzyć miejsca na logi");
-            }
+        if (!logsDir.exists() && !logsDir.mkdir() && !logsDir.mkdirs()) {
+            throw new LoggerException("Nie można utworzyć miejsca na logi");
         }
 
         try {

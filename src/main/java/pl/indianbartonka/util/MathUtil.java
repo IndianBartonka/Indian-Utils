@@ -298,21 +298,21 @@ public final class MathUtil {
      * @return A map of unit characters to their string representations.
      */
     private static Map<Character, String> getUnitBytesMap(final long bytes, final boolean shortNames) {
-        final Map<Character, String> UNIT_MAP = new HashMap<>();
+        final Map<Character, String> unitMap = new HashMap<>();
 
         if (shortNames) {
-            UNIT_MAP.put('k', getRemainingKbFromBytes(bytes) + " KB");
-            UNIT_MAP.put('m', getRemainingMbFromBytes(bytes) + " MB");
-            UNIT_MAP.put('g', getRemainingGbFromBytes(bytes) + " GB");
-            UNIT_MAP.put('b', bytes + " b");
+            unitMap.put('k', getRemainingKbFromBytes(bytes) + " KB");
+            unitMap.put('m', getRemainingMbFromBytes(bytes) + " MB");
+            unitMap.put('g', getRemainingGbFromBytes(bytes) + " GB");
+            unitMap.put('b', bytes + " b");
         } else {
-            UNIT_MAP.put('k', getRemainingKbFromBytes(bytes) + " kilobajtów");
-            UNIT_MAP.put('m', getRemainingMbFromBytes(bytes) + " megabajtów");
-            UNIT_MAP.put('g', getRemainingGbFromBytes(bytes) + " gigabajtów");
-            UNIT_MAP.put('b', bytes + " bajtów");
+            unitMap.put('k', getRemainingKbFromBytes(bytes) + " kilobajtów");
+            unitMap.put('m', getRemainingMbFromBytes(bytes) + " megabajtów");
+            unitMap.put('g', getRemainingGbFromBytes(bytes) + " gigabajtów");
+            unitMap.put('b', bytes + " bajtów");
         }
 
-        return UNIT_MAP;
+        return unitMap;
     }
 
     /**
@@ -323,18 +323,18 @@ public final class MathUtil {
      * @return A map of unit characters to their string representations.
      */
     private static Map<Character, String> getUnitKilobytesMap(final long kilobytes, final boolean shortNames) {
-        final Map<Character, String> UNIT_MAP = new HashMap<>();
+        final Map<Character, String> unitMap = new HashMap<>();
 
         if (shortNames) {
-            UNIT_MAP.put('k', kilobytes + " KB");
-            UNIT_MAP.put('m', getRemainingMbFromKb(kilobytes) + " MB");
-            UNIT_MAP.put('g', getRemainingGbFromKb(kilobytes) + " GB");
+            unitMap.put('k', kilobytes + " KB");
+            unitMap.put('m', getRemainingMbFromKb(kilobytes) + " MB");
+            unitMap.put('g', getRemainingGbFromKb(kilobytes) + " GB");
         } else {
-            UNIT_MAP.put('k', kilobytes + " kilobajtów");
-            UNIT_MAP.put('m', getRemainingMbFromKb(kilobytes) + " megabajtów");
-            UNIT_MAP.put('g', getRemainingGbFromKb(kilobytes) + " gigabajtów");
+            unitMap.put('k', kilobytes + " kilobajtów");
+            unitMap.put('m', getRemainingMbFromKb(kilobytes) + " megabajtów");
+            unitMap.put('g', getRemainingGbFromKb(kilobytes) + " gigabajtów");
         }
 
-        return UNIT_MAP;
+        return unitMap;
     }
 }

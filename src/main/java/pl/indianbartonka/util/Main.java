@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.List;
 import java.util.Random;
 import java.util.concurrent.TimeoutException;
 import pl.indianbartonka.util.download.DownloadListener;
@@ -194,9 +195,28 @@ public final class Main {
 
     public static void bedrockQueryTest() {
         LOGGER.info("BedrockQuery Test");
-        final BedrockQuery query = BedrockQuery.create("play.skyblockpe.com", 19132);
 
-        LOGGER.info(query);
+        final List<String> ipList = List.of("play.skyblockpe.com", "play.inpvp.net", "mco.cubecraft.net", "geo.hivebedrock.network", "51.83.32.139");
+
+        for (final String ip : ipList) {
+            final BedrockQuery query = BedrockQuery.create(ip, 19132);
+            LOGGER.print();
+            LOGGER.info("MOTD: " + query.motd());
+            LOGGER.info("Server Address: " + query.serverAddress());
+            LOGGER.info("Host Address: " + query.hostAddress());
+            LOGGER.info("Online: " + query.online());
+            LOGGER.info("Response Time: " + query.responseTime());
+            LOGGER.info("Edition: " + query.edition());
+            LOGGER.info("Protocol: " + query.protocol());
+            LOGGER.info("Minecraft Version: " + query.minecraftVersion());
+            LOGGER.info("Player Count: " + query.playerCount());
+            LOGGER.info("Max Players: " + query.maxPlayers());
+            LOGGER.info("Server ID: " + query.serverID());
+            LOGGER.info("Map Name: " + query.mapName());
+            LOGGER.info("Game Mode: " + query.gamemode());
+            LOGGER.info("Port V4: " + query.portV4());
+            LOGGER.info("Port V6: " + query.portV6());
+        }
     }
 
     public static void encryptorTest() {

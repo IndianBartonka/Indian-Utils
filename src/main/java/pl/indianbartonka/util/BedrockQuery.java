@@ -15,54 +15,60 @@ public record BedrockQuery(String serverAddress, String hostAddress, boolean onl
                            String motd, int protocol,
                            String minecraftVersion,
                            int playerCount,
-                           int maxPlayers, String serverID, String mapName, String gamemode, int portV4, int portV6) {
+                           int maxPlayers, String serverId, String mapName, String gameMode, int portV4, int portV6) {
 
-    private static final byte IDUnconnectedPing = 0x01;
-    private static final byte[] unconnectedMessageSequence = {0x00, (byte) 0xff, (byte) 0xff, 0x00, (byte) 0xfe, (byte) 0xfe, (byte) 0xfe, (byte) 0xfe, (byte) 0xfd, (byte) 0xfd, (byte) 0xfd, (byte) 0xfd, 0x12, 0x34, 0x56, 0x78};
-    private static long dialerID = new Random().nextLong();
+    private static final byte ID_UNCONNECTED_PING = 0x01;
+    private static final byte[] UNCONNECTED_MESSAGE_SEQUENCE = {
+            0x00, (byte) 0xff, (byte) 0xff, 0x00,
+            (byte) 0xfe, (byte) 0xfe, (byte) 0xfe, (byte) 0xfe,
+            (byte) 0xfd, (byte) 0xfd, (byte) 0xfd, (byte) 0xfd,
+            0x12, 0x34, 0x56, 0x78
+    };
+    private static final Random RANDOM = new Random();
+    private static long dialerId = RANDOM.nextLong();
 
     public static BedrockQuery create(final String serverAddress, final int port) {
         try {
             final InetAddress address = InetAddress.getByName(serverAddress);
 
-            final ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-            final DataOutputStream dataOutputStream = new DataOutputStream(outputStream);
+            try (final ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+                 final DataOutputStream dataOutputStream = new DataOutputStream(outputStream);
+                 final DatagramSocket socket = new DatagramSocket()) {
 
-            final long startTime = System.currentTimeMillis();
-            dataOutputStream.writeByte(IDUnconnectedPing);
-            dataOutputStream.writeLong(System.currentTimeMillis() / 1000);
-            dataOutputStream.write(unconnectedMessageSequence);
-            dataOutputStream.writeLong(dialerID++);
+                dataOutputStream.writeByte(ID_UNCONNECTED_PING);
+                dataOutputStream.writeLong(System.currentTimeMillis() / 1000);
+                dataOutputStream.write(UNCONNECTED_MESSAGE_SEQUENCE);
+                dataOutputStream.writeLong(dialerId++);
 
-            final byte[] requestData = outputStream.toByteArray();
-            final byte[] responseData = new byte[(4 * 1_048_576)];
+                final byte[] requestData = outputStream.toByteArray();
+                final byte[] responseData = new byte[(4 * 1_048_576)];
 
-            final DatagramSocket socket = new DatagramSocket();
-            final DatagramPacket requestPacket = new DatagramPacket(requestData, requestData.length, address, port);
-            socket.send(requestPacket);
+                final DatagramPacket requestPacket = new DatagramPacket(requestData, requestData.length, address, port);
+                final DatagramPacket responsePacket = new DatagramPacket(responseData, responseData.length);
 
-            final DatagramPacket responsePacket = new DatagramPacket(responseData, responseData.length);
-            socket.setSoTimeout(2000);
-            socket.receive(responsePacket);
-            socket.close();
+                final long startTime = System.currentTimeMillis();
+                socket.send(requestPacket);
+                socket.setSoTimeout((int) DateUtil.secondToMillis(5));
+                socket.receive(responsePacket);
 
-            final long ping = System.currentTimeMillis() - startTime;
+                final long ping = System.currentTimeMillis() - startTime;
 
-            // MCPE;<motd>;<protocol>;<version>;<players>;<max players>;<id>;<sub motd>;<gamemode>;<not limited>;<port>;<port>
-            final String[] splittedData = new String(responsePacket.getData(), 35, responsePacket.getLength()).split(";");
+                // MCPE;<motd>;<protocol>;<version>;<players>;<max players>;<id>;<sub motd>;<gamemode>;<not limited>;<port>;<port>
+                final String[] splittedData = new String(responsePacket.getData(), 35, responsePacket.getLength()).split(";");
 
-            int portV4 = -1;
-            int portV6 = -1;
+                int portV4 = -1;
+                int portV6 = -1;
 
-            if (splittedData.length >= 12) {
-                portV4 = Integer.parseInt(splittedData[10]);
-                portV6 = Integer.parseInt(splittedData[11]);
+                if (splittedData.length >= 12) {
+                    portV4 = Integer.parseInt(splittedData[10]);
+                    portV6 = Integer.parseInt(splittedData[11]);
+                }
+
+                return new BedrockQuery(serverAddress, address.getHostAddress(), true, ping,
+                        splittedData[0], splittedData[1], Integer.parseInt(splittedData[2]), splittedData[3],
+                        Integer.parseInt(splittedData[4]), Integer.parseInt(splittedData[5]), splittedData[6],
+                        splittedData[7], splittedData[8], portV4, portV6);
             }
-
-            return new BedrockQuery(serverAddress, address.getHostAddress(), true, ping,
-                    splittedData[0], splittedData[1], Integer.parseInt(splittedData[2]), splittedData[3],
-                    Integer.parseInt(splittedData[4]), Integer.parseInt(splittedData[5]), splittedData[6],
-                    splittedData[7], splittedData[8], portV4, portV6);
         } catch (final Exception exception) {
             return new BedrockQuery(serverAddress, "", false, -1, "", "", -1, "", 0, 0, "", "", "", -1, -1);
         }
