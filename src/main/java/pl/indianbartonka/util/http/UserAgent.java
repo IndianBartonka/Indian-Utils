@@ -13,7 +13,7 @@ import pl.indianbartonka.util.system.SystemUtil;
  * Documents written by ChatGPT
  * </p>
  */
-public final class UserAgentUtil {
+public final class UserAgent {
 
     // Predefined User-Agent strings for various tools and browsers
     public static final String USER_AGENT_CURL = "curl/7.64.1";
@@ -42,7 +42,7 @@ public final class UserAgentUtil {
     /**
      * Private constructor to prevent instantiation of the utility class.
      */
-    private UserAgentUtil() {
+    private UserAgent() {
         // Prevents instantiation of utility class
     }
 

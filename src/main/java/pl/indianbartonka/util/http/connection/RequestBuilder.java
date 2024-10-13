@@ -1,7 +1,7 @@
 package pl.indianbartonka.util.http.connection;
 
 import java.util.concurrent.TimeUnit;
-import pl.indianbartonka.util.http.UserAgentUtil;
+import pl.indianbartonka.util.http.UserAgent;
 
 public class RequestBuilder {
 
@@ -9,7 +9,7 @@ public class RequestBuilder {
 
     public RequestBuilder() {
         this.request = new Request();
-        this.setUserAgent(UserAgentUtil.USER_AGENT_INDIAN_UTILS);
+        this.setUserAgent(UserAgent.USER_AGENT_INDIAN_UTILS);
         this.setConnectTimeout(10, TimeUnit.MINUTES);
         this.setReadTimeout(5, TimeUnit.MINUTES);
     }
