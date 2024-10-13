@@ -1,4 +1,4 @@
-package pl.indianbartonka.util.http.connection;
+package pl.indianbartonka.util.http.connection.request;
 
 import java.util.concurrent.TimeUnit;
 import pl.indianbartonka.util.http.UserAgent;
@@ -54,8 +54,8 @@ public class RequestBuilder {
         return this;
     }
 
-    public RequestBuilder post(final byte[] body) {
-        this.request.setBody(body);
+    public RequestBuilder post(final RequestBody requestBody) {
+        this.request.setRequestBody(requestBody);
         this.request.setRequestMethod("POST");
         return this;
     }
@@ -65,7 +65,8 @@ public class RequestBuilder {
         return this;
     }
 
-    public RequestBuilder put() {
+    public RequestBuilder put(final RequestBody requestBody) {
+        this.request.setRequestBody(requestBody);
         this.request.setRequestMethod("PUT");
         return this;
     }
@@ -75,8 +76,9 @@ public class RequestBuilder {
         return this;
     }
 
-    public RequestBuilder patch() {
-        this.request.setRequestMethod("PATCH");
+    public RequestBuilder delete(final RequestBody requestBody) {
+        this.request.setRequestBody(requestBody);
+        this.request.setRequestMethod("DELETE");
         return this;
     }
 

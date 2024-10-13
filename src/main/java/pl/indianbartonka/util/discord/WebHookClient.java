@@ -12,8 +12,9 @@ import pl.indianbartonka.util.ThreadUtil;
 import pl.indianbartonka.util.discord.embed.Embed;
 import pl.indianbartonka.util.http.HttpStatusCode;
 import pl.indianbartonka.util.http.connection.Connection;
-import pl.indianbartonka.util.http.connection.Request;
-import pl.indianbartonka.util.http.connection.RequestBuilder;
+import pl.indianbartonka.util.http.connection.request.Request;
+import pl.indianbartonka.util.http.connection.request.RequestBody;
+import pl.indianbartonka.util.http.connection.request.RequestBuilder;
 import pl.indianbartonka.util.logger.Logger;
 
 public class WebHookClient {
@@ -99,11 +100,11 @@ public class WebHookClient {
                 final Request request = new RequestBuilder()
                         .setUrl(webhookURL)
                         .setContentType("application/json")
-                        .post(this.gson.toJson(jsonPayload).getBytes())
+                        .post(new RequestBody(this.gson.toJson(jsonPayload).getBytes()))
                         .build();
 
                 try (final Connection connection = new Connection(request)) {
-                    this.handleHttpCode(connection.getHttpCode());
+                    this.handleHttpCode(connection.getHttpStatusCode());
                 }
 
             } catch (final Exception exception) {
@@ -133,11 +134,11 @@ public class WebHookClient {
                 final Request request = new RequestBuilder()
                         .setUrl(webhookURL)
                         .setContentType("application/json")
-                        .post(this.gson.toJson(jsonPayload).getBytes())
+                        .post(new RequestBody(this.gson.toJson(jsonPayload).getBytes()))
                         .build();
 
                 try (final Connection connection = new Connection(request)) {
-                    this.handleHttpCode(connection.getHttpCode());
+                    this.handleHttpCode(connection.getHttpStatusCode());
                 }
 
             } catch (final Exception exception) {

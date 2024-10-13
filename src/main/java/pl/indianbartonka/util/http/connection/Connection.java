@@ -9,8 +9,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import javax.net.ssl.HttpsURLConnection;
+import org.jetbrains.annotations.Nullable;
+import pl.indianbartonka.util.BufferUtil;
 import pl.indianbartonka.util.MessageUtil;
 import pl.indianbartonka.util.http.HttpStatusCode;
+import pl.indianbartonka.util.http.connection.request.Request;
+import pl.indianbartonka.util.http.connection.request.RequestBody;
 
 public class Connection implements AutoCloseable {
 
@@ -20,6 +24,7 @@ public class Connection implements AutoCloseable {
     private final long contentLength;
     private final Map<String, String> headers;
     private final InputStream inputStream;
+    private final String responseMessage;
 
     public Connection(final Request request) throws IOException {
         if (request.getUrl().startsWith("https")) {
@@ -38,34 +43,84 @@ public class Connection implements AutoCloseable {
         this.connection.setReadTimeout(request.getReadTimeout());
         this.connection.setRequestMethod(request.getRequestMethod());
 
-        //TODO: Zainplementuj put, delete, patch
-        if (request.getRequestMethod().equals("POST")) {
-            this.connection.setDoOutput(true);
+        this.handleRequestMethod(request);
 
-            if (request.getBody() != null) {
-                try (final OutputStream outputStream = this.connection.getOutputStream()) {
-                    outputStream.write(request.getBody());
-                    outputStream.flush();
-                }
-            }
-        }
-
-        this.httpStatusCode = HttpStatusCode.getStatus(this.connection.getResponseCode());
-        this.contentLength = this.connection.getContentLength();
         this.headers = new HashMap<>();
 
         for (final Map.Entry<String, List<String>> entry : this.connection.getHeaderFields().entrySet()) {
             this.headers.put(entry.getKey(), MessageUtil.listToSpacedString(entry.getValue()));
         }
 
-        this.inputStream = this.connection.getInputStream();
+        this.httpStatusCode = HttpStatusCode.getStatus(this.connection.getResponseCode());
+
+        if(this.httpStatusCode.isSuccess()){
+            this.contentLength = this.connection.getContentLength();
+            this.inputStream = this.connection.getInputStream();
+        } else {
+            this.contentLength = -1;
+            this.inputStream = this.connection.getErrorStream();
+        }
+
+        this.responseMessage = this.connection.getResponseMessage();
     }
 
-    public InputStream getInputStream() {
-        return this.inputStream;
+    private void handleRequestMethod(final Request request) throws IOException {
+        final RequestBody requestBody = request.getRequestBody();
+        final String requestMethod = request.getRequestMethod();
+
+        if (requestMethod.equals("GET")) return;
+
+        this.connection.setDoOutput(true);
+
+        // Obsługa metod PUT, DELETE, POST
+        if (requestBody != null) {
+            this.handleDataSending(requestBody);
+        } else if (!requestMethod.equals("DELETE")){
+            throw new IllegalArgumentException("RequestBody cannot be null for this request method.");
+        }
     }
 
-    public HttpStatusCode getHttpCode() {
+    private void handleDataSending(final RequestBody requestBody) throws IOException {
+        final byte[] body = requestBody.getBody();
+        final InputStream bodyInputStream = requestBody.getInputStream();
+
+        if (body != null) {
+            try (final OutputStream outputStream = this.connection.getOutputStream()) {
+                outputStream.write(body);
+                outputStream.flush();
+            }
+        } else if (bodyInputStream != null) {
+            try (final OutputStream outputStream = this.connection.getOutputStream(); bodyInputStream) {
+                final long contentLength = requestBody.getContentLength();
+                final byte[] buffer;
+
+                if (contentLength > 0) {
+                    buffer = new byte[BufferUtil.calculateOptimalBufferSize(contentLength)];
+                } else {
+                    buffer = new byte[8192];
+                }
+
+                int bytesRead;
+
+                while ((bytesRead = bodyInputStream.read(buffer)) != -1) {
+                    outputStream.write(buffer, 0, bytesRead);
+                }
+                outputStream.flush();
+            }
+        } else {
+            throw new IllegalArgumentException("Either body or InputStream must be provided.");
+        }
+    }
+
+    public HttpURLConnection getConnection() {
+        return this.connection;
+    }
+
+    public boolean isHttps() {
+        return this.https;
+    }
+
+    public HttpStatusCode getHttpStatusCode() {
         return this.httpStatusCode;
     }
 
@@ -73,16 +128,18 @@ public class Connection implements AutoCloseable {
         return this.contentLength;
     }
 
-    public HttpURLConnection getConnection() {
-        return this.connection;
-    }
-
     public Map<String, String> getHeaders() {
         return this.headers;
     }
 
-    public boolean isHttps() {
-        return this.https;
+    @Nullable
+    public InputStream getInputStream() {
+        return this.inputStream;
+    }
+
+    @Nullable
+    public String getResponseMessage() {
+        return this.responseMessage;
     }
 
     @Override

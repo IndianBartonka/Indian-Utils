@@ -1,4 +1,4 @@
-package pl.indianbartonka.util.http.connection;
+package pl.indianbartonka.util.http.connection.request;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -12,12 +12,16 @@ public class Request {
     private String requestMethod;
     private String authorization;
     private String accept;
-    private byte[] body;
+    private RequestBody requestBody;
     private int connectTimeout;
     private int readTimeout;
 
     public Request() {
         this.headers = new HashMap<>();
+    }
+
+    public RequestBuilder builder(){
+        return new RequestBuilder();
     }
 
     public String getUrl() {
@@ -36,12 +40,12 @@ public class Request {
         this.requestMethod = requestMethod;
     }
 
-    public byte[] getBody() {
-        return this.body;
+    public RequestBody getRequestBody() {
+        return this.requestBody;
     }
 
-    public void setBody(final byte[] body) {
-        this.body = body;
+    public void setRequestBody(final RequestBody requestBody) {
+        this.requestBody = requestBody;
     }
 
     public int getConnectTimeout() {
