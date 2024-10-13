@@ -2,13 +2,15 @@ package pl.indianbartonka.util;
 
 import java.io.File;
 import java.io.IOException;
-import java.net.HttpURLConnection;
-import java.net.URL;
 import java.util.List;
 import java.util.concurrent.TimeoutException;
 import pl.indianbartonka.util.download.DownloadListener;
 import pl.indianbartonka.util.download.DownloadTask;
 import pl.indianbartonka.util.file.FileUtil;
+import pl.indianbartonka.util.http.HttpStatusCode;
+import pl.indianbartonka.util.http.connection.Connection;
+import pl.indianbartonka.util.http.connection.Request;
+import pl.indianbartonka.util.http.connection.RequestBuilder;
 import pl.indianbartonka.util.language.Language;
 import pl.indianbartonka.util.language.LanguageManager;
 import pl.indianbartonka.util.language.storage.impl.HashMapStorageStrategy;
@@ -17,7 +19,7 @@ import pl.indianbartonka.util.logger.Logger;
 import pl.indianbartonka.util.logger.LoggerConfiguration;
 import pl.indianbartonka.util.system.SystemUtil;
 
-public final class Main {
+public final class Test {
 
     private static final Logger LOGGER = new Logger(new LoggerConfiguration(true, System.getProperty("user.dir") + File.separator + "logs", true)) {
     };
@@ -223,11 +225,7 @@ public final class Main {
     }
 
     public static void downloadFileTest() throws IOException {
-        final HttpURLConnection connection = (HttpURLConnection) new URL("https://minecraft.azureedge.net/bin-win/bedrock-server-1.21.23.01.zip").openConnection();
-        connection.setRequestMethod("GET");
-
         final String fileName = "Bedrock.zip";
-        final int responseCode = connection.getResponseCode();
 
         final DownloadListener downloadListener = new DownloadListener() {
             final Logger tempLogger = LOGGER.tempLogger(fileName);
@@ -265,33 +263,41 @@ public final class Main {
             }
         };
 
-        if (responseCode == HttpURLConnection.HTTP_OK) {
-            try {
-                final long start = System.currentTimeMillis();
+        final Request request = new RequestBuilder()
+                .setUrl("https://minecraft.azureedge.net/bin-win/bedrock-server-1.21.23.01.zip")
+                .get()
+                .build();
 
-                final DownloadTask downloadTask = new DownloadTask(connection.getInputStream(), new File(fileName),
-                        connection.getContentLength(),
-                        30,
-                        downloadListener
-                );
+        try (final Connection connection = new Connection(request)) {
+            final HttpStatusCode statusCode = connection.getHttpCode();
 
-                LOGGER.info(downloadTask);
+            if (statusCode == HttpStatusCode.OK) {
+                try {
+                    final long start = System.currentTimeMillis();
 
-                new Thread(() -> {
-                    ThreadUtil.sleep(5);
-                    LOGGER.info("Zatrzymywanie pobierania:&b " + fileName);
-                    downloadTask.stopDownload();
-                }).start();
+                    final DownloadTask downloadTask = new DownloadTask(connection.getInputStream(), new File(fileName),
+                            connection.getContentLength(),
+                            30,
+                            downloadListener
+                    );
 
-                downloadTask.downloadFile();
+                    LOGGER.info(downloadTask);
 
-                LOGGER.info("Pobrano w:&b " + DateUtil.formatTimeDynamic(System.currentTimeMillis() - start, true));
-            } catch (final TimeoutException e) {
-                throw new RuntimeException(e);
+                    new Thread(() -> {
+                        ThreadUtil.sleep(5);
+                        LOGGER.info("Zatrzymywanie pobierania:&b " + fileName);
+                        downloadTask.stopDownload();
+                    }).start();
+
+                    downloadTask.downloadFile();
+
+                    LOGGER.info("Pobrano w:&b " + DateUtil.formatTimeDynamic(System.currentTimeMillis() - start, true));
+                } catch (final TimeoutException e) {
+                    throw new RuntimeException(e);
+                }
+            } else {
+                LOGGER.info("Server zwrócił kod:&a " + statusCode.getCode());
             }
-
-        } else {
-            LOGGER.info("Server zwrócił kod:&a " + responseCode);
         }
     }
 
@@ -319,7 +325,6 @@ public final class Main {
     }
 
     public static void bufferTest() {
-
         final File[] files = new File(System.getProperty("user.dir")).listFiles();
         if (files != null) {
             for (final File file : files) {

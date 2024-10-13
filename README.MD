@@ -14,8 +14,7 @@ Utile używane w różnych projektach przez Indiana
 
 ### Przykłady użycja
 
-Przykłady użycja znajdziecie w klasie [Main.java](src%2Fmain%2Fjava%2Fpl%2Findianbartonka%2Futil%2FMain.java)
-
+Przykłady użycja znajdziecie w klasie [Test.java](src%2Fmain%2Fjava%2Fpl%2Findianbartonka%2Futil%2FTest.java)
 # Przy projekcie pomagali
 
 ![Wykres kontrybucji](https://contrib.rocks/image?repo=IndianBartonka/Indian-Utils)
