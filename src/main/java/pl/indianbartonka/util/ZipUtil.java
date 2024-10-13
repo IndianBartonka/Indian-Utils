@@ -19,7 +19,7 @@ import pl.indianbartonka.util.logger.Logger;
  * Provides methods to zip folders and files, and to unzip files.
  * </p>
  * <p>
- * Docs written by ChatGPT
+ * Documents written by ChatGPT
  * </p>
  */
 public final class ZipUtil {

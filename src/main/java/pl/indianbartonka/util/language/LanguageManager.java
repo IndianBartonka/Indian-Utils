@@ -20,7 +20,7 @@ import pl.indianbartonka.util.logger.Logger;
  * ensuring that messages can be easily retrieved and modified.
  * </p>
  * <p>
- * Docs written by ChatGPT
+ * Documents written by ChatGPT
  * </p>
  */
 public class LanguageManager {
