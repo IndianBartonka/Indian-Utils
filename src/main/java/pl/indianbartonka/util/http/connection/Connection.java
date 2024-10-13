@@ -86,8 +86,10 @@ public class Connection implements AutoCloseable {
     }
 
     @Override
-    public void close() {
-        //TODO: Zamykaj InputStream 
+    public void close() throws IOException {
         this.connection.disconnect();
+        if (this.inputStream != null) {
+            this.inputStream.close();
+        }
     }
 }
