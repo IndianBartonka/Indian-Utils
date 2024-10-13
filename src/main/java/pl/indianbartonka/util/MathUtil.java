@@ -19,16 +19,19 @@ import java.util.Random;
  */
 public final class MathUtil {
 
-    // Static instance of DecimalFormat for formatting numbers.
-    private static final DecimalFormat DECIMAL_FORMAT = new DecimalFormat();
-
     /**
      * The singleton instance of {@link Random} used for generating random numbers.
      */
     public static final Random RANDOM = new Random();
 
+    /**
+     * Static instance of DecimalFormat for formatting numbers.
+     */
+    private static final DecimalFormat DECIMAL_FORMAT = new DecimalFormat();
 
-    // Static initializer to configure DecimalFormat with English locale symbols.
+    /**
+     * Static initializer to configure DecimalFormat with English locale symbols.
+     */
     static {
         final DecimalFormatSymbols decimalFormatSymbols = new DecimalFormatSymbols(Locale.ENGLISH);
         DECIMAL_FORMAT.setDecimalFormatSymbols(decimalFormatSymbols);
