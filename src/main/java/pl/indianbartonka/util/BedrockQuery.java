@@ -5,7 +5,6 @@ import java.io.DataOutputStream;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
-import java.util.Random;
 
 /**
  * Kod zaczerpnięty z
@@ -24,8 +23,8 @@ public record BedrockQuery(String serverAddress, String hostAddress, boolean onl
             (byte) 0xfd, (byte) 0xfd, (byte) 0xfd, (byte) 0xfd,
             0x12, 0x34, 0x56, 0x78
     };
-    private static final Random RANDOM = new Random();
-    private static long dialerId = RANDOM.nextLong();
+
+    private static long dialerId = MathUtil.RANDOM.nextLong();
 
     public static BedrockQuery create(final String serverAddress, final int port) {
         try {

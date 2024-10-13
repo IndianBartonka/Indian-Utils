@@ -7,6 +7,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Random;
 
 /**
  * <p>
@@ -21,14 +22,37 @@ public final class MathUtil {
     // Static instance of DecimalFormat for formatting numbers.
     private static final DecimalFormat DECIMAL_FORMAT = new DecimalFormat();
 
+    /**
+     * The singleton instance of {@link Random} used for generating random numbers.
+     */
+    public static final Random RANDOM = new Random();
+
+
     // Static initializer to configure DecimalFormat with English locale symbols.
     static {
         final DecimalFormatSymbols decimalFormatSymbols = new DecimalFormatSymbols(Locale.ENGLISH);
         DECIMAL_FORMAT.setDecimalFormatSymbols(decimalFormatSymbols);
     }
 
-    // Private constructor to prevent instantiation of the utility class.
+    /**
+     * Private constructor to prevent instantiation of the utility class.
+     */
     private MathUtil() {
+    }
+
+    /**
+     * Returns a random element from the provided list.
+     *
+     * @param list the list from which to select a random element
+     * @param <T>  the type of elements in the list
+     * @return a randomly selected element from the list
+     * @throws IllegalArgumentException if the list is empty
+     */
+    public static <T> T getRandomElement(final List<T> list) {
+        if (list.isEmpty()) {
+            throw new IllegalArgumentException("List must not be empty");
+        }
+        return list.get(RANDOM.nextInt(list.size()));
     }
 
     /**

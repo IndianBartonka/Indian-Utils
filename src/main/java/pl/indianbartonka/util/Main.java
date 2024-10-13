@@ -5,7 +5,6 @@ import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.List;
-import java.util.Random;
 import java.util.concurrent.TimeoutException;
 import pl.indianbartonka.util.download.DownloadListener;
 import pl.indianbartonka.util.download.DownloadTask;
@@ -26,7 +25,6 @@ public final class Main {
     private static final Logger LOGGER2 = LOGGER.prefixed("Logger 2");
 
     private static final long START_TIME = System.currentTimeMillis();
-    private static final Random RANDOM = new Random(Integer.MAX_VALUE);
 
     private static void languagesTest() throws IOException {
         // Inicjalizacja LanguageManager z lokalizacją plików językowych
@@ -139,10 +137,10 @@ public final class Main {
 
         logger.info("okejjj");
 
-        LOGGER.tempLogger("temp1").info("spokoo " + RANDOM.nextInt(5));
-        LOGGER2.tempLogger("temp2").info("spokoo " + RANDOM.nextInt(8));
+        LOGGER.tempLogger("temp1").info("spokoo " + MathUtil.RANDOM.nextInt(5));
+        LOGGER2.tempLogger("temp2").info("spokoo " + MathUtil.RANDOM.nextInt(8));
 
-        logger.info("okejjj " + RANDOM.nextInt(5));
+        logger.info("okejjj " + MathUtil.RANDOM.nextInt(5));
     }
 
     private static void fileUtilTest() {
@@ -172,8 +170,8 @@ public final class Main {
 
     public static void mathUtilTest() {
         LOGGER.info("Math Util Test");
-        final int randomNumber = RANDOM.nextInt();
-        final double randomDouble = RANDOM.nextDouble();
+        final int randomNumber = MathUtil.RANDOM.nextInt();
+        final double randomDouble = MathUtil.RANDOM.nextDouble();
         final int bigNumber = MathUtil.getCorrectNumber(randomNumber, 1, 900000);
 
         LOGGER.info("Randomowa liczba: " + randomNumber);

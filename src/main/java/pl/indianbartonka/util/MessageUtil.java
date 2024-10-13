@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.EnumSet;
 import java.util.List;
-import java.util.Random;
 
 /**
  * The MessageUtil class provides utility methods for generating messages,
@@ -12,7 +11,6 @@ import java.util.Random;
  */
 public final class MessageUtil {
 
-    private static final Random random = new Random();
     private static final String CHARS_STRING = "qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM123456789@#*";
 
     // Private constructor to prevent instantiation of this utility class.
@@ -28,7 +26,7 @@ public final class MessageUtil {
     public static String generateCode(final int length) {
         final StringBuilder code = new StringBuilder(length);
         for (int i = 0; i < length; i++) {
-            code.append(CHARS_STRING.charAt(random.nextInt(CHARS_STRING.length())));
+            code.append(CHARS_STRING.charAt(MathUtil.RANDOM.nextInt(CHARS_STRING.length())));
         }
         return code.toString();
     }
