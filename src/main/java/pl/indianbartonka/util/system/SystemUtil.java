@@ -38,6 +38,11 @@ public final class SystemUtil {
         };
     }
 
+
+    public static String getOsVersion() {
+        return System.getProperty("os.version");
+    }
+
     public static SystemArch getCurrentArch() {
         return switch (System.getProperty("os.arch")) {
             case "amd64", "x86_64" -> SystemArch.AMD_X64;
