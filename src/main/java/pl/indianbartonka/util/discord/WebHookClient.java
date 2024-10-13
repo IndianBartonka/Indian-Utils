@@ -3,18 +3,17 @@ package pl.indianbartonka.util.discord;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
-import java.io.OutputStream;
-import java.net.URL;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.ReentrantLock;
-import javax.net.ssl.HttpsURLConnection;
 import org.jetbrains.annotations.Nullable;
 import pl.indianbartonka.util.ThreadUtil;
 import pl.indianbartonka.util.discord.embed.Embed;
 import pl.indianbartonka.util.http.HttpStatusCode;
-import pl.indianbartonka.util.http.UserAgentUtil;
+import pl.indianbartonka.util.http.connection.Connection;
+import pl.indianbartonka.util.http.connection.Request;
+import pl.indianbartonka.util.http.connection.RequestBuilder;
 import pl.indianbartonka.util.logger.Logger;
 
 public class WebHookClient {
@@ -81,17 +80,10 @@ public class WebHookClient {
 
     public void sendMessage(final String webhookURL, final String userName, @Nullable final String avatarUrl, final String message) {
         this.service.execute(() -> {
-            HttpsURLConnection connection = null;
 
             try {
                 this.lock.lock();
                 this.rateLimit();
-
-                connection = (HttpsURLConnection) new URL(webhookURL).openConnection();
-                connection.setRequestProperty("User-Agent", UserAgentUtil.buildUserAgent());
-                connection.setRequestProperty("Content-Type", "application/json");
-                connection.setRequestMethod("POST");
-                connection.setDoOutput(true);
 
                 final JsonObject jsonPayload = new JsonObject();
                 jsonPayload.addProperty("content", message);
@@ -104,16 +96,19 @@ public class WebHookClient {
                     return;
                 }
 
-                try (final OutputStream os = connection.getOutputStream()) {
-                    os.write(this.gson.toJson(jsonPayload).getBytes());
-                    os.flush();
+                final Request request = new RequestBuilder()
+                        .setUrl(webhookURL)
+                        .setContentType("application/json")
+                        .post(this.gson.toJson(jsonPayload).getBytes())
+                        .build();
+
+                try (final Connection connection = new Connection(request)) {
+                    this.handleHttpCode(connection.getHttpCode());
                 }
 
-                this.handleHttpCode(connection.getResponseCode());
             } catch (final Exception exception) {
                 this.logger.critical("Nie można wysłać wiadomości do discord ", exception);
             } finally {
-                if (connection != null) connection.disconnect();
                 this.lock.unlock();
             }
         });
@@ -121,17 +116,10 @@ public class WebHookClient {
 
     public void sendEmbedMessage(final String webhookURL, final String userName, @Nullable final String avatarUrl, final Embed embed) {
         this.service.execute(() -> {
-            HttpsURLConnection connection = null;
 
             try {
                 this.lock.lock();
                 this.rateLimit();
-
-                connection = (HttpsURLConnection) new URL(webhookURL).openConnection();
-                connection.setRequestProperty("User-Agent", UserAgentUtil.buildUserAgent());
-                connection.setRequestProperty("Content-Type", "application/json");
-                connection.setRequestMethod("POST");
-                connection.setDoOutput(true);
 
                 final JsonObject jsonPayload = new JsonObject();
                 jsonPayload.addProperty("username", userName);
@@ -142,16 +130,19 @@ public class WebHookClient {
                 embedsArray.add(embed.getEmbedJson());
                 jsonPayload.add("embeds", embedsArray);
 
-                try (final OutputStream os = connection.getOutputStream()) {
-                    os.write(this.gson.toJson(jsonPayload).getBytes());
-                    os.flush();
+                final Request request = new RequestBuilder()
+                        .setUrl(webhookURL)
+                        .setContentType("application/json")
+                        .post(this.gson.toJson(jsonPayload).getBytes())
+                        .build();
+
+                try (final Connection connection = new Connection(request)) {
+                    this.handleHttpCode(connection.getHttpCode());
                 }
 
-                this.handleHttpCode(connection.getResponseCode());
             } catch (final Exception exception) {
                 this.logger.critical("Nie można wysłać wiadomości do discord ", exception);
             } finally {
-                if (connection != null) connection.disconnect();
                 this.lock.unlock();
             }
         });
@@ -180,10 +171,8 @@ public class WebHookClient {
         }
     }
 
-    private void handleHttpCode(final int code) {
+    private void handleHttpCode(final HttpStatusCode statusCode) {
         this.requests++;
-
-        final HttpStatusCode statusCode = HttpStatusCode.getStatus(code);
 
         if (statusCode == HttpStatusCode.UNKNOWN) {
             this.logger.error("Nieznany kod odpowiedzi!");
@@ -198,7 +187,7 @@ public class WebHookClient {
                 this.logger.alert("Odczekamy teraz &eminute&r zanim wyślemy następne!");
                 this.rateLimitNow();
             } else {
-                this.logger.debug("Kod odpowiedzi: " + code);
+                this.logger.debug("Kod odpowiedzi: " + statusCode.getCode());
             }
         }
     }
