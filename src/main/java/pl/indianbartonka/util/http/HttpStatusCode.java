@@ -1,9 +1,14 @@
-dodaj klase xd
+package pl.indianbartonka.util.http;
 
-  napisz z kad uzyto https://github.com/javalin/javalin/blob/4afc3f7f14b0529eb8a9df6f0e2ec311e1d8e632/javalin/src/main/java/io/javalin/http/HttpStatus.kt#L4
+/**
+ * Code used from:
+ * <a href="https://github.com/javalin/javalin/blob/4afc3f7f14b0529eb8a9df6f0e2ec311e1d8e632/javalin/src/main/java/io/javalin/http/HttpStatus.kt">Javalin Github</a>
+ */
 
-  
-      /** This interim response indicates that the client should continue the request or ignore the response if the request is already finished. */
+public enum HttpStatusCode {
+  /**
+   * This interim response indicates that the client should continue the request or ignore the response if the request is already finished.
+   */
     CONTINUE(100, "Continue"),
     /** This code is sent in response to an Upgrade request header from the client and indicates the protocol the server is switching to. */
     SWITCHING_PROTOCOLS(101, "Switching Protocols"),
@@ -44,7 +49,6 @@ dodaj klase xd
     /** This is used for caching purposes. It tells the client that the response has not been modified, so the client can continue to use the same cached version of the response. */
     NOT_MODIFIED(304, "Not Modified"),
     /** Defined in a previous version of the HTTP specification to indicate that a requested response must be accessed by a proxy. */
-    @Deprecated("It has been deprecated due to security concerns regarding in-band configuration of a proxy.")
     USE_PROXY(305, "Use Proxy"),
     /** The server sends this response to direct the client to get the requested resource at another URI with the same method that was used in the prior request.  */
     TEMPORARY_REDIRECT(307, "Temporary Redirect"),
@@ -132,19 +136,29 @@ dodaj klase xd
     NETWORK_AUTHENTICATION_REQUIRED(511, "Network Authentication Required"),
     /** An unknown status code */
     UNKNOWN(-1, "Unknown HTTP code");
-   
-private final int code;
-    private final String reasonPhrase;
 
-    HttpStatusCode(int code, String reasonPhrase) {
-        this.code = code;
+  private final int code;
+  private final String reasonPhrase;
+
+  HttpStatusCode(final int code, final String reasonPhrase) {
+    this.code = code;
         this.reasonPhrase = reasonPhrase;
+  }
+
+  public static HttpStatusCode getStatus(final int code) {
+    for (final HttpStatusCode statusCode : values()) {
+      if (statusCode.code == code) return statusCode;
     }
+
+    return UNKNOWN;
+  }
 
     public int getCode() {
-        return code;
+      return this.code;
     }
 
-    public String getReasonPhrase() {
-        return reasonPhrase;
-    }
+  public String getReasonPhrase() {
+    return this.reasonPhrase;
+  }
+
+}
