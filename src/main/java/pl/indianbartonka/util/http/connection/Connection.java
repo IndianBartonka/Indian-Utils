@@ -38,6 +38,7 @@ public class Connection implements AutoCloseable {
         this.connection.setReadTimeout(request.getReadTimeout());
         this.connection.setRequestMethod(request.getRequestMethod());
 
+        //TODO: Zainplementuj put, delete, patch
         if (request.getRequestMethod().equals("POST")) {
             this.connection.setDoOutput(true);
 
