@@ -21,6 +21,7 @@ public abstract class Logger {
     protected LogState logState;
     protected PrintStream printStream;
     private Logger parent;
+    private boolean debug;
 
     protected Logger(final Logger parent) {
         this.parent = parent;
@@ -31,6 +32,7 @@ public abstract class Logger {
         this.initializeLogFile();
 
         parent.children.add(this);
+        this.debug = parent.configuration.isDebug();
     }
 
     protected Logger(final LoggerConfiguration loggerConfiguration) {
@@ -39,6 +41,7 @@ public abstract class Logger {
         this.logState = LogState.NONE;
         this.updatePrefix();
         this.initializeLogFile();
+        this.debug = loggerConfiguration.isDebug();
     }
 
     public Logger prefixed(final String loggerPrefix) {
@@ -215,7 +218,7 @@ public abstract class Logger {
     }
 
     public void debug(final Object log) {
-        if (this.configuration.isDebug()) {
+        if (this.debug) {
             this.logState = LogState.DEBUG;
             this.updatePrefix();
             this.logToFile(log);
@@ -224,7 +227,7 @@ public abstract class Logger {
     }
 
     public void debug(final Object log, final Throwable throwable) {
-        if (this.configuration.isDebug()) {
+        if (this.debug) {
             this.debug(log);
             this.logThrowable(throwable);
         }
@@ -267,15 +270,23 @@ public abstract class Logger {
         }
     }
 
-    public Logger getParent() {
-        return this.parent;
-    }
-
     public List<Logger> getChildren() {
         return this.children;
     }
 
     public File getLogFile() {
         return this.logFile;
+    }
+
+    public Logger getParent() {
+        return this.parent;
+    }
+
+    public boolean isDebug() {
+        return this.debug;
+    }
+
+    public void setDebug(final boolean debug) {
+        this.debug = debug;
     }
 }
