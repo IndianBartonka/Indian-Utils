@@ -13,6 +13,8 @@ import javax.net.ssl.HttpsURLConnection;
 import org.jetbrains.annotations.Nullable;
 import pl.indianbartonka.util.ThreadUtil;
 import pl.indianbartonka.util.discord.embed.Embed;
+import pl.indianbartonka.util.http.HttpStatusCode;
+import pl.indianbartonka.util.http.UserAgentUtil;
 import pl.indianbartonka.util.logger.Logger;
 
 public class WebHookClient {
@@ -86,7 +88,7 @@ public class WebHookClient {
                 this.rateLimit();
 
                 connection = (HttpsURLConnection) new URL(webhookURL).openConnection();
-                connection.setRequestProperty("User-Agent", "Mozilla/5.0");
+                connection.setRequestProperty("User-Agent", UserAgentUtil.buildUserAgent());
                 connection.setRequestProperty("Content-Type", "application/json");
                 connection.setRequestMethod("POST");
                 connection.setDoOutput(true);
@@ -126,7 +128,7 @@ public class WebHookClient {
                 this.rateLimit();
 
                 connection = (HttpsURLConnection) new URL(webhookURL).openConnection();
-                connection.setRequestProperty("User-Agent", "Mozilla/5.0");
+                connection.setRequestProperty("User-Agent", UserAgentUtil.buildUserAgent());
                 connection.setRequestProperty("Content-Type", "application/json");
                 connection.setRequestMethod("POST");
                 connection.setDoOutput(true);
@@ -181,10 +183,17 @@ public class WebHookClient {
     private void handleHttpCode(final int code) {
         this.requests++;
 
-        if (code == HttpsURLConnection.HTTP_BAD_REQUEST) {
-            this.logger.error("Kod odpowiedzi: " + code + " Oznacza to że dane twojego webhook są błędne");
-        } else if (code != HttpsURLConnection.HTTP_NO_CONTENT) {
-            if (code == 429) {
+        final HttpStatusCode statusCode = HttpStatusCode.getStatus(code);
+
+        if (statusCode == HttpStatusCode.UNKNOWN) {
+            this.logger.error("Nieznany kod odpowiedzi!");
+            return;
+        }
+
+        if (statusCode == HttpStatusCode.BAD_REQUEST) {
+            this.logger.error("Kod odpowiedzi: " + statusCode + " Oznacza to że dane twojego webhook są błędne");
+        } else if (statusCode != HttpStatusCode.NO_CONTENT) {
+            if (statusCode == HttpStatusCode.TOO_MANY_REQUESTS) {
                 this.logger.warning("&cWysyłasz zbyt dużo&b requestów&c!");
                 this.logger.alert("Odczekamy teraz &eminute&r zanim wyślemy następne!");
                 this.rateLimitNow();
