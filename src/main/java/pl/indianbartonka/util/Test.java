@@ -1,16 +1,19 @@
 package pl.indianbartonka.util;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.TimeoutException;
 import pl.indianbartonka.util.download.DownloadListener;
 import pl.indianbartonka.util.download.DownloadTask;
 import pl.indianbartonka.util.file.FileUtil;
 import pl.indianbartonka.util.http.HttpStatusCode;
 import pl.indianbartonka.util.http.connection.Connection;
-import pl.indianbartonka.util.http.connection.Request;
-import pl.indianbartonka.util.http.connection.RequestBuilder;
+import pl.indianbartonka.util.http.connection.request.Request;
+import pl.indianbartonka.util.http.connection.request.RequestBuilder;
 import pl.indianbartonka.util.language.Language;
 import pl.indianbartonka.util.language.LanguageManager;
 import pl.indianbartonka.util.language.storage.impl.HashMapStorageStrategy;
@@ -269,7 +272,7 @@ public final class Test {
                 .build();
 
         try (final Connection connection = new Connection(request)) {
-            final HttpStatusCode statusCode = connection.getHttpCode();
+            final HttpStatusCode statusCode = connection.getHttpStatusCode();
 
             if (statusCode == HttpStatusCode.OK) {
                 try {
@@ -334,6 +337,37 @@ public final class Test {
         }
     }
 
+    private static void connectionTest() throws IOException {
+        final Request request = new RequestBuilder()
+                .setUrl("https://indianbartonka.pl/userInfo")
+                .get()
+                .build();
+
+        try (final Connection connection = new Connection(request)) {
+            final HttpStatusCode statusCode = connection.getHttpStatusCode();
+
+            LOGGER.info("Czy jest zabezpieczone? " + connection.isHttps());
+            LOGGER.info("Wiadomość: " + connection.getResponseMessage());
+            LOGGER.info("Kod odpowiedzi: " + statusCode + " (" + statusCode.getCode() + ")");
+            LOGGER.print();
+
+            for (final Map.Entry<String, String> headers : connection.getHeaders().entrySet()) {
+                LOGGER.print(headers.getKey() + " : " + headers.getValue());
+            }
+
+            LOGGER.print();
+
+            if (connection.getInputStream() == null) return;
+            try (final BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()))) {
+                String line;
+
+                while ((line = reader.readLine()) != null) {
+                    LOGGER.print(line);
+                }
+            }
+        }
+    }
+
     public static void main(final String[] args) throws IOException {
         languagesTest();
         LOGGER.print("==================");
@@ -362,7 +396,14 @@ public final class Test {
         downloadFileTest();
         LOGGER.print("==================");
 
-        zipTest();
+        try {
+            zipTest();
+        } catch (final Exception exception){
+            exception.printStackTrace();
+        }
+        LOGGER.print("==================");
+
+        connectionTest();
         LOGGER.print("==================");
 
         dateUtilTest();
