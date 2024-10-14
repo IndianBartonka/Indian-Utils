@@ -18,7 +18,7 @@ import pl.indianbartonka.util.http.connection.request.RequestBody;
 
 public class Connection implements AutoCloseable {
 
-    private final HttpURLConnection connection;
+    private final HttpURLConnection urlConnection;
     private final boolean https;
     private final HttpStatusCode httpStatusCode;
     private final long contentLength;
@@ -28,40 +28,40 @@ public class Connection implements AutoCloseable {
 
     public Connection(final Request request) throws IOException {
         if (request.getUrl().startsWith("https")) {
-            this.connection = (HttpsURLConnection) new URL(request.getUrl()).openConnection();
+            this.urlConnection = (HttpsURLConnection) new URL(request.getUrl()).openConnection();
             this.https = true;
         } else {
-            this.connection = (HttpURLConnection) new URL(request.getUrl()).openConnection();
+            this.urlConnection = (HttpURLConnection) new URL(request.getUrl()).openConnection();
             this.https = false;
         }
 
         for (final Map.Entry<String, String> headersEntry : request.getHeaders().entrySet()) {
-            this.connection.setRequestProperty(headersEntry.getKey(), headersEntry.getValue());
+            this.urlConnection.setRequestProperty(headersEntry.getKey(), headersEntry.getValue());
         }
 
-        this.connection.setConnectTimeout(request.getConnectTimeout());
-        this.connection.setReadTimeout(request.getReadTimeout());
-        this.connection.setRequestMethod(request.getRequestMethod());
+        this.urlConnection.setConnectTimeout(request.getConnectTimeout());
+        this.urlConnection.setReadTimeout(request.getReadTimeout());
+        this.urlConnection.setRequestMethod(request.getRequestMethod());
 
         this.handleRequestMethod(request);
 
         this.headers = new HashMap<>();
 
-        for (final Map.Entry<String, List<String>> entry : this.connection.getHeaderFields().entrySet()) {
+        for (final Map.Entry<String, List<String>> entry : this.urlConnection.getHeaderFields().entrySet()) {
             this.headers.put(entry.getKey(), MessageUtil.listToSpacedString(entry.getValue()));
         }
 
-        this.httpStatusCode = HttpStatusCode.getStatus(this.connection.getResponseCode());
+        this.httpStatusCode = HttpStatusCode.getStatus(this.urlConnection.getResponseCode());
 
         if(this.httpStatusCode.isSuccess()){
-            this.contentLength = this.connection.getContentLength();
-            this.inputStream = this.connection.getInputStream();
+            this.contentLength = this.urlConnection.getContentLength();
+            this.inputStream = this.urlConnection.getInputStream();
         } else {
             this.contentLength = -1;
-            this.inputStream = this.connection.getErrorStream();
+            this.inputStream = this.urlConnection.getErrorStream();
         }
 
-        this.responseMessage = this.connection.getResponseMessage();
+        this.responseMessage = this.urlConnection.getResponseMessage();
     }
 
     private void handleRequestMethod(final Request request) throws IOException {
@@ -70,7 +70,7 @@ public class Connection implements AutoCloseable {
 
         if (requestMethod.equals("GET")) return;
 
-        this.connection.setDoOutput(true);
+        this.urlConnection.setDoOutput(true);
 
         // Obsługa metod PUT, DELETE, POST
         if (requestBody != null) {
@@ -85,12 +85,12 @@ public class Connection implements AutoCloseable {
         final InputStream bodyInputStream = requestBody.getInputStream();
 
         if (body != null) {
-            try (final OutputStream outputStream = this.connection.getOutputStream()) {
+            try (final OutputStream outputStream = this.urlConnection.getOutputStream()) {
                 outputStream.write(body);
                 outputStream.flush();
             }
         } else if (bodyInputStream != null) {
-            try (final OutputStream outputStream = this.connection.getOutputStream(); bodyInputStream) {
+            try (final OutputStream outputStream = this.urlConnection.getOutputStream(); bodyInputStream) {
                 final long contentLength = requestBody.getContentLength();
                 final byte[] buffer;
 
@@ -112,8 +112,8 @@ public class Connection implements AutoCloseable {
         }
     }
 
-    public HttpURLConnection getConnection() {
-        return this.connection;
+    public HttpURLConnection getUrlConnection() {
+        return this.urlConnection;
     }
 
     public boolean isHttps() {
@@ -144,7 +144,7 @@ public class Connection implements AutoCloseable {
 
     @Override
     public void close() throws IOException {
-        this.connection.disconnect();
+        this.urlConnection.disconnect();
         if (this.inputStream != null) {
             this.inputStream.close();
         }
