@@ -67,8 +67,7 @@ public final class SystemUtil {
                     return line.substring(12, line.length() - 1).replaceAll("\"", "");
                 }
             }
-        } catch (final IOException ioException) {
-            ioException.printStackTrace();
+        } catch (final IOException ignored) {
         }
 
         return "Nieznana";
