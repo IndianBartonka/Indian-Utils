@@ -1,9 +1,11 @@
 package pl.indianbartonka.util;
 
+import org.jetbrains.annotations.NotNull;
+import pl.indianbartonka.util.exception.ThreadException;
+
 import java.lang.management.ManagementFactory;
 import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.atomic.AtomicInteger;
-import org.jetbrains.annotations.NotNull;
 
 /**
  * <p>
@@ -72,7 +74,7 @@ public final class ThreadUtil implements ThreadFactory {
             Thread.sleep(1000L * seconds);
         } catch (final InterruptedException exception) {
             Thread.currentThread().interrupt();
-            throw new RuntimeException(exception);
+            throw new ThreadException(exception);
         }
     }
 
@@ -86,7 +88,7 @@ public final class ThreadUtil implements ThreadFactory {
             Thread.sleep(millis);
         } catch (final InterruptedException exception) {
             Thread.currentThread().interrupt();
-            throw new RuntimeException(exception);
+            throw new ThreadException(exception);
         }
     }
 
