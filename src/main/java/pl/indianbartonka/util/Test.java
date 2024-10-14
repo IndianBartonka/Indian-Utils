@@ -268,7 +268,7 @@ public final class Test {
 
         final Request request = new RequestBuilder()
                 .setUrl("https://minecraft.azureedge.net/bin-win/bedrock-server-1.21.23.01.zip")
-                .get()
+                .GET()
                 .build();
 
         try (final Connection connection = new Connection(request)) {
@@ -340,7 +340,7 @@ public final class Test {
     private static void connectionTest() throws IOException {
         final Request request = new RequestBuilder()
                 .setUrl("https://indianbartonka.pl/userInfo")
-                .get()
+                .GET()
                 .build();
 
         try (final Connection connection = new Connection(request)) {

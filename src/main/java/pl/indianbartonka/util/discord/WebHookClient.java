@@ -100,7 +100,7 @@ public class WebHookClient {
                 final Request request = new RequestBuilder()
                         .setUrl(webhookURL)
                         .setContentType("application/json")
-                        .post(new RequestBody(this.gson.toJson(jsonPayload).getBytes()))
+                        .POST(new RequestBody(this.gson.toJson(jsonPayload).getBytes()))
                         .build();
 
                 try (final Connection connection = new Connection(request)) {
@@ -134,7 +134,7 @@ public class WebHookClient {
                 final Request request = new RequestBuilder()
                         .setUrl(webhookURL)
                         .setContentType("application/json")
-                        .post(new RequestBody(this.gson.toJson(jsonPayload).getBytes()))
+                        .POST(new RequestBody(this.gson.toJson(jsonPayload).getBytes()))
                         .build();
 
                 try (final Connection connection = new Connection(request)) {

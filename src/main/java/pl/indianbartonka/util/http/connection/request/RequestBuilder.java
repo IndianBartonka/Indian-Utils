@@ -53,30 +53,30 @@ public class RequestBuilder {
         this.request.addHeader(key, value);
         return this;
     }
+    
+    public RequestBuilder GET() {
+        this.request.setRequestMethod("GET");
+        return this;
+    }
 
-    public RequestBuilder post(final RequestBody requestBody) {
+    public RequestBuilder POST(final RequestBody requestBody) {
         this.request.setRequestBody(requestBody);
         this.request.setRequestMethod("POST");
         return this;
     }
 
-    public RequestBuilder get() {
-        this.request.setRequestMethod("GET");
-        return this;
-    }
-
-    public RequestBuilder put(final RequestBody requestBody) {
+    public RequestBuilder PUT(final RequestBody requestBody) {
         this.request.setRequestBody(requestBody);
         this.request.setRequestMethod("PUT");
         return this;
     }
 
-    public RequestBuilder delete() {
+    public RequestBuilder DELETE() {
         this.request.setRequestMethod("DELETE");
         return this;
     }
 
-    public RequestBuilder delete(final RequestBody requestBody) {
+    public RequestBuilder DELETE(final RequestBody requestBody) {
         this.request.setRequestBody(requestBody);
         this.request.setRequestMethod("DELETE");
         return this;
