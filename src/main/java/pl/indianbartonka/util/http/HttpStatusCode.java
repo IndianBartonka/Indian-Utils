@@ -325,6 +325,15 @@ public enum HttpStatusCode {
         this.reasonPhrase = reasonPhrase;
     }
 
+    /**
+     * Retrieves the corresponding {@link HttpStatusCode} for the given HTTP status code.
+     * <p>
+     * This method iterates over all available HTTP status codes and returns the one that matches the provided code.
+     * If no matching status code is found, it returns {@link HttpStatusCode#UNKNOWN}.
+     *
+     * @param code the HTTP status code to search for
+     * @return the corresponding {@link HttpStatusCode} if found; otherwise, {@link HttpStatusCode#UNKNOWN}
+     */
     public static HttpStatusCode getStatus(final int code) {
         for (final HttpStatusCode statusCode : values()) {
             if (statusCode.code == code) return statusCode;
