@@ -6,7 +6,7 @@
 
     <groupId>pl.indianbartonka.util</groupId>
     <artifactId>IndianUtils</artifactId>
-    <version>0.0.7.5</version>
+    <version>0.0.7.5-Test</version>
     <packaging>jar</packaging>
 
     <properties>
