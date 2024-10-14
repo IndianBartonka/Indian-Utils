@@ -1,5 +1,13 @@
 package pl.indianbartonka.util.http.connection;
 
+import org.jetbrains.annotations.Nullable;
+import pl.indianbartonka.util.BufferUtil;
+import pl.indianbartonka.util.MessageUtil;
+import pl.indianbartonka.util.http.HttpStatusCode;
+import pl.indianbartonka.util.http.connection.request.Request;
+import pl.indianbartonka.util.http.connection.request.RequestBody;
+
+import javax.net.ssl.HttpsURLConnection;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -8,13 +16,6 @@ import java.net.URL;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import javax.net.ssl.HttpsURLConnection;
-import org.jetbrains.annotations.Nullable;
-import pl.indianbartonka.util.BufferUtil;
-import pl.indianbartonka.util.MessageUtil;
-import pl.indianbartonka.util.http.HttpStatusCode;
-import pl.indianbartonka.util.http.connection.request.Request;
-import pl.indianbartonka.util.http.connection.request.RequestBody;
 
 public class Connection implements AutoCloseable {
 
@@ -91,11 +92,11 @@ public class Connection implements AutoCloseable {
             }
         } else if (bodyInputStream != null) {
             try (final OutputStream outputStream = this.urlConnection.getOutputStream(); bodyInputStream) {
-                final long contentLength = requestBody.getContentLength();
+                final long requestBodyContentLength = requestBody.getContentLength();
                 final byte[] buffer;
 
-                if (contentLength > 0) {
-                    buffer = new byte[BufferUtil.calculateOptimalBufferSize(contentLength)];
+                if (requestBodyContentLength > 0) {
+                    buffer = new byte[BufferUtil.calculateOptimalBufferSize(requestBodyContentLength)];
                 } else {
                     buffer = new byte[8192];
                 }

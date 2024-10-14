@@ -1,12 +1,5 @@
 package pl.indianbartonka.util;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.util.List;
-import java.util.Map;
-import java.util.concurrent.TimeoutException;
 import pl.indianbartonka.util.download.DownloadListener;
 import pl.indianbartonka.util.download.DownloadTask;
 import pl.indianbartonka.util.file.FileUtil;
@@ -21,6 +14,14 @@ import pl.indianbartonka.util.language.storage.impl.PropertiesStorageStrategy;
 import pl.indianbartonka.util.logger.Logger;
 import pl.indianbartonka.util.logger.LoggerConfiguration;
 import pl.indianbartonka.util.system.SystemUtil;
+
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.List;
+import java.util.Map;
+import java.util.concurrent.TimeoutException;
 
 public final class Test {
 
@@ -343,6 +344,12 @@ public final class Test {
                 .GET()
                 .build();
 
+        LOGGER.info("Headery Requestu");
+        for (final Map.Entry<String, String> headers : request.getHeaders().entrySet()) {
+            LOGGER.print(headers.getKey() + " : " + headers.getValue());
+        }
+        LOGGER.print();
+
         try (final Connection connection = new Connection(request)) {
             final HttpStatusCode statusCode = connection.getHttpStatusCode();
 
@@ -351,6 +358,7 @@ public final class Test {
             LOGGER.info("Kod odpowiedzi: " + statusCode + " (" + statusCode.getCode() + ")");
             LOGGER.print();
 
+            LOGGER.info("Headery Odpowiedzi");
             for (final Map.Entry<String, String> headers : connection.getHeaders().entrySet()) {
                 LOGGER.print(headers.getKey() + " : " + headers.getValue());
             }
@@ -378,6 +386,9 @@ public final class Test {
         loggerTest();
         LOGGER.print("==================");
 
+        connectionTest();
+        LOGGER.print("==================");
+
         fileUtilTest();
         LOGGER.print("==================");
 
@@ -401,9 +412,6 @@ public final class Test {
         } catch (final Exception exception){
             exception.printStackTrace();
         }
-        LOGGER.print("==================");
-
-        connectionTest();
         LOGGER.print("==================");
 
         dateUtilTest();
