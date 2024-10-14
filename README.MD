@@ -26,7 +26,6 @@ Zależnosci [Maven](#maven-pomxml), [Gradle](#gradle-buildgradle), [SBT](#simple
 ## Maven `pom.xml`
 
 ```xml
-
 <repository>
     <id>jitpack.io</id>
     <url>https://jitpack.io</url>
@@ -34,7 +33,6 @@ Zależnosci [Maven](#maven-pomxml), [Gradle](#gradle-buildgradle), [SBT](#simple
 ```
 
 ```xml
-
 <dependency>
     <groupId>com.github.IndianBartonka</groupId>
     <artifactId>Indian-Utils</artifactId>
@@ -62,5 +60,5 @@ resolvers += "jitpack" at "https://jitpack.io"
 ```
 
 ```sbt
-libraryDependencies += "com.github.IndianBartonka" % "Indian-Utils" % "Tag"    
+libraryDependencies += "com.github.IndianBartonka" % "Indian-Utils" % "TAG"    
 ```
