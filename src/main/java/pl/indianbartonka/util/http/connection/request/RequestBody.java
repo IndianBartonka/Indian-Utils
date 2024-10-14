@@ -16,7 +16,7 @@ public class RequestBody {
 
     public RequestBody(final byte[] body) {
         this.body = body;
-        this.contentLength = 0;
+        this.contentLength = body.length;
         this.inputStream = null;
     }
 
