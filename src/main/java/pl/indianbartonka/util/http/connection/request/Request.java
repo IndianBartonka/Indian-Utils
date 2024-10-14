@@ -9,6 +9,7 @@ public class Request {
     private String url;
     private String userAgent;
     private String contentType;
+    private long contentLength;
     private String requestMethod;
     private String authorization;
     private String accept;
@@ -88,6 +89,15 @@ public class Request {
     public void setContentType(final String contentType) {
         this.contentType = contentType;
         this.headers.put("Content-Type", contentType);
+    }
+
+    public long getContentLength() {
+        return this.contentLength;
+    }
+
+    public void setContentLength(final long contentLength) {
+        this.contentLength = contentLength;
+        this.headers.put("Content-Length", String.valueOf(contentLength));
     }
 
     public String getAuthorization() {

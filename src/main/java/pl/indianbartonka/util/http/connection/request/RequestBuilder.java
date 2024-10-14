@@ -1,7 +1,8 @@
 package pl.indianbartonka.util.http.connection.request;
 
-import java.util.concurrent.TimeUnit;
 import pl.indianbartonka.util.http.UserAgent;
+
+import java.util.concurrent.TimeUnit;
 
 public class RequestBuilder {
 
@@ -26,6 +27,11 @@ public class RequestBuilder {
 
     public RequestBuilder setContentType(final String contentType) {
         this.request.setContentType(contentType);
+        return this;
+    }
+
+    public RequestBuilder setContentLength(final long contentLength) {
+        this.request.setContentLength(contentLength);
         return this;
     }
 
