@@ -1,1 +1,1 @@
-Aktualna Ikona jesy wygenerowana przez Bing Chat
+Aktualne ikony są wygenerowane przez GPT i Bing Chat
