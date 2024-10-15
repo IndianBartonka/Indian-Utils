@@ -1,0 +1,18 @@
+[23:52:34:735] [main] INFO Headery Requestu
+User-Agent : Mozilla/5.0 (Windows 11; 10.0; amd64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.114 Safari/537.36
+Content-Length : 1023981
+
+[23:52:38:896] [main] INFO Czy jest zabezpieczone? false
+[23:52:38:897] [main] INFO Wiadomość: null
+[23:52:38:901] [main] INFO Kod odpowiedzi: OK (200)
+
+[23:52:38:903] [main] INFO Headery Odpowiedzi
+Keep-Alive : timeout=60
+Transfer-Encoding : chunked
+null : HTTP/1.1 200
+Connection : keep-alive
+Date : Mon, 14 Oct 2024 21:52:35 GMT
+Content-Type : application/json
+
+{"userAgent":"Mozilla/5.0 (Windows 11; 10.0; amd64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.114 Safari/537.36","ip":"164.127.218.35","protocol":"HTTP/1.1","requestTime":"2024-10-14T23:52:35.541747991","refer":null,"language":null,"queryParams":null,"headers":{"host":"vps.host2play.com:10001","connection":"keep-alive","user-agent":"Mozilla/5.0 (Windows 11; 10.0; amd64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.114 Safari/537.36","accept":"text/html, image/gif, image/jpeg, *; q=.2, */*; q=.2"}}
+==================

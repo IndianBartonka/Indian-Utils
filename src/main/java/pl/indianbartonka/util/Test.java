@@ -13,14 +13,9 @@ import pl.indianbartonka.util.language.storage.impl.HashMapStorageStrategy;
 import pl.indianbartonka.util.language.storage.impl.PropertiesStorageStrategy;
 import pl.indianbartonka.util.logger.Logger;
 import pl.indianbartonka.util.logger.LoggerConfiguration;
-import pl.indianbartonka.util.system.SystemUtil;
 
-import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.util.List;
-import java.util.Map;
 import java.util.concurrent.TimeoutException;
 
 public final class Test {
@@ -29,8 +24,6 @@ public final class Test {
     };
     //Zaleca się tworzenie nowych loggerów na podstawie głównego
     private static final Logger LOGGER2 = LOGGER.prefixed("Logger 2");
-
-    private static final long START_TIME = System.currentTimeMillis();
 
     private static void languagesTest() throws IOException {
         // Inicjalizacja LanguageManager z lokalizacją plików językowych
@@ -114,114 +107,6 @@ public final class Test {
         polish.saveToFile();
     }
 
-    public static void loggerTest() {
-        LOGGER.info("Logger Test");
-        LOGGER.print("1");
-        LOGGER.info("2");
-        LOGGER.info("2");
-
-        LOGGER.print();
-
-        LOGGER2.print("3");
-        LOGGER2.info(4);
-
-        LOGGER2.print();
-
-        LOGGER.warning(LOGGER2.getLogFile());
-        LOGGER2.warning(LOGGER.getLogFile());
-
-        LOGGER.print();
-
-        LOGGER.alert("Rodzic: " + LOGGER.getParent() + " Dzieci: " + LOGGER.getChildren());
-        LOGGER2.alert("Rodzic: " + LOGGER2.getParent() + " Dzieci: " + LOGGER2.getChildren());
-        LOGGER2.getParent().info("Uzywam rodzica");
-
-        //Info z JUL tez jest wypisywane do naszego pliku z logami
-        //Można to wyłączyc tworząc odpowiadnią instancije `LoggerConfiguration` w głównym logerze np:
-        // new LoggerConfiguration(true, System.getProperty("user.dir") + File.separator + "logs", true, false)
-        final java.util.logging.Logger logger = java.util.logging.Logger.getLogger("JUL");
-
-        logger.info("okejjj");
-
-        LOGGER.tempLogger("temp1").info("spokoo " + MathUtil.RANDOM.nextInt(5));
-        LOGGER2.tempLogger("temp2").info("spokoo " + MathUtil.RANDOM.nextInt(8));
-
-        logger.info("okejjj " + MathUtil.RANDOM.nextInt(5));
-    }
-
-    private static void fileUtilTest() {
-        LOGGER.info("Dostępne: " + MathUtil.formatBytesDynamic(FileUtil.availableDiskSpace(), false));
-        LOGGER.info("Użyte: " + MathUtil.formatBytesDynamic(FileUtil.usedDiskSpace(), false));
-        LOGGER.info("Maksymalne: " + MathUtil.formatBytesDynamic(FileUtil.maxDiskSpace(), false));
-
-        LOGGER.print();
-
-        final File[] files = new File(System.getProperty("user.dir")).listFiles();
-        if (files != null) {
-            for (final File file : files) {
-                LOGGER.info(file.getName() + " = " + FileUtil.getFileTypeInfo(file.getName()));
-            }
-        }
-
-        //TODO: Dodać więcej przykładów użycia FileUtil
-    }
-
-    public static void dateUtilTest() {
-        LOGGER.info("Date Util Test");
-        LOGGER.info(DateUtil.getDate());
-        LOGGER.info(DateUtil.getFixedDate());
-        LOGGER.print();
-        LOGGER.info("Wszytkie testy wraz z tym zajeły:&b " + DateUtil.formatTimeDynamic(System.currentTimeMillis() - START_TIME));
-    }
-
-    public static void mathUtilTest() {
-        LOGGER.info("Math Util Test");
-        final int randomNumber = MathUtil.RANDOM.nextInt();
-        final double randomDouble = MathUtil.RANDOM.nextDouble();
-        final int bigNumber = MathUtil.getCorrectNumber(randomNumber, 1, 900000);
-
-        LOGGER.info("Randomowa liczba: " + randomNumber);
-        LOGGER.info("Wielka liczba: " + bigNumber);
-        LOGGER.print();
-        LOGGER.info("Randomowy double: " + randomDouble);
-        LOGGER.info(MathUtil.getCorrectNumber(randomDouble, 1, 30));
-        LOGGER.print();
-        LOGGER.info(MathUtil.formatBytesDynamic(bigNumber, true));
-        LOGGER.info(MathUtil.formatKiloBytesDynamic(bigNumber, true));
-    }
-
-    private static void systemUtilTest() {
-        LOGGER.info("System Util Test");
-        LOGGER.print();
-        LOGGER.info(SystemUtil.getFullOsNameWithDistribution());
-        LOGGER.info(SystemUtil.getCurrentArch() + " (" + SystemUtil.getFullyArchCode() + ")");
-    }
-
-    public static void bedrockQueryTest() {
-        LOGGER.info("BedrockQuery Test");
-
-        final List<String> ipList = List.of("play.skyblockpe.com", "play.inpvp.net", "mco.cubecraft.net", "geo.hivebedrock.network", "51.83.32.139");
-
-        for (final String ip : ipList) {
-            final BedrockQuery query = BedrockQuery.create(ip, 19132);
-            LOGGER.print();
-            LOGGER.info("MOTD: " + query.motd());
-            LOGGER.info("Server Address: " + query.serverAddress());
-            LOGGER.info("Host Address: " + query.hostAddress());
-            LOGGER.info("Online: " + query.online());
-            LOGGER.info("Response Time: " + query.responseTime());
-            LOGGER.info("Edition: " + query.edition());
-            LOGGER.info("Protocol: " + query.protocol());
-            LOGGER.info("Minecraft Version: " + query.minecraftVersion());
-            LOGGER.info("Player Count: " + query.playerCount());
-            LOGGER.info("Max Players: " + query.maxPlayers());
-            LOGGER.info("Server ID: " + query.serverId());
-            LOGGER.info("Map Name: " + query.mapName());
-            LOGGER.info("Game Mode: " + query.gameMode());
-            LOGGER.info("Port V4: " + query.portV4());
-            LOGGER.info("Port V6: " + query.portV6());
-        }
-    }
 
     public static void encryptorTest() {
         //TODO: Dodać tak owy
@@ -305,73 +190,12 @@ public final class Test {
         }
     }
 
-    public static void zipTest() {
-        ZipUtil.init(LOGGER, 9);
-        final File file = new File("logs");
-
-        LOGGER.info("Aktualny poziom kompresij to:&b " + ZipUtil.getCompressionLevel());
-
-        if (!file.exists()) return;
-
-        final File zipFile;
-
-        try {
-            zipFile = ZipUtil.zipFolder(file.getPath(), "logs.zip");
-        } catch (final IOException e) {
-            throw new RuntimeException(e);
-        }
-
-        try {
-            ZipUtil.unzipFile(zipFile.getPath(), "siur", false);
-        } catch (final IOException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
     public static void bufferTest() {
         final File[] files = new File(System.getProperty("user.dir")).listFiles();
         if (files != null) {
             for (final File file : files) {
                 final int buffer = BufferUtil.calculateOptimalBufferSize(FileUtil.getFileSize(file));
                 LOGGER.info(file.getName() + " = " + MathUtil.formatBytesDynamic(buffer, false));
-            }
-        }
-    }
-
-    private static void connectionTest() throws IOException {
-        final Request request = new RequestBuilder()
-                .setUrl("https://indianbartonka.pl/userInfo")
-                .GET()
-                .build();
-
-        LOGGER.info("Headery Requestu");
-        for (final Map.Entry<String, String> headers : request.getHeaders().entrySet()) {
-            LOGGER.print(headers.getKey() + " : " + headers.getValue());
-        }
-        LOGGER.print();
-
-        try (final Connection connection = new Connection(request)) {
-            final HttpStatusCode statusCode = connection.getHttpStatusCode();
-
-            LOGGER.info("Czy jest zabezpieczone? " + connection.isHttps());
-            LOGGER.info("Wiadomość: " + connection.getResponseMessage());
-            LOGGER.info("Kod odpowiedzi: " + statusCode + " (" + statusCode.getCode() + ")");
-            LOGGER.print();
-
-            LOGGER.info("Headery Odpowiedzi");
-            for (final Map.Entry<String, String> headers : connection.getHeaders().entrySet()) {
-                LOGGER.print(headers.getKey() + " : " + headers.getValue());
-            }
-
-            LOGGER.print();
-
-            if (connection.getInputStream() == null) return;
-            try (final BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()))) {
-                String line;
-
-                while ((line = reader.readLine()) != null) {
-                    LOGGER.print(line);
-                }
             }
         }
     }
@@ -383,38 +207,10 @@ public final class Test {
         bufferTest();
         LOGGER.print("==================");
 
-        loggerTest();
-        LOGGER.print("==================");
-
-        connectionTest();
-        LOGGER.print("==================");
-
-        fileUtilTest();
-        LOGGER.print("==================");
-
-        mathUtilTest();
-        LOGGER.print("==================");
-
-        systemUtilTest();
-        LOGGER.print("==================");
-
-        bedrockQueryTest();
-        LOGGER.print("==================");
-
         encryptorTest();
         LOGGER.print("==================");
 
         downloadFileTest();
-        LOGGER.print("==================");
-
-        try {
-            zipTest();
-        } catch (final Exception exception){
-            exception.printStackTrace();
-        }
-        LOGGER.print("==================");
-
-        dateUtilTest();
         LOGGER.print("==================");
     }
 }

@@ -42,9 +42,8 @@ out/
 
 #####################
 /logs
-/fileTest
-/.idea
-/siur
 /langs
 Bedrock.zip
 logs.zip
+/tescik
+/.idea

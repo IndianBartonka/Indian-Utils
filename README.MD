@@ -12,9 +12,6 @@ Utile używane w różnych projektach przez Indiana
 
 **Java**: 17+
 
-### Przykłady użycja
-
-Przykłady użycja znajdziecie w klasie [Test.java](src%2Fmain%2Fjava%2Fpl%2Findianbartonka%2Futil%2FTest.java)
 # Przy projekcie pomagali
 
 ![Wykres kontrybucji](https://contrib.rocks/image?repo=IndianBartonka/Indian-Utils)
@@ -26,6 +23,7 @@ Zależnosci [Maven](#maven-pomxml), [Gradle](#gradle-buildgradle), [SBT](#simple
 ## Maven `pom.xml`
 
 ```xml
+
 <repository>
     <id>jitpack.io</id>
     <url>https://jitpack.io</url>
@@ -33,6 +31,7 @@ Zależnosci [Maven](#maven-pomxml), [Gradle](#gradle-buildgradle), [SBT](#simple
 ```
 
 ```xml
+
 <dependency>
     <groupId>com.github.IndianBartonka</groupId>
     <artifactId>Indian-Utils</artifactId>
