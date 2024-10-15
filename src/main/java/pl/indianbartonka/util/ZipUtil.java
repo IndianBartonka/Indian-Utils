@@ -1,5 +1,9 @@
 package pl.indianbartonka.util;
 
+import org.jetbrains.annotations.Nullable;
+import pl.indianbartonka.util.file.FileUtil;
+import pl.indianbartonka.util.logger.Logger;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -10,8 +14,6 @@ import java.util.List;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 import java.util.zip.ZipOutputStream;
-import pl.indianbartonka.util.file.FileUtil;
-import pl.indianbartonka.util.logger.Logger;
 
 /**
  * <p>
@@ -30,17 +32,29 @@ public final class ZipUtil {
     // Private constructor to prevent instantiation
     private ZipUtil() {
     }
-
     /**
-     * Initializes the ZipUtil class with a logger instance.
+     * Initializes the ZipUtil class with a logger instance and sets the compression level.
      *
-     * @param logger           The Logger instance to use for logging.
-     * @param compressionLevel The compression level to be used (0-9).
+     * @param logger           The Logger instance used for logging, can be null.
+     * @param compressionLevel The compression level to be used, ranging from 0 (no compression) to 9 (maximum compression).
+     *                         If the specified level is outside this range, it will be adjusted to fit within the limits.
      */
-    public static void init(final Logger logger, final int compressionLevel) {
-        ZipUtil.logger = logger.prefixed("ZipUtil");
+    public static void init(final @Nullable Logger logger, final int compressionLevel) {
+        if (logger != null) {
+            ZipUtil.logger = logger.prefixed("ZipUtil");
+        }
         ZipUtil.compressionLevel = MathUtil.getCorrectNumber(compressionLevel, 0, 9);
     }
+
+    /**
+     * Initializes the ZipUtil class with a default logger and sets the compression level.
+     *
+     * @param compressionLevel The compression level to be used, ranging from 0 to 9.
+     */
+    public static void init(final int compressionLevel) {
+        init(null, compressionLevel);
+    }
+
 
     /**
      * Zips a folder and all its contents into a ZIP file.
