@@ -334,7 +334,7 @@ public enum HttpStatusCode {
      * @param code the HTTP status code to search for
      * @return the corresponding {@link HttpStatusCode} if found; otherwise, {@link HttpStatusCode#UNKNOWN}
      */
-    public static HttpStatusCode getStatus(final int code) {
+    public static HttpStatusCode getByCode(final int code) {
         for (final HttpStatusCode statusCode : values()) {
             if (statusCode.code == code) return statusCode;
         }
