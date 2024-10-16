@@ -4,6 +4,7 @@ package pl.indianbartonka.util.http;
  * Code used from:
  * <a href="https://github.com/javalin/javalin/blob/4afc3f7f14b0529eb8a9df6f0e2ec311e1d8e632/javalin/src/main/java/io/javalin/http/HttpStatus.kt">Javalin Github</a>
  */
+//TODO: Dodaj licencję z Javalin aby wszystko było zgodne z prawem https://www.tldrlegal.com/license/apache-license-2-0-apache-2-0
 
 public enum HttpStatusCode {
 
