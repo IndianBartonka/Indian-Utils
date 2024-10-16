@@ -107,7 +107,7 @@ public final class ConsoleColors {
 
         // WYMAGA TO WIELKICH USPRAWNIEŃ
         // Układane z pomocą https://minecraft.fandom.com/wiki/Formatting_codes
-        COLORS.put(BLACK, new Color(0, 0, 0));
+    COLORS.put(BLACK, new Color(0, 0, 0));
         COLORS.put(BLUE, new Color(0, 0, 128));
         COLORS.put(DARK_BLUE, new Color(0, 170, 0));
         COLORS.put(CYAN, new Color(0, 170, 170));
@@ -124,6 +124,7 @@ public final class ConsoleColors {
         COLORS.put(BRIGHT_GREEN, new Color(0, 238, 43));
         COLORS.put(GREEN, new Color(0, 128, 0));
     }
+    //TODO: Zrób to jako enum, zmień nazwę ma ANSIColors o te COLORS.put używaj np Color.Black zamiast kodu RGB
 
     private ConsoleColors() {
 
