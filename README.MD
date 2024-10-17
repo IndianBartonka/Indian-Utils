@@ -16,6 +16,8 @@ Utile używane w różnych projektach przez Indiana
 
 ![Wykres kontrybucji](https://contrib.rocks/image?repo=IndianBartonka/Indian-Utils)
 
+[![Stargazers over time](https://starchart.cc/IndianBartonka/Indian-Utils.svg?variant=adaptive)]()
+
 # Zależności
 
 Zależnosci [Maven](#maven-pomxml), [Gradle](#gradle-buildgradle), [SBT](#simple-build-tool-buildsbt)
