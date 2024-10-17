@@ -1,7 +1,7 @@
 package pl.indianbartonka.util.http;
 
 /**
- * Copyright 2017 Javalin (or its contributors)
+ * Copyright 2024 Javalin (or its contributors)
  * Code used from:
  * <a href="https://github.com/javalin/javalin/blob/4afc3f7f14b0529eb8a9df6f0e2ec311e1d8e632/javalin/src/main/java/io/javalin/http/HttpStatus.kt">Javalin Github</a>
  * Licensed under the Apache License, Version 2.0 (the "License");
