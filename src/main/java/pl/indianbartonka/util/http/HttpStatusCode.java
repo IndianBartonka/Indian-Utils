@@ -1,10 +1,21 @@
 package pl.indianbartonka.util.http;
 
 /**
+ * Copyright 2017 Javalin (or its contributors)
  * Code used from:
  * <a href="https://github.com/javalin/javalin/blob/4afc3f7f14b0529eb8a9df6f0e2ec311e1d8e632/javalin/src/main/java/io/javalin/http/HttpStatus.kt">Javalin Github</a>
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the
+ * <p>
+ * <a href="http://www.apache.org/licenses/LICENSE-2.0">Apache License</a>
+ * </p>
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
-//TODO: Dodaj licencję z Javalin aby wszystko było zgodne z prawem https://www.tldrlegal.com/license/apache-license-2-0-apache-2-0
 
 public enum HttpStatusCode {
 
