@@ -35,6 +35,7 @@ public class BedrockQueryTest {
             System.out.println("Server ID: " + query.serverId());
             System.out.println("Map Name: " + query.mapName());
             System.out.println("Game Mode: " + query.gameMode());
+            System.out.println("Nintendo Limited: " + query.nintendoLimited());
             System.out.println("Port V4: " + query.portV4());
             System.out.println("Port V6: " + query.portV6());
             System.out.println();

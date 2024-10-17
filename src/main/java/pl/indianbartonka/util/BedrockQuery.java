@@ -14,7 +14,8 @@ public record BedrockQuery(String serverAddress, String hostAddress, boolean onl
                            String motd, int protocol,
                            String minecraftVersion,
                            int playerCount,
-                           int maxPlayers, String serverId, String mapName, String gameMode, int portV4, int portV6) {
+                           int maxPlayers, String serverId, String mapName, String gameMode, boolean nintendoLimited,
+                           int portV4, int portV6) {
 
     private static final byte ID_UNCONNECTED_PING = 0x01;
     private static final byte[] UNCONNECTED_MESSAGE_SEQUENCE = {
@@ -57,6 +58,11 @@ public record BedrockQuery(String serverAddress, String hostAddress, boolean onl
 
                 int portV4 = -1;
                 int portV6 = -1;
+                boolean nintendoLimited = true;
+
+                if (splittedData.length >= 10 && splittedData[9].contains("1")) {
+                    nintendoLimited = false;
+                }
 
                 if (splittedData.length >= 12) {
                     portV4 = Integer.parseInt(splittedData[10]);
@@ -66,10 +72,10 @@ public record BedrockQuery(String serverAddress, String hostAddress, boolean onl
                 return new BedrockQuery(serverAddress, address.getHostAddress(), true, ping,
                         splittedData[0], splittedData[1], Integer.parseInt(splittedData[2]), splittedData[3],
                         Integer.parseInt(splittedData[4]), Integer.parseInt(splittedData[5]), splittedData[6],
-                        splittedData[7], splittedData[8], portV4, portV6);
+                        splittedData[7], splittedData[8], nintendoLimited, portV4, portV6);
             }
         } catch (final Exception exception) {
-            return new BedrockQuery(serverAddress, "", false, -1, "", "", -1, "", 0, 0, "", "", "", -1, -1);
+            return new BedrockQuery(serverAddress, "", false, -1, "", "", -1, "", 0, 0, "", "", "", false, -1, -1);
         }
     }
 }
