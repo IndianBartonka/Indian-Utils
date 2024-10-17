@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.logging.FileHandler;
 import java.util.logging.Handler;
 import pl.indianbartonka.util.DateUtil;
+import pl.indianbartonka.util.color.AnsiColor;
 import pl.indianbartonka.util.exception.LoggerException;
 import pl.indianbartonka.util.file.FileUtil;
 
@@ -149,7 +150,7 @@ public abstract class Logger {
         this.logState = LogState.NONE;
         this.instantLogToFile(log);
 
-        System.out.println(ConsoleColors.convertMinecraftColors(log));
+        System.out.println(AnsiColor.convertMinecraftColors(log));
     }
 
     public void print(final Object log, final Throwable throwable) {
@@ -160,7 +161,7 @@ public abstract class Logger {
     public void info(final Object log) {
         this.logState = LogState.INFO;
         this.updatePrefix();
-        System.out.println(ConsoleColors.convertMinecraftColors(this.prefix + log));
+        System.out.println(AnsiColor.convertMinecraftColors(this.prefix + log));
         this.logToFile(log);
     }
 
@@ -172,7 +173,7 @@ public abstract class Logger {
     public void warning(final Object log) {
         this.logState = LogState.WARNING;
         this.updatePrefix();
-        System.out.println(ConsoleColors.convertMinecraftColors(this.prefix + log));
+        System.out.println(AnsiColor.convertMinecraftColors(this.prefix + log));
         this.logToFile(log);
     }
 
@@ -184,7 +185,7 @@ public abstract class Logger {
     public void alert(final Object log) {
         this.logState = LogState.ALERT;
         this.updatePrefix();
-        System.out.println(ConsoleColors.convertMinecraftColors(this.prefix + log));
+        System.out.println(AnsiColor.convertMinecraftColors(this.prefix + log));
         this.logToFile(log);
     }
 
@@ -196,7 +197,7 @@ public abstract class Logger {
     public void critical(final Object log) {
         this.logState = LogState.CRITICAL;
         this.updatePrefix();
-        System.out.println(ConsoleColors.convertMinecraftColors(this.prefix + log));
+        System.out.println(AnsiColor.convertMinecraftColors(this.prefix + log));
         this.logToFile(log);
     }
 
@@ -208,7 +209,7 @@ public abstract class Logger {
     public void error(final Object log) {
         this.logState = LogState.ERROR;
         this.updatePrefix();
-        System.out.println(ConsoleColors.convertMinecraftColors(this.prefix + log));
+        System.out.println(AnsiColor.convertMinecraftColors(this.prefix + log));
         this.logToFile(log);
     }
 
@@ -222,7 +223,7 @@ public abstract class Logger {
             this.logState = LogState.DEBUG;
             this.updatePrefix();
             this.logToFile(log);
-            System.out.println(ConsoleColors.convertMinecraftColors(this.prefix + log));
+            System.out.println(AnsiColor.convertMinecraftColors(this.prefix + log));
         }
     }
 
@@ -251,13 +252,13 @@ public abstract class Logger {
 
     public void instantLogToFile(final Object log) {
         if (this.printStream != null) {
-            this.printStream.println(ConsoleColors.removeColors(log));
+            this.printStream.println(AnsiColor.removeColors(log));
         }
     }
 
     private void logToFile(final Object log) {
         if (this.printStream != null) {
-            this.printStream.println(ConsoleColors.removeColors(this.prefix + log));
+            this.printStream.println(AnsiColor.removeColors(this.prefix + log));
         }
     }
 
