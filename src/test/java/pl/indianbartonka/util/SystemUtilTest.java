@@ -1,11 +1,10 @@
 package pl.indianbartonka.util;
 
+import java.io.IOException;
 import org.junit.jupiter.api.Test;
 import pl.indianbartonka.util.system.SystemArch;
 import pl.indianbartonka.util.system.SystemOS;
 import pl.indianbartonka.util.system.SystemUtil;
-
-import java.io.IOException;
 
 import static org.junit.jupiter.api.Assertions.*;
 

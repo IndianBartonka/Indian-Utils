@@ -1,10 +1,9 @@
 package pl.indianbartonka.util;
 
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-
 import java.io.File;
 import java.io.IOException;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -26,12 +25,12 @@ public class ZipUtilTest {
     }
 
     @Test
-    void testZipFolderCreatesZipFile()  {
-        try{
+    void testZipFolderCreatesZipFile() {
+        try {
             final File directory = new File(LOGS_DIR);
             final File zipFile = ZipUtil.zipFolder(directory.getPath(), ZIP_FILE_NAME);
             assertTrue(zipFile.exists(), "Plik zip powinien zostać utworzony.");
-        } catch (final IOException ioException){
+        } catch (final IOException ioException) {
             //Tu moze byc Odmowa dostepu bo logger uyzwa pliku Logu
             ioException.printStackTrace();
         }

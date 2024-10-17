@@ -1,11 +1,10 @@
 package pl.indianbartonka.util;
 
-import org.jetbrains.annotations.NotNull;
-import pl.indianbartonka.util.exception.ThreadException;
-
 import java.lang.management.ManagementFactory;
 import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.atomic.AtomicInteger;
+import org.jetbrains.annotations.NotNull;
+import pl.indianbartonka.util.exception.ThreadException;
 
 /**
  * <p>

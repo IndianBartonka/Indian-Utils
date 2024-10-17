@@ -1,14 +1,13 @@
 package pl.indianbartonka.util;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import org.junit.jupiter.api.Test;
 import pl.indianbartonka.util.http.HttpStatusCode;
 import pl.indianbartonka.util.http.connection.Connection;
 import pl.indianbartonka.util.http.connection.request.Request;
 import pl.indianbartonka.util.http.connection.request.RequestBuilder;
-
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 

@@ -9,10 +9,6 @@ public final class IndianUtils {
 
     public static String VERSION = "UNKNOWN";
 
-    private IndianUtils() {
-
-    }
-
     static {
         final InputStream inputStream = IndianUtils.class.getResourceAsStream("/IndianUtils.version");
 
@@ -27,5 +23,9 @@ public final class IndianUtils {
 
             }
         }
+    }
+
+    private IndianUtils() {
+
     }
 }

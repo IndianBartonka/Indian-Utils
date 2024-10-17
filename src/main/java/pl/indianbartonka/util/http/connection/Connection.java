@@ -1,13 +1,5 @@
 package pl.indianbartonka.util.http.connection;
 
-import org.jetbrains.annotations.Nullable;
-import pl.indianbartonka.util.BufferUtil;
-import pl.indianbartonka.util.MessageUtil;
-import pl.indianbartonka.util.http.HttpStatusCode;
-import pl.indianbartonka.util.http.connection.request.Request;
-import pl.indianbartonka.util.http.connection.request.RequestBody;
-
-import javax.net.ssl.HttpsURLConnection;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -16,6 +8,13 @@ import java.net.URL;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import javax.net.ssl.HttpsURLConnection;
+import org.jetbrains.annotations.Nullable;
+import pl.indianbartonka.util.BufferUtil;
+import pl.indianbartonka.util.MessageUtil;
+import pl.indianbartonka.util.http.HttpStatusCode;
+import pl.indianbartonka.util.http.connection.request.Request;
+import pl.indianbartonka.util.http.connection.request.RequestBody;
 
 public class Connection implements AutoCloseable {
 
@@ -54,7 +53,7 @@ public class Connection implements AutoCloseable {
 
         this.httpStatusCode = HttpStatusCode.getByCode(this.urlConnection.getResponseCode());
 
-        if(this.httpStatusCode.isSuccess()){
+        if (this.httpStatusCode.isSuccess()) {
             this.contentLength = this.urlConnection.getContentLength();
             this.inputStream = this.urlConnection.getInputStream();
         } else {
@@ -76,7 +75,7 @@ public class Connection implements AutoCloseable {
         // Obsługa metod PUT, DELETE, POST
         if (requestBody != null) {
             this.handleDataSending(requestBody);
-        } else if (!requestMethod.equals("DELETE")){
+        } else if (!requestMethod.equals("DELETE")) {
             throw new IllegalArgumentException("RequestBody cannot be null for this request method.");
         }
     }

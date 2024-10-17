@@ -1,9 +1,5 @@
 package pl.indianbartonka.util;
 
-import org.jetbrains.annotations.Nullable;
-import pl.indianbartonka.util.file.FileUtil;
-import pl.indianbartonka.util.logger.Logger;
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -14,6 +10,9 @@ import java.util.List;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 import java.util.zip.ZipOutputStream;
+import org.jetbrains.annotations.Nullable;
+import pl.indianbartonka.util.file.FileUtil;
+import pl.indianbartonka.util.logger.Logger;
 
 /**
  * <p>
@@ -32,6 +31,7 @@ public final class ZipUtil {
     // Private constructor to prevent instantiation
     private ZipUtil() {
     }
+
     /**
      * Initializes the ZipUtil class with a logger instance and sets the compression level.
      *

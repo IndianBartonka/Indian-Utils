@@ -1,8 +1,7 @@
 package pl.indianbartonka.util.http.connection.request;
 
-import pl.indianbartonka.util.http.UserAgent;
-
 import java.util.concurrent.TimeUnit;
+import pl.indianbartonka.util.http.UserAgent;
 
 public class RequestBuilder {
 
@@ -59,7 +58,7 @@ public class RequestBuilder {
         this.request.addHeader(key, value);
         return this;
     }
-    
+
     public RequestBuilder GET() {
         this.request.setRequestMethod("GET");
         return this;

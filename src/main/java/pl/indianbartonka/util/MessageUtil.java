@@ -100,7 +100,7 @@ public final class MessageUtil {
      * @return An array of arguments after removal.
      */
     public static String[] removeArgs(final String[] args, final int startFrom) {
-        if (args == null || args.length <= startFrom) return new String[] {};
+        if (args == null || args.length <= startFrom) return new String[]{};
         return Arrays.copyOfRange(args, startFrom, args.length);
     }
 

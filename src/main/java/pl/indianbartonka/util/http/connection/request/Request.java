@@ -21,7 +21,7 @@ public class Request {
         this.headers = new HashMap<>();
     }
 
-    public RequestBuilder builder(){
+    public RequestBuilder builder() {
         return new RequestBuilder();
     }
 

@@ -1,5 +1,8 @@
 package pl.indianbartonka.util;
 
+import java.io.File;
+import java.io.IOException;
+import java.util.concurrent.TimeoutException;
 import pl.indianbartonka.util.download.DownloadListener;
 import pl.indianbartonka.util.download.DownloadTask;
 import pl.indianbartonka.util.file.FileUtil;
@@ -13,10 +16,6 @@ import pl.indianbartonka.util.language.storage.impl.HashMapStorageStrategy;
 import pl.indianbartonka.util.language.storage.impl.PropertiesStorageStrategy;
 import pl.indianbartonka.util.logger.Logger;
 import pl.indianbartonka.util.logger.LoggerConfiguration;
-
-import java.io.File;
-import java.io.IOException;
-import java.util.concurrent.TimeoutException;
 
 public final class Test {
 
