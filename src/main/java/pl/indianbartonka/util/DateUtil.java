@@ -62,7 +62,9 @@ public final class DateUtil {
      */
     private static ZoneId defaultZone = ZoneId.systemDefault();
 
-    // Private constructor to prevent instantiation
+    /**
+     * Private constructor to prevent instantiation of the utility class.
+     */
     private DateUtil() {
     }
 

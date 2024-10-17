@@ -28,7 +28,9 @@ public final class ZipUtil {
     private static Logger logger;
     private static int compressionLevel = 5;
 
-    // Private constructor to prevent instantiation
+    /**
+     * Private constructor to prevent instantiation of the utility class.
+     */
     private ZipUtil() {
     }
 

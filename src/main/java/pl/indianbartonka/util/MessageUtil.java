@@ -13,7 +13,9 @@ public final class MessageUtil {
 
     private static final String CHARS_STRING = "qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM123456789@#*";
 
-    // Private constructor to prevent instantiation of this utility class.
+    /**
+     * Private constructor to prevent instantiation of the utility class.
+     */
     private MessageUtil() {
     }
 
