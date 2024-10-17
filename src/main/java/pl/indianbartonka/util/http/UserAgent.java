@@ -24,26 +24,25 @@ public final class UserAgent {
     // Browser version strings
     private static final String CHROME_VERSION = "91.0.4472.114";
     private static final String FIREFOX_VERSION = "89.0";
-    public static final String USER_AGENT_FIREFOX =
-            "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:" + FIREFOX_VERSION + ") Gecko/20100101 Firefox/" + FIREFOX_VERSION;
     private static final String SAFARI_VERSION = "537.36";
+    private static final String EDGE_VERSION = "91.0.864.64";
+    private static final String OPERA_VERSION = "77.0.4054.90";
 
     // Predefined User-Agent strings for browsers
     public static final String USER_AGENT_CHROME = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/" + CHROME_VERSION + " Safari/" + SAFARI_VERSION;
     public static final String USER_AGENT_SAFARI = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Version/14.1 Safari/" + SAFARI_VERSION;
+    public static final String USER_AGENT_EDGE = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/" + CHROME_VERSION + " Safari/" + SAFARI_VERSION + " Edg/" + EDGE_VERSION;
+    public static final String USER_AGENT_OPERA = "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/" + CHROME_VERSION + " OPR/" + OPERA_VERSION;
+    public static final String USER_AGENT_FIREFOX = "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:" + FIREFOX_VERSION + ") Gecko/20100101 Firefox/" + FIREFOX_VERSION;
+
     // Predefined User-Agent strings for mobile applications
     public static final String USER_AGENT_ANDROID = "Mozilla/5.0 (Linux; Android 13; K) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/" + CHROME_VERSION + " Mobile Safari/" + SAFARI_VERSION;
     public static final String USER_AGENT_IOS = "Mozilla/5.0 (iPhone; CPU iPhone OS 18_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.1 Mobile/15E148 Safari/" + SAFARI_VERSION;
-    private static final String EDGE_VERSION = "91.0.864.64";
-    public static final String USER_AGENT_EDGE = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/" + CHROME_VERSION + " Safari/" + SAFARI_VERSION + " Edg/" + EDGE_VERSION;
-    private static final String OPERA_VERSION = "77.0.4054.90";
-    public static final String USER_AGENT_OPERA = "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/" + CHROME_VERSION + " OPR/" + OPERA_VERSION;
 
     /**
      * Private constructor to prevent instantiation of the utility class.
      */
     private UserAgent() {
-        // Prevents instantiation of utility class
     }
 
     /**
