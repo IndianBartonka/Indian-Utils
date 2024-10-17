@@ -58,11 +58,7 @@ public record BedrockQuery(String serverAddress, String hostAddress, boolean onl
 
                 int portV4 = -1;
                 int portV6 = -1;
-                boolean nintendoLimited = true;
-
-                if (splittedData.length >= 10 && splittedData[9].contains("1")) {
-                    nintendoLimited = false;
-                }
+                final boolean nintendoLimited = (splittedData.length < 10 || !splittedData[9].contains("1"));
 
                 if (splittedData.length >= 12) {
                     portV4 = Integer.parseInt(splittedData[10]);
