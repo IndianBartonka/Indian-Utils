@@ -78,7 +78,7 @@ public final class DateUtil {
     }
 
     /**
-     * Gets the current date and time in "yyyy-MM-dd HH:mm:ss" format, with colons replaced by hyphens.
+     * Gets the current date and time in "yyyy-MM-dd HH-mm-ss" format, with colons replaced by hyphens.
      *
      * @return The formatted date and time as a string.
      */
@@ -87,7 +87,7 @@ public final class DateUtil {
     }
 
     /**
-     * Gets the current date and time in "yyyy-MM-dd HH:mm:ss:SSS" format, with colons replaced by hyphens.
+     * Gets the current date and time in "yyyy-MM-dd HH-mm-ss-SSS" format, with colons replaced by hyphens.
      *
      * @return The formatted date and time as a string.
      */
