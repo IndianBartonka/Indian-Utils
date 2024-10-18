@@ -83,7 +83,16 @@ public final class DateUtil {
      * @return The formatted date and time as a string.
      */
     public static String getFixedDate() {
-        return LocalDateTime.now(defaultZone).format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")).replace(":", "-");
+        return LocalDateTime.now(defaultZone).format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH-mm-ss"));
+    }
+
+    /**
+     * Gets the current date and time in "yyyy-MM-dd HH:mm:ss:SSS" format, with colons replaced by hyphens.
+     *
+     * @return The formatted date and time as a string.
+     */
+    public static String getFixedDateMs() {
+        return LocalDateTime.now(defaultZone).format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH-mm-ss-SSS"));
     }
 
     /**
