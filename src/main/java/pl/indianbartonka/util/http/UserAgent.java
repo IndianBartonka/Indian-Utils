@@ -23,8 +23,8 @@ public final class UserAgent {
     private static final String OPERA_VERSION = "77.0.4054.90";
 
     //Base User agent
-    private static final String BASE_USER_AGENT = MessageUtil.formatMessage("Mozilla/5.0 (%s; %s; %s)",
-            SystemUtil.getFullyOsName(), SystemUtil.getOsVersion(), SystemUtil.getFullyArchCode());
+    private static final String BASE_USER_AGENT = MessageUtil.formatMessage("Mozilla/5.0 (%s; %s; %s; %s)",
+            SystemUtil.getFullyOsName(), SystemUtil.getOsVersion(), SystemUtil.getFullyArchCode(), SystemUtil.LOCALE.toString());
 
     // Predefined User-Agent strings for various tools and browsers
     public static final String USER_AGENT_CURL = "curl/7.64.1";
