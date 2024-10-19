@@ -51,7 +51,7 @@ public final class UserAgent {
      * @return A randomly generated User-Agent string.
      */
     public static String buildUserAgent() {
-        return buildUserAgent(MathUtil.getRandomElement(List.of("chrome", "firefox", "safari", "edge", "opera")));
+        return buildUserAgent(MathUtil.getRandomElement(List.of("chrome", "firefox", "safari", "edge", "opera", "")));
     }
 
     /**
