@@ -2,10 +2,9 @@ package pl.indianbartonka.util;
 
 import java.io.File;
 import java.io.IOException;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class ZipUtilTest {
 
@@ -21,7 +20,7 @@ public class ZipUtilTest {
     @Test
     void testZipFolderExists() {
         final File directory = new File(LOGS_DIR);
-        assertTrue(directory.exists(), "Folder logs powinien istnieć.");
+        Assertions.assertTrue(directory.exists(), "Folder logs powinien istnieć.");
     }
 
     @Test
@@ -29,7 +28,7 @@ public class ZipUtilTest {
         try {
             final File directory = new File(LOGS_DIR);
             final File zipFile = ZipUtil.zipFolder(directory.getPath(), ZIP_FILE_NAME);
-            assertTrue(zipFile.exists(), "Plik zip powinien zostać utworzony.");
+            Assertions.assertTrue(zipFile.exists(), "Plik zip powinien zostać utworzony.");
         } catch (final IOException ioException) {
             //Tu moze byc Odmowa dostepu bo logger uyzwa pliku Logu
             ioException.printStackTrace();
@@ -41,6 +40,6 @@ public class ZipUtilTest {
         final File zipFile = new File(ZIP_FILE_NAME);
         ZipUtil.unzipFile(zipFile.getPath(), UNZIP_DIR, false);
         final File unzippedDir = new File(UNZIP_DIR);
-        assertTrue(unzippedDir.exists(), "Folder po wypakowaniu powinien istnieć.");
+        Assertions.assertTrue(unzippedDir.exists(), "Folder po wypakowaniu powinien istnieć.");
     }
 }

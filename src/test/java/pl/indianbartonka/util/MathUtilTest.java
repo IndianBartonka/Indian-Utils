@@ -2,10 +2,11 @@ package pl.indianbartonka.util;
 
 import java.util.ArrayList;
 import java.util.List;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+
 
 public class MathUtilTest {
 
@@ -17,7 +18,7 @@ public class MathUtilTest {
         list.add("C");
 
         final String result = MathUtil.getRandomElement(list);
-        assertTrue(list.contains(result));
+        Assertions.assertTrue(list.contains(result));
     }
 
     @Test
