@@ -10,8 +10,6 @@ import pl.indianbartonka.util.http.connection.Connection;
 import pl.indianbartonka.util.http.connection.request.Request;
 import pl.indianbartonka.util.http.connection.request.RequestBuilder;
 
-
-
 public class ConnectionTest {
 
     @Test
