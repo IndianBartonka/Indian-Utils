@@ -7,8 +7,11 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
+import java.util.Locale;
 
 public final class SystemUtil {
+
+    public static final Locale LOCALE = Locale.getDefault();
 
     private SystemUtil() {
     }
@@ -37,7 +40,6 @@ public final class SystemUtil {
             case LINUX -> getFullyOsName() + " (" + getLinuxDistribution() + ")";
         };
     }
-
 
     public static String getOsVersion() {
         return System.getProperty("os.version");
