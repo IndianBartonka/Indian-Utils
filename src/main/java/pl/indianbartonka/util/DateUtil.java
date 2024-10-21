@@ -330,6 +330,9 @@ public final class DateUtil {
      * @param millis The time duration in milliseconds.
      * @return The formatted time string.
      */
+
+    //TODO: Dodać w MathUtil też tą adnotacje 
+    @VisibleForTesting
     public static String formatTimeDynamic(final long millis) {
         return formatTimeDynamic(millis, false);
     }
