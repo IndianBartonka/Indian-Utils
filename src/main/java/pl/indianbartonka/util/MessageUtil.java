@@ -39,7 +39,9 @@ public final class MessageUtil {
      * @param args The array of arguments to build the message from.
      * @return The constructed message as a string.
      */
-    public static String buildMessageFromArgs(final String[] args) {
+
+    //TODO: Dodaj adnotację NotEmpty tam gdzie to potrzebne 
+    public static String buildMessageFromArgs(@NotEmpty final String[] args) {
         return buildMessageFromArgs(args, null);
     }
 
