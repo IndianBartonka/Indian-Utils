@@ -5,32 +5,45 @@ import java.io.IOException;
 import javax.crypto.SecretKey;
 import javax.crypto.spec.IvParameterSpec;
 import pl.indianbartonka.util.logger.Logger;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+import org.jetbrains.annotations.CheckReturnValue;
 
 public interface Encryptor {
 
-    EncryptedFile encryptFile(File inputFile, SecretKey key) throws Exception;
+    @NotNull
+    EncryptedFile encryptFile(@NotNull File inputFile, @NotNull SecretKey key) throws Exception;
 
-    File decryptFile(File inputFile, SecretKey key) throws Exception;
+    @NotNull
+    File decryptFile(@NotNull File inputFile, @NotNull SecretKey key);
 
-    String encryptText(String text, SecretKey key) throws Exception;
+    //TODO: Popraw to.i owo związanego z exception i z adnotacjami 
 
-    String decryptText(String encryptedText, SecretKey key) throws Exception;
+    @NotNull
+    String encryptText(@NotNull String text, @NotNull SecretKey key) ;
 
-    void setLogger(Logger logger);
+    @NotNull
+    String decryptText(@NotNull String encryptedText, @NotNull SecretKey key) throws Exception;
 
+    void setLogger(@NotNull Logger logger);
+
+    @NotNull
     IvParameterSpec getIvParameterSpec();
 
-    void setIvParameterSpec(IvParameterSpec ivParameterSpec);
+    void setIvParameterSpec(@NotNull IvParameterSpec ivParameterSpec);
 
+    @NotNull
     String getProvider();
 
-    void setProvider(String provider);
+    void setProvider(@NotNull String provider);
 
+    @NotNull
     String getEncryptedDir();
 
-    void setEncryptedDir(String encryptedDir) throws IOException;
+    void setEncryptedDir(@NotNull String encryptedDir) throws IOException;
 
+    @NotNull
     String getUserDir();
 
-    void setUserDir(String userDir) throws IOException;
+    void setUserDir(@NotNull String userDir) throws IOException;
 }
