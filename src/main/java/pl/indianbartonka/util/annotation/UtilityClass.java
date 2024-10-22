@@ -9,3 +9,4 @@ public @interface UtilityClass {
 }
 
 //TODO: Dodaj tą adnotacje w klasach takich jak ZipUtil.itp aby kod ładniej wygladał
+//Dodaj po skończeniu info/todo żeby kiedyś ta adnotacja robiła coś więcej niż wygladala xD
