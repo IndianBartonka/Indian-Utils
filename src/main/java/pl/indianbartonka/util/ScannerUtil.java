@@ -113,6 +113,8 @@ public final class ScannerUtil {
         return this.scanner.nextLine();
     }
 
+    //TODO: Dodac też getInput używając tam nextint itp a także usunąć na interface ma rzecz "Consumer"
+
     /**
      * Functional interface for handling string responses.
      */
