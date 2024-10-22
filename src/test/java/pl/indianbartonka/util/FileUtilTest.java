@@ -33,20 +33,6 @@ class FileUtilTest {
     }
 
     @Test
-    void testDiskSpaceLogging() {
-        final long availableSpace = FileUtil.availableDiskSpace();
-        final long usedSpace = FileUtil.usedDiskSpace();
-        final long maxSpace = FileUtil.maxDiskSpace();
-
-        System.out.println("Dostępne: " + MathUtil.formatBytesDynamic(availableSpace, false));
-        System.out.println("Użyte: " + MathUtil.formatBytesDynamic(usedSpace, false));
-        System.out.println("Maksymalne: " + MathUtil.formatBytesDynamic(maxSpace, false));
-
-        Assertions.assertTrue(availableSpace >= 0);
-        Assertions.assertTrue(usedSpace >= 0);
-    }
-
-    @Test
     void testWriteTextCreatesFile() throws IOException {
         FileUtil.writeText(this.testFile, Arrays.asList("Hello", "World"));
         Assertions.assertTrue(this.testFile.exists());

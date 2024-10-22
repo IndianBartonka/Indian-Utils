@@ -1,6 +1,7 @@
 package pl.indianbartonka.util.system;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.nio.file.Files;
@@ -14,6 +15,7 @@ import pl.indianbartonka.util.annotation.UtilityClass;
 public final class SystemUtil {
 
     public static final Locale LOCALE = Locale.getDefault();
+    private static final File FILE = new File(File.separator);
 
     private SystemUtil() {
     }
@@ -74,7 +76,7 @@ public final class SystemUtil {
         } catch (final IOException ignored) {
         }
 
-        return "Nieznana";
+        return "Unknown";
     }
 
     public static long getRamUsageByPid(final long pid) throws IOException {
@@ -84,6 +86,18 @@ public final class SystemUtil {
             default ->
                     throw new UnsupportedOperationException("Nie można pozyskać ilość ram dla nie wspieranego systemu");
         };
+    }
+
+    public static long availableDiskSpace() {
+        return (FILE.exists() ? FILE.getUsableSpace() : 0);
+    }
+
+    public static long maxDiskSpace() {
+        return (FILE.exists() ? FILE.getTotalSpace() : 0);
+    }
+
+    public static long usedDiskSpace() {
+        return (maxDiskSpace() - availableDiskSpace());
     }
 
     private static long getMemoryUsageWindows(final long pid) throws IOException {

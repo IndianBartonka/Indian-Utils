@@ -21,7 +21,6 @@ import java.util.stream.Stream;
 
 public final class FileUtil {
 
-    private static final File FILE = new File(File.separator);
     private static final FileExtensionMap FILE_EXTENSION_MAP = new FileExtensionMap();
     private static final Map<String, String> EXTENSIONS_MAP = FILE_EXTENSION_MAP.getExtensionsMap();
 
@@ -54,18 +53,6 @@ public final class FileUtil {
 
     public static void writeText(final File file, final List<String> lines) throws IOException {
         writeText(file, lines, true);
-    }
-
-    public static long availableDiskSpace() {
-        return (FILE.exists() ? FILE.getUsableSpace() : 0);
-    }
-
-    public static long maxDiskSpace() {
-        return (FILE.exists() ? FILE.getTotalSpace() : 0);
-    }
-
-    public static long usedDiskSpace() {
-        return (maxDiskSpace() - availableDiskSpace());
     }
 
     public static boolean canExecute(final String filePath) {

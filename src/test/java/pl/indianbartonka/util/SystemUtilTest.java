@@ -1,12 +1,16 @@
 package pl.indianbartonka.util;
 
 import java.io.IOException;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import pl.indianbartonka.util.system.SystemArch;
 import pl.indianbartonka.util.system.SystemOS;
 import pl.indianbartonka.util.system.SystemUtil;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class SystemUtilTest {
 
@@ -14,7 +18,7 @@ public class SystemUtilTest {
     void testGetSystem() {
         final SystemOS os = SystemUtil.getSystem();
         assertNotNull(os);
-        assertTrue(os == SystemOS.WINDOWS || os == SystemOS.LINUX || os == SystemOS.MAC || os == SystemOS.UNSUPPORTED);
+        assertTrue(os == SystemOS.WINDOWS || os == SystemOS.LINUX || os == SystemOS.MAC);
     }
 
     @Test
@@ -58,7 +62,7 @@ public class SystemUtilTest {
             assertNotNull(distribution);
             assertFalse(distribution.isEmpty());
         } else {
-            assertEquals("Nieznana", distribution);
+            assertEquals("Unknown", distribution);
         }
     }
 
@@ -67,5 +71,19 @@ public class SystemUtilTest {
         final long pid = ProcessHandle.current().pid(); // Get current process ID
         final long ramUsage = SystemUtil.getRamUsageByPid(pid);
         assertTrue(ramUsage >= 0); // RAM usage should be non-negative
+    }
+
+    @Test
+    void testDiskSpaceLogging() {
+        final long availableSpace = SystemUtil.availableDiskSpace();
+        final long usedSpace = SystemUtil.usedDiskSpace();
+        final long maxSpace = SystemUtil.maxDiskSpace();
+
+        System.out.println("Dostępne: " + MathUtil.formatBytesDynamic(availableSpace, false));
+        System.out.println("Użyte: " + MathUtil.formatBytesDynamic(usedSpace, false));
+        System.out.println("Maksymalne: " + MathUtil.formatBytesDynamic(maxSpace, false));
+
+        Assertions.assertTrue(availableSpace >= 0);
+        Assertions.assertTrue(usedSpace >= 0);
     }
 }
