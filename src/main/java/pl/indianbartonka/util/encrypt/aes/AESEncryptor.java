@@ -22,6 +22,8 @@ import org.jetbrains.annotations.NotNull;
 import pl.indianbartonka.util.BufferUtil;
 import pl.indianbartonka.util.encrypt.EncryptedFile;
 import pl.indianbartonka.util.encrypt.Encryptor;
+import pl.indianbartonka.util.exception.DecryptException;
+import pl.indianbartonka.util.exception.EncryptException;
 import pl.indianbartonka.util.file.FileUtil;
 import pl.indianbartonka.util.logger.Logger;
 
@@ -49,23 +51,35 @@ public final class AESEncryptor implements Encryptor {
     }
 
     @Override
-    public  EncryptedFile encryptFile(final @NotNull File inputFile, final @NotNull SecretKey key) throws NoSuchAlgorithmException, InvalidKeyException, InvalidAlgorithmParameterException, NoSuchPaddingException, NoSuchProviderException, IOException {
-        final File encryptedFile = new File(this.encryptedDir, inputFile.getName());
-        final Cipher cipher = AESSettings.createCipher(this.aesMode, this.aesPadding, key, this.ivParameterSpec, this.provider, true);
-        if (this.logger != null) this.logger.debug("Szyfrowanie pliku: " + inputFile.getPath());
-        this.processFile(cipher, inputFile, encryptedFile);
-        if (this.logger != null) this.logger.debug("Zszyfrowna plik " + encryptedFile.getPath());
-        return new EncryptedFile(System.currentTimeMillis(), inputFile.length(), encryptedFile, "AES");
+    public EncryptedFile encryptFile(final @NotNull File inputFile, final @NotNull SecretKey key) throws EncryptException {
+        try {
+            // Append .aes extension to the encrypted file
+            final File encryptedFile = new File(this.encryptedDir, inputFile.getName() + ".aes");
+            final Cipher cipher = AESSettings.createCipher(this.aesMode, this.aesPadding, key, this.ivParameterSpec, this.provider, true);
+            if (this.logger != null) this.logger.debug("Encrypting file: " + inputFile.getPath());
+            this.processFile(cipher, inputFile, encryptedFile);
+            if (this.logger != null) this.logger.debug("Encrypted file created: " + encryptedFile.getPath());
+            return new EncryptedFile(System.currentTimeMillis(), inputFile.length(), encryptedFile, "AES");
+        } catch (final IOException | InvalidAlgorithmParameterException | NoSuchPaddingException |
+                       NoSuchAlgorithmException | InvalidKeyException | NoSuchProviderException exception) {
+            throw new EncryptException("An error occurred while encrypting the file " + inputFile.getName(), exception);
+        }
     }
 
     @Override
-    public  File decryptFile(final @NotNull File inputFile, final @NotNull SecretKey key) throws NoSuchAlgorithmException, InvalidKeyException, InvalidAlgorithmParameterException, NoSuchPaddingException, NoSuchProviderException, IOException {
-        final File decryptedFile = new File(this.userDir, inputFile.getName());
-        final Cipher cipher = AESSettings.createCipher(this.aesMode, this.aesPadding, key, this.ivParameterSpec, this.provider, false);
-        if (this.logger != null) this.logger.debug("Odszyfrowanie pliku: " + inputFile.getPath());
-        this.processFile(cipher, inputFile, decryptedFile);
-        if (this.logger != null) this.logger.debug("Odszyfrowna plik " + inputFile.getPath());
-        return decryptedFile;
+    public File decryptFile(final @NotNull File inputFile, final @NotNull SecretKey key) throws DecryptException {
+        try {
+            // Create decrypted file without .aes extension
+            final File decryptedFile = new File(this.userDir, inputFile.getName().replace(".aes", ""));
+            final Cipher cipher = AESSettings.createCipher(this.aesMode, this.aesPadding, key, this.ivParameterSpec, this.provider, false);
+            if (this.logger != null) this.logger.debug("Decrypting file: " + inputFile.getPath());
+            this.processFile(cipher, inputFile, decryptedFile);
+            if (this.logger != null) this.logger.debug("Decrypted file created: " + decryptedFile.getPath());
+            return decryptedFile;
+        } catch (final IOException | InvalidAlgorithmParameterException | NoSuchPaddingException |
+                       NoSuchAlgorithmException | InvalidKeyException | NoSuchProviderException exception) {
+            throw new DecryptException("An error occurred while decrypting the file " + inputFile.getName(), exception);
+        }
     }
 
     private void processFile(final Cipher cipher, final File inputFile, final File outputFile) throws IOException {
@@ -83,18 +97,31 @@ public final class AESEncryptor implements Encryptor {
     }
 
     @Override
-    public String encryptText(final @NotNull String text, final @NotNull SecretKey key) throws NoSuchAlgorithmException, InvalidKeyException, IllegalBlockSizeException, BadPaddingException, InvalidAlgorithmParameterException, NoSuchPaddingException, NoSuchProviderException {
-        final Cipher cipher = AESSettings.createCipher(this.aesMode, this.aesPadding, key, this.ivParameterSpec, this.provider, true);
-        final byte[] encryptedBytes = cipher.doFinal(text.getBytes());
-        return Base64.getEncoder().encodeToString(encryptedBytes);
+    public String encryptText(final @NotNull String text, final @NotNull SecretKey key) throws EncryptException {
+        try {
+            final Cipher cipher = AESSettings.createCipher(this.aesMode, this.aesPadding, key, this.ivParameterSpec, this.provider, true);
+            final byte[] encryptedBytes = cipher.doFinal(text.getBytes());
+            return Base64.getEncoder().encodeToString(encryptedBytes);
+
+        } catch (final InvalidAlgorithmParameterException | NoSuchPaddingException | NoSuchAlgorithmException |
+                       InvalidKeyException | NoSuchProviderException | IllegalBlockSizeException |
+                       BadPaddingException exception) {
+            throw new EncryptException("An error occurred while encrypting the text " + text, exception);
+        }
     }
 
     @Override
-    public String decryptText(final @NotNull String encryptedText, final @NotNull SecretKey key) throws NoSuchAlgorithmException, InvalidKeyException, IllegalBlockSizeException, BadPaddingException, InvalidAlgorithmParameterException, NoSuchPaddingException, NoSuchProviderException {
-        final Cipher cipher = AESSettings.createCipher(this.aesMode, this.aesPadding, key, this.ivParameterSpec, this.provider, false);
-        final byte[] decodedBytes = Base64.getDecoder().decode(encryptedText);
-        final byte[] decryptedBytes = cipher.doFinal(decodedBytes);
-        return new String(decryptedBytes);
+    public String decryptText(final @NotNull String encryptedText, final @NotNull SecretKey key) throws DecryptException {
+        try {
+            final Cipher cipher = AESSettings.createCipher(this.aesMode, this.aesPadding, key, this.ivParameterSpec, this.provider, false);
+            final byte[] decodedBytes = Base64.getDecoder().decode(encryptedText);
+            final byte[] decryptedBytes = cipher.doFinal(decodedBytes);
+            return new String(decryptedBytes);
+        } catch (final InvalidAlgorithmParameterException | NoSuchPaddingException | NoSuchAlgorithmException |
+                       InvalidKeyException | NoSuchProviderException | IllegalBlockSizeException |
+                       BadPaddingException exception) {
+            throw new DecryptException("An error occurred while decrypting the text " + encryptedText, exception);
+        }
     }
 
     @Override

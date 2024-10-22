@@ -2,23 +2,22 @@ package pl.indianbartonka.util.encrypt;
 
 import java.io.File;
 import java.io.IOException;
-import java.security.NoSuchAlgorithmException;
 import javax.crypto.SecretKey;
 import javax.crypto.spec.IvParameterSpec;
 import org.jetbrains.annotations.NotNull;
+import pl.indianbartonka.util.exception.DecryptException;
+import pl.indianbartonka.util.exception.EncryptException;
 import pl.indianbartonka.util.logger.Logger;
 
 public interface Encryptor {
 
-    EncryptedFile encryptFile(@NotNull File inputFile, @NotNull SecretKey key) throws Exception;
+    EncryptedFile encryptFile(@NotNull File inputFile, @NotNull SecretKey key) throws EncryptException;
 
-    File decryptFile(@NotNull File inputFile, @NotNull SecretKey key) throws NoSuchAlgorithmException;
+    File decryptFile(@NotNull File inputFile, @NotNull SecretKey key) throws DecryptException;
 
-    //TODO: Popraw to.i owo związanego z exception i z adnotacjami 
+    String encryptText(@NotNull String text, @NotNull SecretKey key) throws EncryptException;
 
-    String encryptText(@NotNull String text, @NotNull SecretKey key) ;
-
-    String decryptText(@NotNull String encryptedText, @NotNull SecretKey key) throws Exception;
+    String decryptText(@NotNull String encryptedText, @NotNull SecretKey key) throws DecryptException;
 
     void setLogger(@NotNull Logger logger);
 
