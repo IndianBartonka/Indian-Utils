@@ -7,30 +7,31 @@ import java.net.DatagramSocket;
 import java.net.InetAddress;
 
 /**
-
-Copyright (c) 2023 Justin
-
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
-
- * Kod zaczerpnięty z
- * <a href="https://github.com/justin-eckenweber/BedrockServerQuery/blob/main/src/main/java/me/justin/bedrockserverquery/data/BedrockQuery.java">...</a>
+ * <p><b>Copyright (c) 2023 Justin</b></p>
+ * <p>Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:</p>
+ *
+ * <p>The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.</p>
+ *
+ * <p>THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.</p>
+ * <br> <br>
+ * <p>Code adapted from
+ * <a href="https://github.com/justin-eckenweber/BedrockServerQuery/blob/main/src/main/java/me/justin/bedrockserverquery/data/BedrockQuery.java">BedrockServerQuery</a>
+ * </p>
+ * Documents written by ChatGPT
  */
+
 public record BedrockQuery(String serverAddress, String hostAddress, boolean online, long responseTime, String edition,
                            String motd, int protocol,
                            String minecraftVersion,
@@ -48,6 +49,13 @@ public record BedrockQuery(String serverAddress, String hostAddress, boolean onl
 
     private static long dialerId = MathUtil.RANDOM.nextLong();
 
+    /**
+     * Creates a new {@code BedrockQuery} instance by sending a query to the specified server address and port.
+     *
+     * @param serverAddress the address of the Bedrock server to query
+     * @param port          the port of the Bedrock server to query
+     * @return a {@code BedrockQuery} instance containing the server details, or an offline instance if an error occurs
+     */
     public static BedrockQuery create(final String serverAddress, final int port) {
         try {
             final InetAddress address = InetAddress.getByName(serverAddress);
