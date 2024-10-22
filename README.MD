@@ -12,6 +12,10 @@ Utile używane w różnych projektach przez Indiana
 
 **Java**: 17+
 
+//TODO: Wystylizuj to tam jakoś 
+### Webhook Client
+ **Gson** 2.11.0
+
 # Przy projekcie pomagali
 
 ![Wykres kontrybucji](https://contrib.rocks/image?repo=IndianBartonka/Indian-Utils)
