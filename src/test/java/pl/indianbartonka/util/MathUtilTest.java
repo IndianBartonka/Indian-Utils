@@ -22,26 +22,13 @@ public class MathUtilTest {
 
     @Test
     void testKilobytesToMb() {
-        assertEquals(1, MathUtil.getRemainingMegabytesFromKilobytes(1024));
-        assertEquals(0, MathUtil.getRemainingMegabytesFromKilobytes(512));
-    }
-
-    @Test
-    void testKilobytesToGb() {
-        assertEquals(1, MathUtil.getRemainingGigabytesFromKilobytes(1024 * 1024));
-        assertEquals(0, MathUtil.getRemainingGigabytesFromKilobytes(512 * 1024));
+        assertEquals(1, MathUtil.getRemainingMegabytesFromTotalKilobytes(1024));
     }
 
     @Test
     void testFormatKilobytesDynamic() {
         assertEquals("1 MB", MathUtil.formatKilobytesDynamic(1024, true));
         assertEquals("1 kilobajtów", MathUtil.formatBytesDynamic(1024, false));
-    }
-
-    @Test
-    void testBytesToKb() {
-        assertEquals(1, MathUtil.getRemainingKilobytesFromBytes(1024));
-        assertEquals(0, MathUtil.getRemainingKilobytesFromBytes(512));
     }
 
     @Test

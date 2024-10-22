@@ -86,68 +86,6 @@ public final class MathUtil {
         return Math.max(min, Math.min(max, number));
     }
 
-    // Data conversion methods
-
-    /**
-     * Converts kilobytes to megabytes.
-     *
-     * @param kilobytes The number of kilobytes.
-     * @return The equivalent number of megabytes.
-     */
-    public static long getRemainingMegabytesFromKilobytes(final long kilobytes) {
-        return kilobytes / 1024;
-    }
-
-    /**
-     * Converts kilobytes to gigabytes.
-     *
-     * @param kilobytes The number of kilobytes.
-     * @return The equivalent number of gigabytes.
-     */
-    public static long getRemainingGigabytesFromKilobytes(final long kilobytes) {
-        return kilobytes / (1024 * 1024);
-    }
-
-    /**
-     * Converts kilobytes to bytes.
-     *
-     * @param kilobytes The number of kilobytes.
-     * @return The equivalent number of bytes.
-     */
-    public static long getBytesFromKilobytes(final long kilobytes) {
-        return kilobytes * 1024;
-    }
-
-    /**
-     * Converts bytes to kilobytes.
-     *
-     * @param bytes The number of bytes.
-     * @return The equivalent number of kilobytes.
-     */
-    public static long getRemainingKilobytesFromBytes(final long bytes) {
-        return bytes / 1024;
-    }
-
-    /**
-     * Converts bytes to megabytes.
-     *
-     * @param bytes The number of bytes.
-     * @return The equivalent number of megabytes.
-     */
-    public static long getRemainingMegabytesFromBytes(final long bytes) {
-        return bytes / (1024 * 1024);
-    }
-
-    /**
-     * Converts bytes to gigabytes.
-     *
-     * @param bytes The number of bytes.
-     * @return The equivalent number of gigabytes.
-     */
-    public static long getRemainingGigabytesFromBytes(final long bytes) {
-        return bytes / (1024 * 1024 * 1024);
-    }
-
     // Methods to extract remaining units
 
     /**
@@ -225,7 +163,7 @@ public final class MathUtil {
         if (kilobytes == 0) return "N/A";
 
         final List<Character> unitsPattern = new ArrayList<>();
-        final long gb = getRemainingGigabytesFromKilobytes(kilobytes);
+        final long gb = getRemainingGigabytesFromTotalKilobytes(kilobytes);
         final long mb = getRemainingMegabytesFromTotalKilobytes(kilobytes);
 
         if (gb > 0) unitsPattern.add('g');

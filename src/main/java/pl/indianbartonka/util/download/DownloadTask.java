@@ -9,6 +9,7 @@ import org.jetbrains.annotations.Nullable;
 import pl.indianbartonka.util.BufferUtil;
 import pl.indianbartonka.util.DateUtil;
 import pl.indianbartonka.util.MathUtil;
+import pl.indianbartonka.util.MemoryUnit;
 
 public class DownloadTask {
 
@@ -84,7 +85,7 @@ public class DownloadTask {
                     final int progress = Math.round((float) totalBytesRead / (float) this.fileSize * 100.0f);
 
                     final double formatedSpeed = MathUtil.formatDecimal(speedMBps, 3);
-                    final long remainingTimeSeconds = (long) (MathUtil.getRemainingMegabytesFromBytes(this.fileSize) / formatedSpeed);
+                    final long remainingTimeSeconds = (long) (MemoryUnit.MEGABYTES.from(this.fileSize, MemoryUnit.BYTES) / formatedSpeed);
                     final String remainingTimeString = DateUtil.formatTimeDynamic(remainingTimeSeconds * 1000, true);
 
                     if (this.downloadListener != null) {
