@@ -1,4 +1,4 @@
-package pl.indianbartonka.util.exception;
+package pl.indianbartonka.util.exception.encryption;
 
 public class DecryptException extends Exception{
 

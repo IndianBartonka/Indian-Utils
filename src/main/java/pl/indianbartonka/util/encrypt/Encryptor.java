@@ -5,8 +5,8 @@ import java.io.IOException;
 import javax.crypto.SecretKey;
 import javax.crypto.spec.IvParameterSpec;
 import org.jetbrains.annotations.NotNull;
-import pl.indianbartonka.util.exception.DecryptException;
-import pl.indianbartonka.util.exception.EncryptException;
+import pl.indianbartonka.util.exception.encryption.DecryptException;
+import pl.indianbartonka.util.exception.encryption.EncryptException;
 import pl.indianbartonka.util.logger.Logger;
 
 public interface Encryptor {

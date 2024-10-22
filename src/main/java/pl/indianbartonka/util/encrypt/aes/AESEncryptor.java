@@ -22,8 +22,8 @@ import org.jetbrains.annotations.NotNull;
 import pl.indianbartonka.util.BufferUtil;
 import pl.indianbartonka.util.encrypt.EncryptedFile;
 import pl.indianbartonka.util.encrypt.Encryptor;
-import pl.indianbartonka.util.exception.DecryptException;
-import pl.indianbartonka.util.exception.EncryptException;
+import pl.indianbartonka.util.exception.encryption.DecryptException;
+import pl.indianbartonka.util.exception.encryption.EncryptException;
 import pl.indianbartonka.util.file.FileUtil;
 import pl.indianbartonka.util.logger.Logger;
 
