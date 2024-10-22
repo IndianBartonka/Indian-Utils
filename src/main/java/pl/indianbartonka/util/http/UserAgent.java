@@ -4,6 +4,7 @@ import java.util.List;
 import pl.indianbartonka.util.IndianUtils;
 import pl.indianbartonka.util.MathUtil;
 import pl.indianbartonka.util.MessageUtil;
+import pl.indianbartonka.util.annotation.UtilityClass;
 import pl.indianbartonka.util.system.SystemUtil;
 
 /**
@@ -13,6 +14,8 @@ import pl.indianbartonka.util.system.SystemUtil;
  * Documents written by ChatGPT
  * </p>
  */
+
+@UtilityClass
 public final class UserAgent {
 
     // Browser version strings

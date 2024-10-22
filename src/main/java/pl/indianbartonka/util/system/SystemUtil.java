@@ -8,7 +8,9 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
 import java.util.Locale;
+import pl.indianbartonka.util.annotation.UtilityClass;
 
+@UtilityClass
 public final class SystemUtil {
 
     public static final Locale LOCALE = Locale.getDefault();

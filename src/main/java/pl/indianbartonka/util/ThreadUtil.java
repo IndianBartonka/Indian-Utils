@@ -4,6 +4,7 @@ import java.lang.management.ManagementFactory;
 import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.atomic.AtomicInteger;
 import org.jetbrains.annotations.NotNull;
+import pl.indianbartonka.util.annotation.UtilityClass;
 import pl.indianbartonka.util.exception.ThreadException;
 
 /**
@@ -14,6 +15,8 @@ import pl.indianbartonka.util.exception.ThreadException;
  * Documents written by ChatGPT
  * </p>
  */
+
+@UtilityClass
 public final class ThreadUtil implements ThreadFactory {
 
     private final String threadName;

@@ -11,6 +11,7 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 import java.util.zip.ZipOutputStream;
 import org.jetbrains.annotations.Nullable;
+import pl.indianbartonka.util.annotation.UtilityClass;
 import pl.indianbartonka.util.file.FileUtil;
 import pl.indianbartonka.util.logger.Logger;
 
@@ -23,6 +24,7 @@ import pl.indianbartonka.util.logger.Logger;
  * Documents written by ChatGPT
  * </p>
  */
+@UtilityClass
 public final class ZipUtil {
 
     private static Logger logger;
@@ -275,3 +277,4 @@ public final class ZipUtil {
         }
     }
 }
+

@@ -4,7 +4,9 @@ import java.awt.Color;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.TreeMap;
+import pl.indianbartonka.util.annotation.UtilityClass;
 
+@UtilityClass
 public final class AnsiColor {
 
     /**

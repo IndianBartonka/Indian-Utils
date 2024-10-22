@@ -4,11 +4,13 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.EnumSet;
 import java.util.List;
+import pl.indianbartonka.util.annotation.UtilityClass;
 
 /**
  * The MessageUtil class provides utility methods for generating messages,
  * formatting strings, manipulating arguments, and converting data types.
  */
+@UtilityClass
 public final class MessageUtil {
 
     private static final String CHARS_STRING = "qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM123456789@#*";
@@ -39,9 +41,7 @@ public final class MessageUtil {
      * @param args The array of arguments to build the message from.
      * @return The constructed message as a string.
      */
-
-    //TODO: Dodaj adnotację NotEmpty tam gdzie to potrzebne 
-    public static String buildMessageFromArgs(@NotEmpty final String[] args) {
+    public static String buildMessageFromArgs(final String[] args) {
         return buildMessageFromArgs(args, null);
     }
 

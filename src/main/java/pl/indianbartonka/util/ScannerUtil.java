@@ -1,6 +1,7 @@
 package pl.indianbartonka.util;
 
 import java.util.Scanner;
+import pl.indianbartonka.util.annotation.UtilityClass;
 
 /**
  * <p>
@@ -11,6 +12,8 @@ import java.util.Scanner;
  * Documents written by ChatGPT
  * </p>
  */
+
+@UtilityClass
 public final class ScannerUtil {
 
     private final Scanner scanner;

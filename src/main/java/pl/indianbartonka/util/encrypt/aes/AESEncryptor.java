@@ -18,6 +18,7 @@ import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
 import javax.crypto.SecretKey;
 import javax.crypto.spec.IvParameterSpec;
+import org.jetbrains.annotations.NotNull;
 import pl.indianbartonka.util.BufferUtil;
 import pl.indianbartonka.util.encrypt.EncryptedFile;
 import pl.indianbartonka.util.encrypt.Encryptor;
@@ -48,7 +49,7 @@ public final class AESEncryptor implements Encryptor {
     }
 
     @Override
-    public EncryptedFile encryptFile(final File inputFile, final SecretKey key) throws NoSuchAlgorithmException, InvalidKeyException, InvalidAlgorithmParameterException, NoSuchPaddingException, NoSuchProviderException, IOException {
+    public  EncryptedFile encryptFile(final @NotNull File inputFile, final @NotNull SecretKey key) throws NoSuchAlgorithmException, InvalidKeyException, InvalidAlgorithmParameterException, NoSuchPaddingException, NoSuchProviderException, IOException {
         final File encryptedFile = new File(this.encryptedDir, inputFile.getName());
         final Cipher cipher = AESSettings.createCipher(this.aesMode, this.aesPadding, key, this.ivParameterSpec, this.provider, true);
         if (this.logger != null) this.logger.debug("Szyfrowanie pliku: " + inputFile.getPath());
@@ -58,7 +59,7 @@ public final class AESEncryptor implements Encryptor {
     }
 
     @Override
-    public File decryptFile(final File inputFile, final SecretKey key) throws NoSuchAlgorithmException, InvalidKeyException, InvalidAlgorithmParameterException, NoSuchPaddingException, NoSuchProviderException, IOException {
+    public  File decryptFile(final @NotNull File inputFile, final @NotNull SecretKey key) throws NoSuchAlgorithmException, InvalidKeyException, InvalidAlgorithmParameterException, NoSuchPaddingException, NoSuchProviderException, IOException {
         final File decryptedFile = new File(this.userDir, inputFile.getName());
         final Cipher cipher = AESSettings.createCipher(this.aesMode, this.aesPadding, key, this.ivParameterSpec, this.provider, false);
         if (this.logger != null) this.logger.debug("Odszyfrowanie pliku: " + inputFile.getPath());
@@ -82,14 +83,14 @@ public final class AESEncryptor implements Encryptor {
     }
 
     @Override
-    public String encryptText(final String text, final SecretKey key) throws NoSuchAlgorithmException, InvalidKeyException, IllegalBlockSizeException, BadPaddingException, InvalidAlgorithmParameterException, NoSuchPaddingException, NoSuchProviderException {
+    public String encryptText(final @NotNull String text, final @NotNull SecretKey key) throws NoSuchAlgorithmException, InvalidKeyException, IllegalBlockSizeException, BadPaddingException, InvalidAlgorithmParameterException, NoSuchPaddingException, NoSuchProviderException {
         final Cipher cipher = AESSettings.createCipher(this.aesMode, this.aesPadding, key, this.ivParameterSpec, this.provider, true);
         final byte[] encryptedBytes = cipher.doFinal(text.getBytes());
         return Base64.getEncoder().encodeToString(encryptedBytes);
     }
 
     @Override
-    public String decryptText(final String encryptedText, final SecretKey key) throws NoSuchAlgorithmException, InvalidKeyException, IllegalBlockSizeException, BadPaddingException, InvalidAlgorithmParameterException, NoSuchPaddingException, NoSuchProviderException {
+    public String decryptText(final @NotNull String encryptedText, final @NotNull SecretKey key) throws NoSuchAlgorithmException, InvalidKeyException, IllegalBlockSizeException, BadPaddingException, InvalidAlgorithmParameterException, NoSuchPaddingException, NoSuchProviderException {
         final Cipher cipher = AESSettings.createCipher(this.aesMode, this.aesPadding, key, this.ivParameterSpec, this.provider, false);
         final byte[] decodedBytes = Base64.getDecoder().decode(encryptedText);
         final byte[] decryptedBytes = cipher.doFinal(decodedBytes);
@@ -97,7 +98,7 @@ public final class AESEncryptor implements Encryptor {
     }
 
     @Override
-    public void setLogger(final Logger logger) {
+    public void setLogger(final @NotNull Logger logger) {
         if (this.logger == null) this.logger = logger.prefixed("AESEncryptor");
     }
 
@@ -115,7 +116,7 @@ public final class AESEncryptor implements Encryptor {
     }
 
     @Override
-    public void setIvParameterSpec(final IvParameterSpec ivParameterSpec) {
+    public void setIvParameterSpec(final @NotNull IvParameterSpec ivParameterSpec) {
         this.ivParameterSpec = ivParameterSpec;
     }
 
@@ -125,7 +126,7 @@ public final class AESEncryptor implements Encryptor {
     }
 
     @Override
-    public void setProvider(final String provider) {
+    public void setProvider(final @NotNull String provider) {
         this.provider = provider;
     }
 
@@ -148,7 +149,7 @@ public final class AESEncryptor implements Encryptor {
     }
 
     @Override
-    public void setEncryptedDir(final String encryptedDir) throws IOException {
+    public void setEncryptedDir(final @NotNull String encryptedDir) throws IOException {
         this.encryptedDir = encryptedDir;
 
         Files.createDirectories(Path.of(encryptedDir));
@@ -160,7 +161,7 @@ public final class AESEncryptor implements Encryptor {
     }
 
     @Override
-    public void setUserDir(final String userDir) throws IOException {
+    public void setUserDir(final @NotNull String userDir) throws IOException {
         this.userDir = userDir;
 
         Files.createDirectories(Path.of(userDir));

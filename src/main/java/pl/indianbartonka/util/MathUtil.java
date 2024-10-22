@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Random;
+import pl.indianbartonka.util.annotation.UtilityClass;
 
 /**
  * <p>
@@ -17,6 +18,8 @@ import java.util.Random;
  * Documents written by ChatGPT
  * </p>
  */
+
+@UtilityClass
 public final class MathUtil {
 
     /**

@@ -2,7 +2,9 @@ package pl.indianbartonka.util;
 
 import com.sun.management.OperatingSystemMXBean;
 import java.lang.management.ManagementFactory;
+import pl.indianbartonka.util.annotation.UtilityClass;
 
+@UtilityClass
 public final class BufferUtil {
 
     private static int MIN_BUFFER = 4_09;

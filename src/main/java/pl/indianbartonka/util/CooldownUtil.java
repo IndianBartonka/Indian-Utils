@@ -1,12 +1,12 @@
 package pl.indianbartonka.util;
 
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
-
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.TimeUnit;
+import org.jetbrains.annotations.NotNull;
+import pl.indianbartonka.util.annotation.UtilityClass;
 
+@UtilityClass
 public final class CooldownUtil {
 
     private static final Map<String, Long> COOLDOWN = new ConcurrentHashMap<>();
