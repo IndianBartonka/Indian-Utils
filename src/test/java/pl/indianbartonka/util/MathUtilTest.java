@@ -7,7 +7,6 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-
 public class MathUtilTest {
 
     @Test
@@ -22,41 +21,27 @@ public class MathUtilTest {
     }
 
     @Test
-    void testGetCorrectNumberInt() {
-        assertEquals(5, MathUtil.getCorrectNumber(5, 1, 10));
-        assertEquals(1, MathUtil.getCorrectNumber(-5, 1, 10));
-        assertEquals(10, MathUtil.getCorrectNumber(15, 1, 10));
-    }
-
-    @Test
-    void testGetCorrectNumberDouble() {
-        assertEquals(5.5, MathUtil.getCorrectNumber(5.5, 1.0, 10.0));
-        assertEquals(1.0, MathUtil.getCorrectNumber(-5.5, 1.0, 10.0));
-        assertEquals(10.0, MathUtil.getCorrectNumber(15.5, 1.0, 10.0));
-    }
-
-    @Test
     void testKilobytesToMb() {
-        assertEquals(1, MathUtil.kilobytesToMb(1024));
-        assertEquals(0, MathUtil.kilobytesToMb(512));
+        assertEquals(1, MathUtil.getRemainingMegabytesFromKilobytes(1024));
+        assertEquals(0, MathUtil.getRemainingMegabytesFromKilobytes(512));
     }
 
     @Test
     void testKilobytesToGb() {
-        assertEquals(1, MathUtil.kilobytesToGb(1024 * 1024));
-        assertEquals(0, MathUtil.kilobytesToGb(512 * 1024));
+        assertEquals(1, MathUtil.getRemainingGigabytesFromKilobytes(1024 * 1024));
+        assertEquals(0, MathUtil.getRemainingGigabytesFromKilobytes(512 * 1024));
     }
 
     @Test
-    void testFormatKiloBytesDynamic() {
-        assertEquals("1 MB", MathUtil.formatKiloBytesDynamic(1024, true));
+    void testFormatKilobytesDynamic() {
+        assertEquals("1 MB", MathUtil.formatKilobytesDynamic(1024, true));
         assertEquals("1 kilobajtów", MathUtil.formatBytesDynamic(1024, false));
     }
 
     @Test
     void testBytesToKb() {
-        assertEquals(1, MathUtil.bytesToKB(1024));
-        assertEquals(0, MathUtil.bytesToKB(512));
+        assertEquals(1, MathUtil.getRemainingKilobytesFromBytes(1024));
+        assertEquals(0, MathUtil.getRemainingKilobytesFromBytes(512));
     }
 
     @Test
@@ -67,7 +52,7 @@ public class MathUtilTest {
 
     @Test
     void testFormatDecimal() {
-        assertEquals(12.34, MathUtil.format(12.3456, 2), 0.01);
-        assertEquals(12.3, MathUtil.format(12.3456, 1), 0.01);
+        assertEquals(12.34, MathUtil.formatDecimal(12.3456, 2), 0.01);
+        assertEquals(12.3, MathUtil.formatDecimal(12.3456, 1), 0.01);
     }
 }

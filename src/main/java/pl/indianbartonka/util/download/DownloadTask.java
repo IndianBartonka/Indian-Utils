@@ -83,8 +83,8 @@ public class DownloadTask {
 
                     final int progress = Math.round((float) totalBytesRead / (float) this.fileSize * 100.0f);
 
-                    final double formatedSpeed = MathUtil.format(speedMBps, 3);
-                    final long remainingTimeSeconds = (long) (MathUtil.bytesToMB(this.fileSize) / formatedSpeed);
+                    final double formatedSpeed = MathUtil.formatDecimal(speedMBps, 3);
+                    final long remainingTimeSeconds = (long) (MathUtil.getRemainingMegabytesFromBytes(this.fileSize) / formatedSpeed);
                     final String remainingTimeString = DateUtil.formatTimeDynamic(remainingTimeSeconds * 1000, true);
 
                     if (this.downloadListener != null) {

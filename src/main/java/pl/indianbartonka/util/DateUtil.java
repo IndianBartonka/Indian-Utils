@@ -10,6 +10,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
+import org.jetbrains.annotations.VisibleForTesting;
 import pl.indianbartonka.util.annotation.UtilityClass;
 
 /**
@@ -56,10 +57,6 @@ public final class DateUtil {
     public static final ZoneId VILNIUS_ZONE = ZoneId.of("Europe/Vilnius");
     public static final ZoneId TALLINN_ZONE = ZoneId.of("Europe/Tallinn");
     public static final ZoneId RIGA_ZONE = ZoneId.of("Europe/Riga");
-    /**
-     * Map for storing time unit strings.
-     */
-    private static final Map<Character, String> UNIT_MAP = new HashMap<>();
     /**
      * The time zone used for date and time operations.
      */
@@ -276,12 +273,12 @@ public final class DateUtil {
     }
 
     /**
-     * Calculates the number of days in a given time duration in milliseconds.
+     * Calculates the number of remaining days in a given time duration in milliseconds.
      *
      * @param millis The time duration in milliseconds.
-     * @return The number of days.
+     * @return The number of remaining days.
      */
-    private static long formatDays(final long millis) {
+    public static long getRemainingDays(final long millis) {
         final long totalSeconds = millis / 1000;
         final long totalMinutes = totalSeconds / 60;
         final long totalHours = totalMinutes / 60;
@@ -290,12 +287,12 @@ public final class DateUtil {
     }
 
     /**
-     * Calculates the number of hours (excluding full days) in a given time duration in milliseconds.
+     * Calculates the number of remaining hours (excluding full days) in a given time duration in milliseconds.
      *
      * @param millis The time duration in milliseconds.
-     * @return The number of hours.
+     * @return The number of remaining hours.
      */
-    private static long formatHours(final long millis) {
+    public static long getRemainingHours(final long millis) {
         final long totalSeconds = millis / 1000;
         final long totalMinutes = totalSeconds / 60;
         final long totalHours = totalMinutes / 60;
@@ -304,12 +301,12 @@ public final class DateUtil {
     }
 
     /**
-     * Calculates the number of minutes (excluding full hours) in a given time duration in milliseconds.
+     * Calculates the number of remaining minutes (excluding full hours) in a given time duration in milliseconds.
      *
      * @param millis The time duration in milliseconds.
-     * @return The number of minutes.
+     * @return The number of remaining minutes.
      */
-    private static long formatMinutes(final long millis) {
+    public static long getRemainingMinutes(final long millis) {
         final long totalSeconds = millis / 1000;
         final long totalMinutes = totalSeconds / 60;
 
@@ -317,12 +314,12 @@ public final class DateUtil {
     }
 
     /**
-     * Calculates the number of seconds (excluding full minutes) in a given time duration in milliseconds.
+     * Calculates the number of remaining seconds (excluding full minutes) in a given time duration in milliseconds.
      *
      * @param millis The time duration in milliseconds.
-     * @return The number of seconds.
+     * @return The number of remaining seconds.
      */
-    private static long formatSeconds(final long millis) {
+    public static long getRemainingSeconds(final long millis) {
         return (millis / 1000) % 60;
     }
 
@@ -352,10 +349,10 @@ public final class DateUtil {
         if (millis == 0) return "N/A";
 
         final List<Character> unitsPattern = new ArrayList<>();
-        final long days = formatDays(millis);
-        final long hours = formatHours(millis);
-        final long minutes = formatMinutes(millis);
-        final long seconds = formatSeconds(millis);
+        final long days = getRemainingDays(millis);
+        final long hours = getRemainingHours(millis);
+        final long minutes = getRemainingMinutes(millis);
+        final long seconds = getRemainingSeconds(millis);
         final long formatedMillis = millis % 1000;
 
         if (days > 0) unitsPattern.add('d');
@@ -376,6 +373,7 @@ public final class DateUtil {
      * @param shortNames   If true, uses short names for units; otherwise, uses full names.
      * @return The formatted time string.
      */
+    @VisibleForTesting
     public static String formatTime(final long millis, final List<Character> unitsPattern, final boolean shortNames) {
         final StringBuilder formattedTime = new StringBuilder();
         final Map<Character, String> unitMap = getUnitMap(millis, shortNames);
@@ -409,20 +407,20 @@ public final class DateUtil {
      * @return A map of time units and their formatted strings.
      */
     private static Map<Character, String> getUnitMap(final long millis, final boolean shortNames) {
-        UNIT_MAP.clear();
+        final Map<Character, String> unitMap = new HashMap<>();
         if (shortNames) {
-            UNIT_MAP.put('d', formatDays(millis) + "dni");
-            UNIT_MAP.put('h', formatHours(millis) + "godz");
-            UNIT_MAP.put('m', formatMinutes(millis) + "min");
-            UNIT_MAP.put('s', formatSeconds(millis) + "s");
-            UNIT_MAP.put('i', millis % 1000 + "ms");
+            unitMap.put('d', getRemainingDays(millis) + "dni");
+            unitMap.put('h', getRemainingHours(millis) + "godz");
+            unitMap.put('m', getRemainingMinutes(millis) + "min");
+            unitMap.put('s', getRemainingSeconds(millis) + "s");
+            unitMap.put('i', millis % 1000 + "ms");
         } else {
-            UNIT_MAP.put('d', formatDays(millis) + " dni");
-            UNIT_MAP.put('h', formatHours(millis) + " godzin");
-            UNIT_MAP.put('m', formatMinutes(millis) + " minut");
-            UNIT_MAP.put('s', formatSeconds(millis) + " sekund");
-            UNIT_MAP.put('i', millis % 1000 + " milisekund");
+            unitMap.put('d', getRemainingDays(millis) + " dni");
+            unitMap.put('h', getRemainingHours(millis) + " godzin");
+            unitMap.put('m', getRemainingMinutes(millis) + " minut");
+            unitMap.put('s', getRemainingSeconds(millis) + " sekund");
+            unitMap.put('i', millis % 1000 + " milisekund");
         }
-        return UNIT_MAP;
+        return unitMap;
     }
 }
