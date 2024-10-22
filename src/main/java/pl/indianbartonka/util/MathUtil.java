@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Random;
+import org.jetbrains.annotations.VisibleForTesting;
 import pl.indianbartonka.util.annotation.UtilityClass;
 
 /**
@@ -274,6 +275,7 @@ public final class MathUtil {
      * @param shortNames   If true, uses short names; otherwise uses long names.
      * @return The formatted kilobytes as a string.
      */
+    @VisibleForTesting
     public static String formatKilobytes(final long kilobytes, final List<Character> unitsPattern, final boolean shortNames) {
         final StringBuilder formattedKilobytes = new StringBuilder();
         final Map<Character, String> unitMap = getUnitKilobytesMap(kilobytes, shortNames);
@@ -295,6 +297,7 @@ public final class MathUtil {
      * @param shortNames   If true, uses short names; otherwise uses long names.
      * @return The formatted bytes as a string.
      */
+    @VisibleForTesting
     public static String formatBytes(final long bytes, final List<Character> unitsPattern, final boolean shortNames) {
         final StringBuilder formattedBytes = new StringBuilder();
         final Map<Character, String> unitMap = getUnitBytesMap(bytes, shortNames);
