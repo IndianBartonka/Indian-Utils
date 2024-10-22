@@ -4,7 +4,7 @@
 
 Utile używane w różnych projektach przez Indiana
 
-[![](https://jitpack.io/v/IndianBartonka/Indian-Utils.svg)](https://jitpack.io/#IndianBartonka/Indian-Utils)
+[![Jitpack](https://jitpack.io/v/IndianBartonka/Indian-Utils.svg)](https://jitpack.io/#IndianBartonka/Indian-Utils)
 [![wakatime](https://wakatime.com/badge/user/adf40340-ba3b-43af-87af-de3920ec0c1b/project/5e41acf1-0b55-470c-be02-5b2f68bbdee0.svg)](https://wakatime.com/badge/user/adf40340-ba3b-43af-87af-de3920ec0c1b/project/5e41acf1-0b55-470c-be02-5b2f68bbdee0)
 </div>
 
@@ -12,13 +12,10 @@ Utile używane w różnych projektach przez Indiana
 
 **Java**: 17+
 
-//TODO: Wystylizuj to tam jakoś 
 ### Webhook Client
- **Gson** 2.11.0
 
-# Przy projekcie pomagali
-
-![Wykres kontrybucji](https://contrib.rocks/image?repo=IndianBartonka/Indian-Utils)
+<sup>Do użycja <code>pl.indianbartonka.util.discord.WebHookClient</code> wymagane jest:</sup><br>
+**Gson** 2.11.0
 
 # Zależności
 
@@ -66,5 +63,10 @@ resolvers += "jitpack" at "https://jitpack.io"
 libraryDependencies += "com.github.IndianBartonka" % "Indian-Utils" % "TAG"    
 ```
 
+# Przy projekcie pomagali
+
+![Wykres kontrybucji](https://contrib.rocks/image?repo=IndianBartonka/Indian-Utils)
+
 # Gwiazdki na przestrzeni czasu
+
 [![Stargazers over time](https://starchart.cc/IndianBartonka/Indian-Utils.svg?variant=adaptive)]()
