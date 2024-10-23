@@ -91,6 +91,29 @@ public final class ScannerUtil {
     }
 
     /**
+     * Asks a long question to the user, provides a default value if no input is given,
+     * and processes the user's response.
+     *
+     * @param question     A {@link Consumer} that handles the question prompt.
+     * @param defaultValue The default value to return if the user provides no input.
+     * @param response     A {@link Consumer} that handles the user's response.
+     * @return The user's input as a long or the default value if no input was provided.
+     */
+    @CheckReturnValue
+    public static long addLongQuestion(final Consumer<Long> question, final long defaultValue, final Consumer<Long> response) {
+        LOCK.lock();
+        try {
+            question.accept(defaultValue);
+            final String input = getInput();
+            final long userInput = input.isEmpty() ? defaultValue : Long.parseLong(input);
+            response.accept(userInput);
+            return userInput;
+        } finally {
+            LOCK.unlock();
+        }
+    }
+
+    /**
      * Asks a double question to the user, provides a default value if no input is given,
      * and processes the user's response.
      *
