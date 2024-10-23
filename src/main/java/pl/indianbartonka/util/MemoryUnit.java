@@ -28,4 +28,12 @@ public enum MemoryUnit {
         final double valueInBytes = value * sourceUnit.bytes;
         return valueInBytes / this.bytes;
     }
+
+    public long to(final long value, final MemoryUnit unit) {
+        return (long) this.to((double) value, unit);
+    }
+
+    public long from(final long value, final MemoryUnit unit) {
+        return (long) this.from((double) value, unit);
+    }
 }
