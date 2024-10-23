@@ -1,107 +1,116 @@
 package pl.indianbartonka.util;
 
 import java.util.Scanner;
+import java.util.concurrent.locks.ReentrantLock;
+import java.util.function.Consumer;
+import org.jetbrains.annotations.CheckReturnValue;
 import pl.indianbartonka.util.annotation.UtilityClass;
 
 /**
  * <p>
  * Utility class for handling user input through a {@link Scanner}.
- * Provides methods to ask various types of questions and process the user's responses.
+ * It provides methods to ask various types of questions and process the user's responses.
  * </p>
  * <p>
- * Documents written by ChatGPT
+ * Documentation written by ChatGPT.
  * </p>
  */
-
 @UtilityClass
 public final class ScannerUtil {
 
-    private final Scanner scanner;
+    private static final Scanner SCANNER = new Scanner(System.in);
+    private static final ReentrantLock LOCK = new ReentrantLock();
 
     /**
-     * Constructs a {@code ScannerUtil} instance with the specified {@link Scanner}.
+     * Asks a string question to the user, provides a default value if no input is given,
+     * and processes the user's response.
      *
-     * @param scanner The {@link Scanner} to be used for input.
-     */
-    public ScannerUtil(final Scanner scanner) {
-        this.scanner = scanner;
-    }
-
-    /**
-     * Asks a string question to the user, provides a default value if no input is given, and processes the response.
-     *
-     * @param question     A {@link StringResponseConsumer} that handles the question prompt.
-     * @param defaultValue The default value to use if the user provides no input.
-     * @param response     A {@link StringResponseConsumer} that handles the user's response.
+     * @param question     A {@link Consumer} that handles the question prompt.
+     * @param defaultValue The default value to return if the user provides no input.
+     * @param response     A {@link Consumer} that handles the user's response.
      * @return The user's input or the default value if no input was provided.
      */
-    public String addStringQuestion(final StringResponseConsumer question, final String defaultValue, final StringResponseConsumer response) {
-        question.accept(defaultValue);
-        String input = this.getInput();
-        input = input.isEmpty() ? defaultValue : input;
-        response.accept(input);
-
-        return input;
+    @CheckReturnValue
+    public static String addStringQuestion(final Consumer<String> question, final String defaultValue, final Consumer<String> response) {
+        LOCK.lock();
+        try {
+            question.accept(defaultValue);
+            String input = getInput();
+            input = input.isEmpty() ? defaultValue : input;
+            response.accept(input);
+            return input;
+        } finally {
+            LOCK.unlock();
+        }
     }
 
     /**
-     * Asks a boolean question to the user, provides a default value if no input is given, and processes the response.
+     * Asks a boolean question to the user, provides a default value if no input is given,
+     * and processes the user's response.
      *
-     * @param question     A {@link BooleanResponseConsumer} that handles the question prompt.
-     * @param defaultValue The default value to use if the user provides no input.
-     * @param response     A {@link BooleanResponseConsumer} that handles the user's response.
-     * @return The user's input or the default value if no input was provided.
+     * @param question     A {@link Consumer} that handles the question prompt.
+     * @param defaultValue The default value to return if the user provides no input.
+     * @param response     A {@link Consumer} that handles the user's response.
+     * @return The user's input as a boolean or the default value if no input was provided.
      */
-    public boolean addBooleanQuestion(final BooleanResponseConsumer question, final boolean defaultValue, final BooleanResponseConsumer response) {
-        question.accept(defaultValue);
-        final String input = this.getInput();
-        final boolean userInput = input.isEmpty() ? defaultValue : Boolean.parseBoolean(input);
-        response.accept(userInput);
-
-        return userInput;
+    @CheckReturnValue
+    public static boolean addBooleanQuestion(final Consumer<Boolean> question, final boolean defaultValue, final Consumer<Boolean> response) {
+        LOCK.lock();
+        try {
+            question.accept(defaultValue);
+            final String input = getInput();
+            final boolean userInput = input.isEmpty() ? defaultValue : Boolean.parseBoolean(input);
+            response.accept(userInput);
+            return userInput;
+        } finally {
+            LOCK.unlock();
+        }
     }
 
     /**
-     * Asks an integer question to the user, provides a default value if no input is given, and processes the response.
+     * Asks an integer question to the user, provides a default value if no input is given,
+     * and processes the user's response.
      *
-     * @param question     A {@link IntegerResponseConsumer} that handles the question prompt.
-     * @param defaultValue The default value to use if the user provides no input.
-     * @param response     A {@link IntegerResponseConsumer} that handles the user's response.
-     * @return The user's input or the default value if no input was provided.
+     * @param question     A {@link Consumer} that handles the question prompt.
+     * @param defaultValue The default value to return if the user provides no input.
+     * @param response     A {@link Consumer} that handles the user's response.
+     * @return The user's input as an int or the default value if no input was provided.
      */
-    public int addIntQuestion(final IntegerResponseConsumer question, final int defaultValue, final IntegerResponseConsumer response) {
-        question.accept(defaultValue);
-        final String input = this.getInput();
-        final int userInput = input.isEmpty() ? defaultValue : Integer.parseInt(input);
-        response.accept(userInput);
-
-        return userInput;
+    @CheckReturnValue
+    public static int addIntQuestion(final Consumer<Integer> question, final int defaultValue, final Consumer<Integer> response) {
+        LOCK.lock();
+        try {
+            question.accept(defaultValue);
+            final String input = getInput();
+            final int userInput = input.isEmpty() ? defaultValue : Integer.parseInt(input);
+            response.accept(userInput);
+            return userInput;
+        } finally {
+            LOCK.unlock();
+        }
     }
 
     /**
-     * Asks a double question to the user, provides a default value if no input is given, and processes the response.
+     * Asks a double question to the user, provides a default value if no input is given,
+     * and processes the user's response.
      *
-     * @param question     A {@link DoubleResponseConsumer} that handles the question prompt.
-     * @param defaultValue The default value to use if the user provides no input.
-     * @param response     A {@link DoubleResponseConsumer} that handles the user's response.
-     * @return The user's input or the default value if no input was provided.
+     * @param question     A {@link Consumer} that handles the question prompt.
+     * @param defaultValue The default value to return if the user provides no input.
+     * @param response     A {@link Consumer} that handles the user's response.
+     * @return The user's input as a double or the default value if no input was provided.
      */
-    public double addDoubleQuestion(final DoubleResponseConsumer question, final double defaultValue, final DoubleResponseConsumer response) {
-        question.accept(defaultValue);
-        final String input = this.getInput();
-        final double userInput = input.isEmpty() ? defaultValue : Double.parseDouble(input);
-        response.accept(userInput);
-
-        return userInput;
-    }
-
-    /**
-     * Returns the {@link Scanner} instance used by this utility.
-     *
-     * @return The {@link Scanner} instance.
-     */
-    public Scanner getScanner() {
-        return this.scanner;
+    @CheckReturnValue
+    public static double addDoubleQuestion(final Consumer<Double> question, final double defaultValue, final Consumer<Double> response) {
+        LOCK.lock();
+        try {
+            question.accept(defaultValue);
+            final String input = getInput();
+            final double userInput = input.isEmpty() ? defaultValue : Double.parseDouble(input);
+            response.accept(userInput);
+            return userInput;
+        } finally {
+            LOCK.unlock();
+        }
     }
 
     /**
@@ -109,41 +118,7 @@ public final class ScannerUtil {
      *
      * @return The user's input as a {@code String}.
      */
-    private String getInput() {
-        return this.scanner.nextLine();
-    }
-
-    //TODO: Dodac też getInput używając tam nextint itp a także usunąć na interface ma rzecz "Consumer"
-
-    /**
-     * Functional interface for handling string responses.
-     */
-    @FunctionalInterface
-    public interface StringResponseConsumer {
-        void accept(final String consumer);
-    }
-
-    /**
-     * Functional interface for handling boolean responses.
-     */
-    @FunctionalInterface
-    public interface BooleanResponseConsumer {
-        void accept(final boolean consumer);
-    }
-
-    /**
-     * Functional interface for handling integer responses.
-     */
-    @FunctionalInterface
-    public interface IntegerResponseConsumer {
-        void accept(final int consumer);
-    }
-
-    /**
-     * Functional interface for handling double responses.
-     */
-    @FunctionalInterface
-    public interface DoubleResponseConsumer {
-        void accept(final double consumer);
+    private static String getInput() {
+        return SCANNER.nextLine();
     }
 }
