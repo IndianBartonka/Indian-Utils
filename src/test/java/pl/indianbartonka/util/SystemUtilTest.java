@@ -18,7 +18,7 @@ public class SystemUtilTest {
     void testGetSystem() {
         final SystemOS os = SystemUtil.getSystem();
         assertNotNull(os);
-        assertTrue(os == SystemOS.WINDOWS || os == SystemOS.LINUX || os == SystemOS.MAC);
+        assertTrue(os == SystemOS.WINDOWS || os == SystemOS.LINUX || os == SystemOS.FREE_BSD || os == SystemOS.MAC);
     }
 
     @Test
@@ -56,9 +56,11 @@ public class SystemUtilTest {
     }
 
     @Test
-    void testGetLinuxDistribution() {
-        final String distribution = SystemUtil.getLinuxDistribution();
-        if (SystemUtil.getSystem() == SystemOS.LINUX) {
+    void testGetDistribution() {
+        final String distribution = SystemUtil.getDistribution();
+        SystemOS systemOS = SystemUtil.getSystem();
+
+        if (systemOS == SystemOS.LINUX || systemOS == SystemOS.FREE_BSD) {
             assertNotNull(distribution);
             assertFalse(distribution.isEmpty());
         } else {

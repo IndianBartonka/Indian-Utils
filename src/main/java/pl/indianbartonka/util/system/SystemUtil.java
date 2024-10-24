@@ -5,7 +5,6 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.nio.file.Files;
-import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
 import java.util.Locale;
@@ -27,10 +26,12 @@ public final class SystemUtil {
             return SystemOS.WINDOWS;
         } else if (os.contains("nux")) {
             return SystemOS.LINUX;
+        } else if (os.contains("bsd")) {
+            return SystemOS.FREE_BSD;
         } else if (os.contains("mac")) {
             return SystemOS.MAC;
         } else {
-            return SystemOS.UNSUPPORTED;
+            return SystemOS.UNKNOWN;
         }
     }
 
@@ -40,8 +41,8 @@ public final class SystemUtil {
 
     public static String getFullOsNameWithDistribution() {
         return switch (getSystem()) {
-            case WINDOWS, MAC, UNSUPPORTED -> getFullyOsName();
-            case LINUX -> getFullyOsName() + " (" + getLinuxDistribution() + ")";
+            case WINDOWS, MAC, UNKNOWN -> getFullyOsName();
+            case LINUX, FREE_BSD -> getFullyOsName() + " (" + getDistribution() + ")";
         };
     }
 
@@ -63,10 +64,9 @@ public final class SystemUtil {
         return System.getProperty("os.arch");
     }
 
-    public static String getLinuxDistribution() {
+    public static String getDistribution() {
         try {
-            final Path path = Paths.get("/etc/os-release");
-            final List<String> lines = Files.readAllLines(path);
+            final List<String> lines = Files.readAllLines(Paths.get("/etc/os-release"));
 
             for (final String line : lines) {
                 if (line.startsWith("PRETTY_NAME=")) {
@@ -79,12 +79,14 @@ public final class SystemUtil {
         return "Unknown";
     }
 
+    //Nie wiadomo czy działa to dobrze na mac
     public static long getRamUsageByPid(final long pid) throws IOException {
-        return switch (getSystem()) {
-            case WINDOWS -> getMemoryUsageWindows(pid);
-            case LINUX -> getMemoryUsageLinux(pid);
+        final SystemOS systemOS = getSystem();
+        return switch (systemOS) {
+            case WINDOWS -> getWindowsMemoryUsage(pid);
+            case LINUX, FREE_BSD, MAC -> getUnixMemoryUsage(pid);
             default ->
-                    throw new UnsupportedOperationException("Nie można pozyskać ilość ram dla nie wspieranego systemu");
+                    throw new UnsupportedOperationException("Pozyskiwanie ilosci ram dla " + systemOS + " nie jest wspierane");
         };
     }
 
@@ -100,7 +102,7 @@ public final class SystemUtil {
         return (maxDiskSpace() - availableDiskSpace());
     }
 
-    private static long getMemoryUsageWindows(final long pid) throws IOException {
+    private static long getWindowsMemoryUsage(final long pid) throws IOException {
         final Process process = Runtime.getRuntime().exec("tasklist /NH /FI \"PID eq " + pid + "\"");
         try (final BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()))) {
             String line;
@@ -117,11 +119,23 @@ public final class SystemUtil {
         return -1;
     }
 
-    private static long getMemoryUsageLinux(final long pid) throws IOException {
+    private static long getUnixMemoryUsage(final long pid) throws IOException {
+        long ram = -1;
         final Process process = Runtime.getRuntime().exec("ps -p " + pid + " -o rss=");
+
         try (final BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()))) {
-            final String line = reader.readLine();
-            return line != null ? Long.parseLong(line) : -1;
+
+            //Robie tak na wszelki wypadek gdyby jakis system mial jakis niepotrzebny header w tym poleceniu
+            String line;
+            while ((line = reader.readLine()) != null) {
+                try {
+                    ram = Long.parseLong(line);
+                } catch (final NumberFormatException ignored) {
+
+                }
+            }
         }
+
+        return ram;
     }
 }
