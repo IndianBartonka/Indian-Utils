@@ -35,6 +35,7 @@ public final class SystemUtil {
         }
     }
 
+    //TODO: Poprawić pisownie Os na OS
     public static String getFullyOsName() {
         return System.getProperty("os.name");
     }
@@ -86,7 +87,7 @@ public final class SystemUtil {
             case WINDOWS -> getWindowsMemoryUsage(pid);
             case LINUX, FREE_BSD, MAC -> getUnixMemoryUsage(pid);
             default ->
-                    throw new UnsupportedOperationException("Pozyskiwanie ilosci ram dla " + systemOS + " nie jest wspierane");
+                    throw new UnsupportedOperationException("Pozyskiwanie ilosci ram dla " + getFullOsName() + " nie jest wspierane");
         };
     }
 
