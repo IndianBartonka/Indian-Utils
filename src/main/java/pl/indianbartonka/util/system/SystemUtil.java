@@ -34,7 +34,21 @@ public final class SystemUtil {
             return SystemOS.UNKNOWN;
         }
     }
-    
+
+    public static SystemFamily getSystemFamily() {
+        return switch (getSystem()) {
+            case WINDOWS -> SystemFamily.WINDOWS;
+            case LINUX, FREE_BSD, MAC -> SystemFamily.UNIX;
+            case UNKNOWN -> {
+                if (!getDistribution().equals("Unknown")) {
+                    yield SystemFamily.UNIX;
+                } else {
+                    yield SystemFamily.UNKNOWN;
+                }
+            }
+        };
+    }
+
     public static String getFullyOSName() {
         return System.getProperty("os.name");
     }
@@ -81,9 +95,9 @@ public final class SystemUtil {
 
     //Nie wiadomo czy działa to dobrze na mac
     public static long getRamUsageByPid(final long pid) throws IOException {
-        return switch (getSystem()) {
+        return switch (getSystemFamily()) {
             case WINDOWS -> getWindowsMemoryUsage(pid);
-            case LINUX, FREE_BSD, MAC -> getUnixMemoryUsage(pid);
+            case UNIX -> getUnixMemoryUsage(pid);
             default ->
                     throw new UnsupportedOperationException("Pozyskiwanie ilosci ram dla " + getFullyOSName() + " nie jest wspierane");
         };
@@ -119,22 +133,20 @@ public final class SystemUtil {
     }
 
     private static long getUnixMemoryUsage(final long pid) throws IOException {
-        long ram = -1;
         final Process process = Runtime.getRuntime().exec("ps -p " + pid + " -o rss=");
 
         try (final BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()))) {
-
             //Robie tak na wszelki wypadek gdyby jakis system mial jakis niepotrzebny header w tym poleceniu
             String line;
             while ((line = reader.readLine()) != null) {
                 try {
-                    ram = Long.parseLong(line);
+                   return Long.parseLong(line);
                 } catch (final NumberFormatException ignored) {
 
                 }
             }
         }
 
-        return ram;
+        return -1;
     }
 }
