@@ -27,7 +27,7 @@ public final class UserAgent {
 
     //Base User agent
     private static final String BASE_USER_AGENT = MessageUtil.formatMessage("Mozilla/5.0 (%s; %s; %s; %s)",
-            SystemUtil.getFullyOsName(), SystemUtil.getOsVersion(), SystemUtil.getFullyArchCode(), SystemUtil.LOCALE.toString());
+            SystemUtil.getFullyOSName(), SystemUtil.getOSVersion(), SystemUtil.getFullyArchCode(), SystemUtil.LOCALE.toString());
 
     // Predefined User-Agent strings for various tools and browsers
     public static final String USER_AGENT_CURL = "curl/7.64.1";

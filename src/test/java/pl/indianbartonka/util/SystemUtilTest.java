@@ -22,22 +22,22 @@ public class SystemUtilTest {
     }
 
     @Test
-    void testGetFullyOsName() {
-        final String osName = SystemUtil.getFullyOsName();
+    void testGetFullyOSName() {
+        final String osName = SystemUtil.getFullyOSName();
         assertNotNull(osName);
         assertFalse(osName.isEmpty());
     }
 
     @Test
-    void testGetFullOsNameWithDistribution() {
-        final String fullOsName = SystemUtil.getFullOsNameWithDistribution();
-        assertNotNull(fullOsName);
-        assertFalse(fullOsName.isEmpty());
+    void testGetFullOSNameWithDistribution() {
+        final String fullOSName = SystemUtil.getFullOSNameWithDistribution();
+        assertNotNull(fullOSName);
+        assertFalse(fullOSName.isEmpty());
     }
 
     @Test
-    void testGetOsVersion() {
-        final String osVersion = SystemUtil.getOsVersion();
+    void testGetOSVersion() {
+        final String osVersion = SystemUtil.getOSVersion();
         assertNotNull(osVersion);
         assertFalse(osVersion.isEmpty());
     }

@@ -34,20 +34,19 @@ public final class SystemUtil {
             return SystemOS.UNKNOWN;
         }
     }
-
-    //TODO: Poprawić pisownie Os na OS
-    public static String getFullyOsName() {
+    
+    public static String getFullyOSName() {
         return System.getProperty("os.name");
     }
 
-    public static String getFullOsNameWithDistribution() {
+    public static String getFullOSNameWithDistribution() {
         return switch (getSystem()) {
-            case WINDOWS, MAC, UNKNOWN -> getFullyOsName();
-            case LINUX, FREE_BSD -> getFullyOsName() + " (" + getDistribution() + ")";
+            case WINDOWS, MAC, UNKNOWN -> getFullyOSName();
+            case LINUX, FREE_BSD -> getFullyOSName() + " (" + getDistribution() + ")";
         };
     }
 
-    public static String getOsVersion() {
+    public static String getOSVersion() {
         return System.getProperty("os.version");
     }
 
@@ -82,12 +81,11 @@ public final class SystemUtil {
 
     //Nie wiadomo czy działa to dobrze na mac
     public static long getRamUsageByPid(final long pid) throws IOException {
-        final SystemOS systemOS = getSystem();
-        return switch (systemOS) {
+        return switch (getSystem()) {
             case WINDOWS -> getWindowsMemoryUsage(pid);
             case LINUX, FREE_BSD, MAC -> getUnixMemoryUsage(pid);
             default ->
-                    throw new UnsupportedOperationException("Pozyskiwanie ilosci ram dla " + getFullOsName() + " nie jest wspierane");
+                    throw new UnsupportedOperationException("Pozyskiwanie ilosci ram dla " + getFullyOSName() + " nie jest wspierane");
         };
     }
 
