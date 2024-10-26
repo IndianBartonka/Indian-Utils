@@ -30,10 +30,10 @@ import pl.indianbartonka.util.logger.Logger;
 
 public final class AESEncryptor implements Encryptor {
 
+    private final String fileExtension;
     private AESSettings.AESMode aesMode;
     private AESSettings.AESPadding aesPadding;
     private IvParameterSpec ivParameterSpec;
-    private final String fileExtension;
     private String provider;
     private String encryptedDir;
     private String userDir;
