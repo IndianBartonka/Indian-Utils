@@ -31,7 +31,11 @@ public final class SystemUtil {
         } else if (os.contains("mac")) {
             return SystemOS.MAC;
         } else {
-            return SystemOS.UNKNOWN;
+            if (!getDistribution().equals("Unknown")) {
+                return SystemOS.LINUX;
+            } else {
+                return SystemOS.UNKNOWN;
+            }
         }
     }
 
@@ -140,7 +144,7 @@ public final class SystemUtil {
             String line;
             while ((line = reader.readLine()) != null) {
                 try {
-                   return Long.parseLong(line);
+                    return Long.parseLong(line);
                 } catch (final NumberFormatException ignored) {
 
                 }
