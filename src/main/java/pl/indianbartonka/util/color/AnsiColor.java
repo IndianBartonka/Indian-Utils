@@ -178,10 +178,6 @@ public final class AnsiColor {
     public static String getMinecraftColor(final int r, final int g, final int b) {
         if (r <= -1 && g <= -1 && b <= -1) return getMinecraftColor(LIGHT_GRAY);
 
-        System.out.println(r);
-        System.out.println(g);
-        System.out.println(b);
-
         final TreeMap<Double, String> closest = new TreeMap<>();
 
         COLORS.forEach((color, set) -> {
