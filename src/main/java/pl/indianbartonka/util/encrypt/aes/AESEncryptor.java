@@ -134,6 +134,11 @@ public final class AESEncryptor implements Encryptor {
     }
 
     @Override
+    public String getAlgorithm() {
+        return "AES";
+    }
+
+    @Override
     public String getFileExtension() {
         return this.fileExtension;
     }

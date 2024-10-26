@@ -21,6 +21,8 @@ public interface Encryptor {
 
     void setLogger(@NotNull Logger logger);
 
+    String getAlgorithm();
+
     String getFileExtension();
 
     IvParameterSpec getIvParameterSpec();
