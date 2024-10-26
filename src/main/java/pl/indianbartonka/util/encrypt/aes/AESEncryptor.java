@@ -32,6 +32,7 @@ public final class AESEncryptor implements Encryptor {
     private AESSettings.AESMode aesMode;
     private AESSettings.AESPadding aesPadding;
     private IvParameterSpec ivParameterSpec;
+    private final String fileExtension;
     private String provider;
     private String encryptedDir;
     private String userDir;
@@ -48,13 +49,15 @@ public final class AESEncryptor implements Encryptor {
         this.provider = provider;
         this.encryptedDir = System.getProperty("user.dir") + File.separator + "encrypted_dir" + File.separator;
         this.userDir = System.getProperty("user.dir") + File.separator;
+        this.fileExtension = ".aes";
     }
 
     @Override
     public EncryptedFile encryptFile(final @NotNull File inputFile, final @NotNull SecretKey key) throws EncryptException {
         try {
+            this.createMissingDirs();
             // Append .aes extension to the encrypted file
-            final File encryptedFile = new File(this.encryptedDir, inputFile.getName() + ".aes");
+            final File encryptedFile = new File(this.encryptedDir, inputFile.getName() + this.fileExtension);
             final Cipher cipher = AESSettings.createCipher(this.aesMode, this.aesPadding, key, this.ivParameterSpec, this.provider, true);
             if (this.logger != null) this.logger.debug("Encrypting file: " + inputFile.getPath());
             this.processFile(cipher, inputFile, encryptedFile);
@@ -69,8 +72,9 @@ public final class AESEncryptor implements Encryptor {
     @Override
     public File decryptFile(final @NotNull File inputFile, final @NotNull SecretKey key) throws DecryptException {
         try {
+            this.createMissingDirs();
             // Create decrypted file without .aes extension
-            final File decryptedFile = new File(this.userDir, inputFile.getName().replace(".aes", ""));
+            final File decryptedFile = new File(this.userDir, inputFile.getName().replace(this.fileExtension, ""));
             final Cipher cipher = AESSettings.createCipher(this.aesMode, this.aesPadding, key, this.ivParameterSpec, this.provider, false);
             if (this.logger != null) this.logger.debug("Decrypting file: " + inputFile.getPath());
             this.processFile(cipher, inputFile, decryptedFile);
@@ -127,6 +131,11 @@ public final class AESEncryptor implements Encryptor {
     @Override
     public void setLogger(final @NotNull Logger logger) {
         if (this.logger == null) this.logger = logger.prefixed("AESEncryptor");
+    }
+
+    @Override
+    public String getFileExtension() {
+        return this.fileExtension;
     }
 
     public AESSettings.AESMode getAesMode() {
