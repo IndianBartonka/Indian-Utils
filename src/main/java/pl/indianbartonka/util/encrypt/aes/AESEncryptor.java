@@ -19,6 +19,7 @@ import javax.crypto.NoSuchPaddingException;
 import javax.crypto.SecretKey;
 import javax.crypto.spec.IvParameterSpec;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import pl.indianbartonka.util.BufferUtil;
 import pl.indianbartonka.util.encrypt.EncryptedFile;
 import pl.indianbartonka.util.encrypt.Encryptor;
@@ -161,6 +162,7 @@ public final class AESEncryptor implements Encryptor {
         this.ivParameterSpec = ivParameterSpec;
     }
 
+    @Nullable
     @Override
     public String getProvider() {
         return this.provider;
