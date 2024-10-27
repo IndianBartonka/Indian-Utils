@@ -20,7 +20,7 @@ public interface Encryptor {
 
     String decryptText(@NotNull String encryptedText, @NotNull SecretKey key) throws DecryptException;
 
-    void setLogger(@NotNull Logger logger);
+    void setDebugLogger(@NotNull Logger logger);
 
     String getAlgorithm();
 

@@ -130,8 +130,8 @@ public final class AESEncryptor implements Encryptor {
     }
 
     @Override
-    public void setLogger(final @NotNull Logger logger) {
-        if (this.logger == null) this.logger = logger.prefixed("AESEncryptor");
+    public void setDebugLogger(final @NotNull Logger logger) {
+        if (this.logger == null) this.logger = logger;
     }
 
     @Override
