@@ -106,12 +106,6 @@ public final class Test {
         polish.saveToFile();
     }
 
-
-    public static void encryptorTest() {
-        //TODO: Dodać tak owy
-        LOGGER.info("Dodac encryptor Test");
-    }
-
     public static void downloadFileTest() throws IOException {
         final String fileName = "Bedrock.zip";
 
@@ -204,9 +198,6 @@ public final class Test {
         LOGGER.print("==================");
 
         bufferTest();
-        LOGGER.print("==================");
-
-        encryptorTest();
         LOGGER.print("==================");
 
         downloadFileTest();
