@@ -165,7 +165,9 @@ public final class Test {
 
                     LOGGER.info(downloadTask);
 
-                    new Thread(() -> {
+                    final ThreadUtil threadUtil = new ThreadUtil("DownloadTest");
+
+                    threadUtil.newThread(() -> {
                         ThreadUtil.sleep(5);
                         LOGGER.info("Zatrzymywanie pobierania:&b " + fileName);
                         downloadTask.stopDownload();
