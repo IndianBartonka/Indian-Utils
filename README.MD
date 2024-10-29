@@ -17,11 +17,14 @@ Utile używane w różnych projektach przez Indiana
 <sup>Do użycja <code>pl.indianbartonka.util.discord.WebHookClient</code> wymagane jest:</sup><br>
 **Gson** 2.11.0
 
+ //TODO: Wystylizuj to lepiej i dodaj info jakie biblioteki są używane 
+
+
 # Zależności
 
 Zależnosci [Maven](#maven-pomxml), [Gradle](#gradle-buildgradle), [SBT](#simple-build-tool-buildsbt)
 
-## Maven `pom.xml`
+### Maven `pom.xml`
 
 ```xml
 
@@ -40,7 +43,7 @@ Zależnosci [Maven](#maven-pomxml), [Gradle](#gradle-buildgradle), [SBT](#simple
 </dependency>
 ```
 
-## Gradle `build.gradle`
+### Gradle `build.gradle`
 
 ```groovy
 repositories {
@@ -53,7 +56,7 @@ dependencies {
 }
 ```
 
-## Simple Build Tool `build.sbt`
+### Simple Build Tool `build.sbt`
 
 ```sbt
 resolvers += "jitpack" at "https://jitpack.io"
