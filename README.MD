@@ -12,13 +12,24 @@ Utile używane w różnych projektach przez Indiana
 
 **Java**: 17+
 
-### Webhook Client
+# Biblioteki użyte w projekcie
 
-<sup>Do użycja <code>pl.indianbartonka.util.discord.WebHookClient</code> wymagane jest:</sup><br>
-**Gson** 2.11.0
+### [JetBrains Annotations 26.0.1](https://github.com/JetBrains/java-annotations)
 
- //TODO: Wystylizuj to lepiej i dodaj info jakie biblioteki są używane 
+Używane do lepszego wyglądu kodu i ewentualnych informacjach dla użytkownika.
 
+### [Gson 2.11.0](https://github.com/google/gson) *(provided)*
+
+Używane w WebHook Cliencie.
+
+<details>
+  <summary>Klasa</summary>
+  <pre><code>pl.indianbartonka.util.discord.WebHookClient</code></pre>
+</details>
+
+### [JUnit Jupiter API 5.11.3](https://junit.org/junit5/)
+
+Używane do prostych testów jednostkowych.
 
 # Zależności
 
