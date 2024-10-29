@@ -27,7 +27,7 @@ public class WebHookClient {
     private boolean block;
 
     public WebHookClient(final Logger logger, final Gson gson, final boolean disableShutdownHook) {
-        this.logger = logger.prefixed("Webhook");
+        this.logger = logger;
         this.service = Executors.newScheduledThreadPool(4, new ThreadUtil("Discord-WebHook"));
         this.lock = new ReentrantLock();
         this.gson = gson;
