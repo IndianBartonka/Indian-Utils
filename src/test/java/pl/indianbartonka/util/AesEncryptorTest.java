@@ -41,11 +41,10 @@ public class AesEncryptorTest {
 
         try {
             this.encryptor.encryptFile(file, this.secretKey);
+            System.out.println("Zszyfrowano");
         } catch (final EncryptException exception) {
             exception.printStackTrace();
         }
-
-        System.out.println("Zszyfrowano");
     }
 
     @Test
@@ -54,13 +53,12 @@ public class AesEncryptorTest {
 
         try {
             final File decryptedFile = this.encryptor.decryptFile(encryptedFile, this.secretKey);
+            System.out.println("Odszyfrowano");
 
             Assertions.assertNotNull(decryptedFile, "Odszyfrowany plik nie powinien być nullem");
             Assertions.assertTrue(decryptedFile.exists(), "Odszyfrowany plik powinien istnieć");
         } catch (final DecryptException exception) {
             exception.printStackTrace();
         }
-
-        System.out.println("Odszyfrowano");
     }
 }
