@@ -53,7 +53,7 @@ public class WebHookClient {
 
     private void rateLimit() {
         this.logger.debug("Aktualna liczba wysłanych requestów do discord: " + (this.requests + 1));
-        if (this.requests == 37) {
+        if (this.requests == 19) {
             this.rateLimitNow();
         }
     }
