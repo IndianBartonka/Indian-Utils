@@ -151,7 +151,7 @@ public class WebHookClient {
 
     public void shutdown() {
         try {
-            while (this.block) {
+            while (this.block || this.lock.isLocked()) {
                 this.logger.alert("Czekanie na możliwość wysłania requestów do discord, następna próba za&a 10&b sekund");
                 ThreadUtil.sleep(10);
             }
