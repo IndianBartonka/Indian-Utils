@@ -9,7 +9,6 @@ import java.io.UncheckedIOException;
 import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
-import java.nio.file.NoSuchFileException;
 import java.nio.file.Path;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.nio.file.attribute.FileOwnerAttributeView;
@@ -59,6 +58,11 @@ public final class FileUtil {
         return Files.isExecutable(Path.of(URLDecoder.decode(filePath.replace("/C", "C"), StandardCharsets.UTF_8)));
     }
 
+    public static boolean addExecutePerm(final String filePath) {
+        final File file = new File(filePath);
+        return file.setExecutable(true, false);
+    }
+
     public static boolean directoryIsEmpty(final File directory) {
         if (!directory.exists()) return false;
         if (!directory.isDirectory()) {
@@ -106,14 +110,8 @@ public final class FileUtil {
         return attrs.creationTime().toMillis();
     }
 
-    public static boolean addExecutePerm(final String filePath) throws NoSuchFileException {
-        final File file = new File(filePath);
-        if (!file.exists()) throw new NoSuchFileException(file.toString());
-        return file.setExecutable(true, false);
-    }
-
-    public static void renameFolder(final Path oldPath, final Path newPath) throws IOException {
-        Files.move(oldPath, newPath);
+    public static Path renameFolder(final Path oldPath, final Path newPath) throws IOException {
+        return Files.move(oldPath, newPath);
     }
 
     public static long getFileSize(final File file) {
