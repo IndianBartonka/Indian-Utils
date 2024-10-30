@@ -16,7 +16,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 public class SystemUtilTest {
 
     @Test
-    void testGetSystem() {
+    public void testGetSystem() {
         final SystemOS os = SystemUtil.getSystem();
         assertNotNull(os);
         assertTrue(os == SystemOS.WINDOWS || os == SystemOS.LINUX || os == SystemOS.FREE_BSD || os == SystemOS.MAC);
@@ -24,7 +24,7 @@ public class SystemUtilTest {
     }
 
     @Test
-    void testSystemFamily() {
+    public void testSystemFamily() {
         final SystemFamily systemFamily = SystemUtil.getSystemFamily();
 
         assertTrue(systemFamily == SystemFamily.WINDOWS || systemFamily == SystemFamily.UNIX);
@@ -32,7 +32,7 @@ public class SystemUtilTest {
     }
 
     @Test
-    void testGetFullyOSName() {
+    public void testGetFullyOSName() {
         final String osName = SystemUtil.getFullyOSName();
         assertNotNull(osName);
         assertFalse(osName.isEmpty());
@@ -40,7 +40,7 @@ public class SystemUtilTest {
     }
 
     @Test
-    void testGetFullOSNameWithDistribution() {
+    public void testGetFullOSNameWithDistribution() {
         final String fullOSName = SystemUtil.getFullOSNameWithDistribution();
         assertNotNull(fullOSName);
         assertFalse(fullOSName.isEmpty());
@@ -48,7 +48,7 @@ public class SystemUtilTest {
     }
 
     @Test
-    void testGetOSVersion() {
+    public void testGetOSVersion() {
         final String osVersion = SystemUtil.getOSVersion();
         assertNotNull(osVersion);
         assertFalse(osVersion.isEmpty());
@@ -56,14 +56,14 @@ public class SystemUtilTest {
     }
 
     @Test
-    void testGetCurrentArch() {
+    public void testGetCurrentArch() {
         final SystemArch arch = SystemUtil.getCurrentArch();
         assertNotNull(arch);
         System.out.println(arch);
     }
 
     @Test
-    void testGetFullyArchCode() {
+    public void testGetFullyArchCode() {
         final String archCode = SystemUtil.getFullyArchCode();
         assertNotNull(archCode);
         assertFalse(archCode.isEmpty());
@@ -71,7 +71,7 @@ public class SystemUtilTest {
     }
 
     @Test
-    void testGetDistribution() {
+    public void testGetDistribution() {
         final String distribution = SystemUtil.getDistribution();
         final SystemOS systemOS = SystemUtil.getSystem();
 
@@ -86,7 +86,7 @@ public class SystemUtilTest {
     }
 
     @Test
-    void testGetRamUsageByPid() throws IOException {
+    public void testGetRamUsageByPid() throws IOException {
         final long pid = ProcessHandle.current().pid(); // Get current process ID
         final long ramUsage = SystemUtil.getRamUsageByPid(pid);
         assertTrue(ramUsage >= 0); // RAM usage should be non-negative
@@ -94,7 +94,7 @@ public class SystemUtilTest {
     }
 
     @Test
-    void testDiskSpaceLogging() {
+    public void testDiskSpaceLogging() {
         final long availableSpace = SystemUtil.availableDiskSpace();
         final long usedSpace = SystemUtil.usedDiskSpace();
         final long maxSpace = SystemUtil.maxDiskSpace();

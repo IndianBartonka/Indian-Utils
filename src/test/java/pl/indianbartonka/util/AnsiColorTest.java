@@ -7,7 +7,7 @@ import pl.indianbartonka.util.color.AnsiColor;
 public class AnsiColorTest {
 
     @Test
-    void testColors() {
+    public void testColors() {
         System.out.println("&0: " + AnsiColor.convertMinecraftColors("&0Black"));
         System.out.println("&1: " + AnsiColor.convertMinecraftColors("&1Dark Blue"));
         System.out.println("&2: " + AnsiColor.convertMinecraftColors("&2Dark Green"));

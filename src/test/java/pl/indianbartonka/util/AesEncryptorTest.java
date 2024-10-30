@@ -32,7 +32,7 @@ public class AesEncryptorTest {
     }
 
     @Test
-    void encrypt() throws IOException {
+    public void encrypt() throws IOException {
         final File file = new File("./Test.txt");
 
         if (!file.exists()) {
@@ -48,7 +48,7 @@ public class AesEncryptorTest {
     }
 
     @Test
-    void decrypt() {
+    public void decrypt() {
         final File encryptedFile = new File(this.encryptor.getEncryptedDir(), "Test.txt" + this.encryptor.getFileExtension());
 
         try {

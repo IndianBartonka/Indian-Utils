@@ -13,7 +13,7 @@ import pl.indianbartonka.util.http.connection.request.RequestBuilder;
 public class ConnectionTest {
 
     @Test
-    void testConnection() throws IOException {
+    public void testConnection() throws IOException {
         final Request request = new RequestBuilder()
                 .setUrl("https://indianbartonka.pl/userInfo")
                 .GET()

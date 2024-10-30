@@ -3,12 +3,14 @@ package pl.indianbartonka.util;
 import java.util.concurrent.CountDownLatch;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class ThreadUtilTest {
 
     @Test
-    void testSleepSeconds() {
+    public void testSleepSeconds() {
         final long startTime = System.currentTimeMillis();
         ThreadUtil.sleep(1);
         final long endTime = System.currentTimeMillis();
@@ -16,7 +18,7 @@ public class ThreadUtilTest {
     }
 
     @Test
-    void testSleepMilliseconds() {
+    public void testSleepMilliseconds() {
         final long startTime = System.currentTimeMillis();
         ThreadUtil.sleep(500L);
         final long endTime = System.currentTimeMillis();
@@ -24,19 +26,19 @@ public class ThreadUtilTest {
     }
 
     @Test
-    void testGetLogicalThreads() {
+    public void testGetLogicalThreads() {
         final int logicalThreads = ThreadUtil.getLogicalThreads();
         assertTrue(logicalThreads > 0, "Should return a positive number of logical processors.");
     }
 
     @Test
-    void testGetPeakThreadsCount() {
+    public void testGetPeakThreadsCount() {
         final int peakCount = ThreadUtil.getPeakThreadsCount();
         assertTrue(peakCount >= 0, "Peak threads count should be non-negative.");
     }
 
     @Test
-    void testNewThread() {
+    public void testNewThread() {
         final ThreadUtil threadUtil = new ThreadUtil("TestThread");
         final Thread thread = threadUtil.newThread();
         assertEquals("TestThread-1", thread.getName());
@@ -44,7 +46,7 @@ public class ThreadUtilTest {
     }
 
     @Test
-    void testNewThreadWithRunnable() {
+    public void testNewThreadWithRunnable() {
         final Runnable runnable = () -> {
         };
         final ThreadUtil threadUtil = new ThreadUtil("TestRunnableThread", runnable);
@@ -54,14 +56,14 @@ public class ThreadUtilTest {
     }
 
     @Test
-    void testDaemonThread() {
+    public void testDaemonThread() {
         final ThreadUtil threadUtil = new ThreadUtil("DaemonThread", true);
         final Thread thread = threadUtil.newThread();
         assertTrue(thread.isDaemon(), "Thread should be a daemon thread.");
     }
 
     @Test
-    void testConcurrentThreadCreation() throws InterruptedException {
+    public void testConcurrentThreadCreation() throws InterruptedException {
         final int threadCount = 10;
         final CountDownLatch latch = new CountDownLatch(threadCount);
         final ThreadUtil threadUtil = new ThreadUtil("ConcurrentThread");

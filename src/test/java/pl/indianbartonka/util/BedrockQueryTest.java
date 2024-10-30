@@ -9,7 +9,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 public class BedrockQueryTest {
 
     @Test
-    void testBedrockQuery() {
+    public void testBedrockQuery() {
         final List<String> ipList = List.of(
                 "play.skyblockpe.com",
                 "play.inpvp.net",
@@ -25,7 +25,7 @@ public class BedrockQueryTest {
             System.out.println("MOTD: " + query.motd());
             System.out.println("Server Address: " + query.serverAddress());
             System.out.println("Host Address: " + query.hostAddress());
-            Assertions. assertTrue(query.online(), "Server should be online for IP: " + ip);
+            Assertions.assertTrue(query.online(), "Server should be online for IP: " + ip);
             System.out.println("Response Time: " + query.responseTime());
             System.out.println("Edition: " + query.edition());
             System.out.println("Protocol: " + query.protocol());

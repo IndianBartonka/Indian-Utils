@@ -33,13 +33,13 @@ class FileUtilTest {
     }
 
     @Test
-    void testWriteTextCreatesFile() throws IOException {
+    public void testWriteTextCreatesFile() throws IOException {
         FileUtil.writeText(this.testFile, Arrays.asList("Hello", "World"));
         Assertions.assertTrue(this.testFile.exists());
     }
 
     @Test
-    void testDirectoryIsEmptyTrue() {
+    public void testDirectoryIsEmptyTrue() {
         final File directory = new File("emptyDir");
         directory.mkdir();
         Assertions.assertTrue(FileUtil.directoryIsEmpty(directory));
@@ -47,7 +47,7 @@ class FileUtilTest {
     }
 
     @Test
-    void testDirectoryIsEmptyFalse() throws IOException {
+    public void testDirectoryIsEmptyFalse() throws IOException {
         final File directory = new File("nonEmptyDir");
         directory.mkdir();
         new File(directory, "file.txt").createNewFile();
@@ -56,7 +56,7 @@ class FileUtilTest {
     }
 
     @Test
-    void testDeleteFile() throws IOException {
+    public void testDeleteFile() throws IOException {
         FileUtil.writeText(this.testFile, List.of("Some content"));
         Assertions.assertTrue(this.testFile.exists());
         FileUtil.deleteFile(this.testFile);

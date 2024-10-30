@@ -18,13 +18,13 @@ public class ZipUtilTest {
     }
 
     @Test
-    void testZipFolderExists() {
+    public void testZipFolderExists() {
         final File directory = new File(LOGS_DIR);
         Assertions.assertTrue(directory.exists(), "Folder logs powinien istnieć.");
     }
 
     @Test
-    void testZipFolderCreatesZipFile() {
+    public void testZipFolderCreatesZipFile() {
         try {
             final File directory = new File(LOGS_DIR);
             final File zipFile = ZipUtil.zipFolder(directory.getPath(), ZIP_FILE_NAME);
@@ -36,7 +36,7 @@ public class ZipUtilTest {
     }
 
     @Test
-    void testUnzipCreatesDirectory() throws IOException {
+    public void testUnzipCreatesDirectory() throws IOException {
         final File zipFile = new File(ZIP_FILE_NAME);
         ZipUtil.unzipFile(zipFile.getPath(), UNZIP_DIR, false);
         final File unzippedDir = new File(UNZIP_DIR);

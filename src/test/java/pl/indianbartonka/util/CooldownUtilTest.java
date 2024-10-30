@@ -7,7 +7,7 @@ import org.junit.jupiter.api.Test;
 public class CooldownUtilTest {
 
     @Test
-    void cooldown() {
+    public void cooldown() {
         final long startTime = System.currentTimeMillis();
 
 //        do {
@@ -23,7 +23,7 @@ public class CooldownUtilTest {
     }
 
     @Test
-    void cooldownMultipleTimes() {
+    public void cooldownMultipleTimes() {
         for (int i = 0; i < 5; i++) {
             final long startTime = System.currentTimeMillis();
 
