@@ -8,6 +8,7 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.ReentrantLock;
 import org.jetbrains.annotations.Nullable;
+import pl.indianbartonka.util.GsonUtil;
 import pl.indianbartonka.util.ThreadUtil;
 import pl.indianbartonka.util.discord.embed.Embed;
 import pl.indianbartonka.util.http.HttpStatusCode;
@@ -37,6 +38,10 @@ public class WebHookClient {
         this.resetRequestsOnMinute();
 
         if (!disableShutdownHook) this.addShutdownHook();
+    }
+
+    public WebHookClient(final Logger logger, final boolean disableShutdownHook) {
+        this(logger, GsonUtil.getGson(), disableShutdownHook);
     }
 
     private void addShutdownHook() {

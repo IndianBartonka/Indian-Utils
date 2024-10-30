@@ -8,6 +8,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import pl.indianbartonka.util.GsonUtil;
 import pl.indianbartonka.util.language.storage.StorageStrategy;
 
 public class JsonStorageStrategy implements StorageStrategy {
@@ -15,8 +16,8 @@ public class JsonStorageStrategy implements StorageStrategy {
     private final Gson gson;
     private final Map<String, String> messages;
 
-    public JsonStorageStrategy(final Gson gson) {
-        this.gson = gson;
+    public JsonStorageStrategy() {
+        this.gson = GsonUtil.getGson();
         this.messages = new LinkedHashMap<>();
     }
 
