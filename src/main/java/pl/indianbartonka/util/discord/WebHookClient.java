@@ -161,13 +161,15 @@ public class WebHookClient {
                 ThreadUtil.sleep(10);
             }
 
-            this.logger.info("Zamykanie wątków Webhooku, może to potrwać do&a 3&b minut");
-            this.service.shutdown();
-            if (!this.service.awaitTermination(3, TimeUnit.MINUTES)) {
-                this.logger.error("Wątki nie zostały zamknięte na czas! Wymuszanie zamknięcia");
-                this.service.shutdownNow();
+            if (!this.service.isShutdown()) {
+                this.logger.info("Zamykanie wątków Webhooku, może to potrwać do&a 3&b minut");
+                this.service.shutdown();
+                if (!this.service.awaitTermination(3, TimeUnit.MINUTES)) {
+                    this.logger.error("Wątki nie zostały zamknięte na czas! Wymuszanie zamknięcia");
+                    this.service.shutdownNow();
+                }
+                this.logger.info("Zamknięto wątki Webhooku");
             }
-            this.logger.info("Zamknięto wątki Webhooku");
         } catch (final Exception exception) {
             this.logger.critical("Wstąpił błąd przy próbie zamknięcia webhooku ", exception);
 
