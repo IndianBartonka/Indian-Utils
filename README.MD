@@ -18,7 +18,7 @@ Utile używane w różnych projektach przez Indiana
 
 Używane do lepszego wyglądu kodu i ewentualnych informacjach dla użytkownika.
 
-### [Gson 2.11.0](https://github.com/google/gson) *(provided)*
+### [Gson 2.11.0](https://github.com/google/gson)
 
 Używane w WebHook Cliencie.
 
