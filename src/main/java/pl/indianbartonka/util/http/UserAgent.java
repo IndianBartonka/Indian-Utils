@@ -31,7 +31,7 @@ public final class UserAgent {
      * Base User agent
      */
     private static final String BASE_USER_AGENT = MessageUtil.formatMessage("Mozilla/5.0 (%s; %s; %s; %s)",
-            SystemUtil.getFullyOSName(), SystemUtil.getOSVersion(), SystemUtil.getFullyArchCode(), SystemUtil.LOCALE.toString());
+            SystemUtil.getFullyOSName(), SystemUtil.getOSVersion(), SystemUtil.getFullyArchCode(), SystemUtil.LOCALE.toLanguageTag());
 
     /**
      * Predefined User-Agent strings for various tools and browsers
