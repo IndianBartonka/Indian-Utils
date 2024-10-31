@@ -20,9 +20,8 @@ Używane do lepszego wyglądu kodu i ewentualnych informacjach dla użytkownika.
 
 ### [Gson 2.11.0](https://github.com/google/gson)
 
-Używane do łatwiej serialziacij i deserialziacij Json 
+Używane do łatwiej serializacji i deserializacji Json
 
-TODO: POPRSW TO
 ### [JUnit Jupiter API 5.11.3](https://junit.org/junit5/)
 
 Używane do prostych testów jednostkowych.
