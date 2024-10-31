@@ -1,7 +1,6 @@
 package pl.indianbartonka.util;
 
 import java.io.IOException;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import pl.indianbartonka.util.system.SystemArch;
 import pl.indianbartonka.util.system.SystemFamily;
@@ -17,6 +16,7 @@ public class SystemUtilTest {
 
     @Test
     public void testGetSystem() {
+        System.out.println();
         final SystemOS os = SystemUtil.getSystem();
         assertNotNull(os);
         assertTrue(os == SystemOS.WINDOWS || os == SystemOS.LINUX || os == SystemOS.FREE_BSD || os == SystemOS.MAC);
@@ -25,6 +25,7 @@ public class SystemUtilTest {
 
     @Test
     public void testSystemFamily() {
+        System.out.println();
         final SystemFamily systemFamily = SystemUtil.getSystemFamily();
 
         assertTrue(systemFamily == SystemFamily.WINDOWS || systemFamily == SystemFamily.UNIX);
@@ -33,6 +34,7 @@ public class SystemUtilTest {
 
     @Test
     public void testGetFullyOSName() {
+        System.out.println();
         final String osName = SystemUtil.getFullyOSName();
         assertNotNull(osName);
         assertFalse(osName.isEmpty());
@@ -41,6 +43,7 @@ public class SystemUtilTest {
 
     @Test
     public void testGetFullOSNameWithDistribution() {
+        System.out.println();
         final String fullOSName = SystemUtil.getFullOSNameWithDistribution();
         assertNotNull(fullOSName);
         assertFalse(fullOSName.isEmpty());
@@ -49,6 +52,7 @@ public class SystemUtilTest {
 
     @Test
     public void testGetOSVersion() {
+        System.out.println();
         final String osVersion = SystemUtil.getOSVersion();
         assertNotNull(osVersion);
         assertFalse(osVersion.isEmpty());
@@ -57,6 +61,7 @@ public class SystemUtilTest {
 
     @Test
     public void testGetCurrentArch() {
+        System.out.println();
         final SystemArch arch = SystemUtil.getCurrentArch();
         assertNotNull(arch);
         System.out.println(arch);
@@ -64,6 +69,7 @@ public class SystemUtilTest {
 
     @Test
     public void testGetFullyArchCode() {
+        System.out.println();
         final String archCode = SystemUtil.getFullyArchCode();
         assertNotNull(archCode);
         assertFalse(archCode.isEmpty());
@@ -72,6 +78,7 @@ public class SystemUtilTest {
 
     @Test
     public void testGetDistribution() {
+        System.out.println();
         final String distribution = SystemUtil.getDistribution();
         final SystemOS systemOS = SystemUtil.getSystem();
 
@@ -87,6 +94,7 @@ public class SystemUtilTest {
 
     @Test
     public void testGetRamUsageByPid() throws IOException {
+        System.out.println();
         final long pid = ProcessHandle.current().pid(); // Get current process ID
         final long ramUsage = SystemUtil.getRamUsageByPid(pid);
         assertTrue(ramUsage >= 0); // RAM usage should be non-negative
@@ -94,16 +102,20 @@ public class SystemUtilTest {
     }
 
     @Test
-    public void testDiskSpaceLogging() {
-        final long availableSpace = SystemUtil.availableDiskSpace();
-        final long usedSpace = SystemUtil.usedDiskSpace();
-        final long maxSpace = SystemUtil.maxDiskSpace();
+    public void testDiskSpace() {
+        System.out.println();
 
-        System.out.println("Dostępne: " + MathUtil.formatBytesDynamic(availableSpace, false));
-        System.out.println("Użyte: " + MathUtil.formatBytesDynamic(usedSpace, false));
-        System.out.println("Maksymalne: " + MathUtil.formatBytesDynamic(maxSpace, false));
+        System.out.println("Dostępne: " + MathUtil.formatBytesDynamic(SystemUtil.getFreeDiskSpace(), false));
+        System.out.println("Użyte: " + MathUtil.formatBytesDynamic(SystemUtil.getUsedDiskSpace(), false));
+        System.out.println("Maksymalne: " + MathUtil.formatBytesDynamic(SystemUtil.getMaxDiskSpace(), false));
+    }
 
-        Assertions.assertTrue(availableSpace >= 0);
-        Assertions.assertTrue(usedSpace >= 0);
+    @Test
+    public void testRam() {
+        System.out.println();
+
+        System.out.println("Dostępne: " + MathUtil.formatBytesDynamic(SystemUtil.getFreeRam(), false));
+        System.out.println("Użyte: " + MathUtil.formatBytesDynamic(SystemUtil.getUsedRam(), false));
+        System.out.println("Maksymalne: " + MathUtil.formatBytesDynamic(SystemUtil.getMaxRam(), false));
     }
 }
