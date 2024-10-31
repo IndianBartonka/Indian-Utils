@@ -109,23 +109,23 @@ public final class SystemUtil {
         };
     }
 
-    public static long availableDiskSpace() {
+    public static long getFreeDiskSpace() {
         return (FILE.exists() ? FILE.getUsableSpace() : 0);
     }
 
-    public static long maxDiskSpace() {
+    public static long getMaxDiskSpace() {
         return (FILE.exists() ? FILE.getTotalSpace() : 0);
     }
 
-    public static long usedDiskSpace() {
-        return (maxDiskSpace() - availableDiskSpace());
+    public static long getUsedDiskSpace() {
+        return (getMaxDiskSpace() - getFreeDiskSpace());
     }
 
     public static long getUsedRam() {
-        return getAvailableRam() - getFreeRam();
+        return getMaxRam() - getFreeRam();
     }
 
-    public static long getAvailableRam() {
+    public static long getMaxRam() {
         return ((OperatingSystemMXBean) ManagementFactory.getOperatingSystemMXBean()).getTotalMemorySize();
     }
 
