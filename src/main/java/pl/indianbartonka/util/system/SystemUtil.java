@@ -1,9 +1,11 @@
 package pl.indianbartonka.util.system;
 
+import com.sun.management.OperatingSystemMXBean;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.lang.management.ManagementFactory;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.List;
@@ -117,6 +119,18 @@ public final class SystemUtil {
 
     public static long usedDiskSpace() {
         return (maxDiskSpace() - availableDiskSpace());
+    }
+
+    public static long getUsedRam() {
+        return getAvailableRam() - getFreeRam();
+    }
+
+    public static long getAvailableRam() {
+        return ((OperatingSystemMXBean) ManagementFactory.getOperatingSystemMXBean()).getTotalMemorySize();
+    }
+
+    public static long getFreeRam() {
+        return ((OperatingSystemMXBean) ManagementFactory.getOperatingSystemMXBean()).getFreeMemorySize();
     }
 
     private static long getWindowsMemoryUsage(final long pid) throws IOException {
