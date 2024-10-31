@@ -1,8 +1,7 @@
 package pl.indianbartonka.util;
 
-import com.sun.management.OperatingSystemMXBean;
-import java.lang.management.ManagementFactory;
 import pl.indianbartonka.util.annotation.UtilityClass;
+import pl.indianbartonka.util.system.SystemUtil;
 
 @UtilityClass
 public final class BufferUtil {
@@ -15,7 +14,7 @@ public final class BufferUtil {
     }
 
     public static int calculateOptimalBufferSize(final long fileSize) {
-        final long bufferPerRequest = ((OperatingSystemMXBean) ManagementFactory.getOperatingSystemMXBean()).getFreeMemorySize() / 5;
+        final long bufferPerRequest = SystemUtil.getFreeRam() / 5;
         final long bufferSize = Math.min((long) (fileSize * 0.1), bufferPerRequest);
 
         return (int) MathUtil.getCorrectNumber(bufferSize, MIN_BUFFER, MAX_BUFFER);
