@@ -20,13 +20,9 @@ Używane do lepszego wyglądu kodu i ewentualnych informacjach dla użytkownika.
 
 ### [Gson 2.11.0](https://github.com/google/gson)
 
-Używane w WebHook Cliencie.
+Używane do łatwiej serialziacij i deserialziacij Json 
 
-<details>
-  <summary>Klasa</summary>
-  <pre><code>pl.indianbartonka.util.discord.WebHookClient</code></pre>
-</details>
-
+TODO: POPRSW TO
 ### [JUnit Jupiter API 5.11.3](https://junit.org/junit5/)
 
 Używane do prostych testów jednostkowych.
