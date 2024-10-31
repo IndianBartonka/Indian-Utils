@@ -18,6 +18,7 @@ public final class AnsiColor {
     public static final String ITALIC = "\033[3m";
     public static final String UNDERLINE = "\033[4m";
     public static final String STRIKETHROUGH = "\033[9m";
+
     /**
      * Default colors
      */
@@ -41,6 +42,7 @@ public final class AnsiColor {
     public static final String DARK_GRAY = "\u001B[90m";
     public static final String LIGHT_GRAY = "\u001B[37;1m";
     public static final String DARK_RED = "\u001B[31;1m";
+
     /**
      * Backgorund colors
      */
@@ -61,6 +63,7 @@ public final class AnsiColor {
     public static final String BRIGHT_PURPLE_BACKGROUND = "\u001B[105m";
     public static final String BRIGHT_CYAN_BACKGROUND = "\u001B[106m";
     public static final String BRIGHT_WHITE_BACKGROUND = "\u001B[107m";
+
     /**
      * Minecraft Bedrock special colors
      */
