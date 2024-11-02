@@ -133,6 +133,20 @@ public final class SystemUtil {
         return ((OperatingSystemMXBean) ManagementFactory.getOperatingSystemMXBean()).getFreeMemorySize();
     }
 
+    public static long getMaxSwap() {
+        final OperatingSystemMXBean osBean = (OperatingSystemMXBean) ManagementFactory.getOperatingSystemMXBean();
+        return osBean.getTotalSwapSpaceSize() - SystemUtil.getMaxRam();
+    }
+
+    public static long getFreeSwap() {
+        final OperatingSystemMXBean osBean = (OperatingSystemMXBean) ManagementFactory.getOperatingSystemMXBean();
+        return osBean.getFreeSwapSpaceSize() - SystemUtil.getFreeRam();
+    }
+
+    public static long getUsedSwap() {
+        return getMaxSwap() - getFreeSwap();
+    }
+
     private static long getWindowsMemoryUsage(final long pid) throws IOException {
         final Process process = Runtime.getRuntime().exec("tasklist /NH /FI \"PID eq " + pid + "\"");
         try (final BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()))) {
