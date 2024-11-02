@@ -6,8 +6,10 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.lang.management.ManagementFactory;
+import java.nio.file.FileStore;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
 import pl.indianbartonka.util.annotation.UtilityClass;
@@ -16,7 +18,7 @@ import pl.indianbartonka.util.annotation.UtilityClass;
 public final class SystemUtil {
 
     public static final Locale LOCALE = Locale.getDefault();
-    private static final File FILE = new File(File.separator);
+    private static final File MAIN_DISK = new File(File.listRoots()[0].getPath());
 
     private SystemUtil() {
     }
@@ -109,16 +111,59 @@ public final class SystemUtil {
         };
     }
 
-    public static long getFreeDiskSpace() {
-        return (FILE.exists() ? FILE.getUsableSpace() : 0);
+    public static List<Disk> getAvailableDisk() {
+        final List<Disk> disks = new LinkedList<>();
+
+        for (final File diskFile : File.listRoots()) {
+            String name = diskFile.getPath().replaceAll(":", "").replaceAll("[/\\\\]", "").trim();
+            String type = "UNKNOWN";
+            boolean readOnly = false;
+            long blockSize = 0;
+
+            try {
+                final FileStore store = Files.getFileStore(Paths.get(diskFile.getPath()));
+                final String diskName = store.name();
+
+                if (!diskName.isEmpty()) {
+                    name = diskName;
+                }
+
+                type = store.type();
+                readOnly = store.isReadOnly();
+                blockSize = store.getBlockSize();
+
+            } catch (final IOException e) {
+                e.printStackTrace();
+            }
+
+            disks.add(new Disk(name, diskFile, type, blockSize, readOnly));
+        }
+
+        return disks;
     }
 
-    public static long getMaxDiskSpace() {
-        return (FILE.exists() ? FILE.getTotalSpace() : 0);
+    public static long getFreeMainDiskSpace() {
+        return getFreeDiskSpace(MAIN_DISK);
     }
 
-    public static long getUsedDiskSpace() {
-        return (getMaxDiskSpace() - getFreeDiskSpace());
+    public static long getMaxMainDiskSpace() {
+        return getMaxDiskSpace(MAIN_DISK);
+    }
+
+    public static long getUsedMainDiskSpace() {
+        return getUsedDiskSpace(MAIN_DISK);
+    }
+
+    public static long getFreeDiskSpace(final File diskFile) {
+        return (diskFile.exists() ? diskFile.getUsableSpace() : 0);
+    }
+
+    public static long getMaxDiskSpace(final File diskFile) {
+        return (diskFile.exists() ? diskFile.getTotalSpace() : 0);
+    }
+
+    public static long getUsedDiskSpace(final File diskFile) {
+        return (getMaxDiskSpace(diskFile) - getFreeDiskSpace(diskFile));
     }
 
     public static long getUsedRam() {
