@@ -12,10 +12,13 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.nio.file.attribute.FileOwnerAttributeView;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public final class FileUtil {
@@ -108,6 +111,29 @@ public final class FileUtil {
     public static long getCreationTime(final File file) throws IOException {
         final BasicFileAttributes attrs = Files.readAttributes(file.toPath(), BasicFileAttributes.class);
         return attrs.creationTime().toMillis();
+    }
+
+    public static List<File> listAllFiles(final File file) {
+        final File[] files = file.listFiles();
+
+        if (files == null) return new ArrayList<>();
+
+        return listAllFiles(Arrays.asList(files));
+    }
+
+    public static List<File> listAllFiles(final List<File> files) {
+        return files.stream()
+                .flatMap(file -> {
+                    final List<File> filesList = new ArrayList<>();
+                    filesList.add(file);
+                    if (file.isDirectory()) {
+                        final File[] fileFiles = file.listFiles();
+                        if (fileFiles != null) {
+                            filesList.addAll(listAllFiles(Arrays.asList(fileFiles)));
+                        }
+                    }
+                    return filesList.stream();
+                }).collect(Collectors.toList());
     }
 
     public static Path renameFolder(final Path oldPath, final Path newPath) throws IOException {
