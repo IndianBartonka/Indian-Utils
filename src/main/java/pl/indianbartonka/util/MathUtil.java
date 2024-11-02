@@ -158,7 +158,7 @@ public final class MathUtil {
      * @return The formatted kilobytes as a string.
      */
     public static String formatKilobytesDynamic(final long kilobytes, final boolean shortNames) {
-        if (kilobytes == 0) return "N/A";
+        if (kilobytes < 0) return "N/A";
 
         final List<Character> unitsPattern = new ArrayList<>();
         final long gb = getRemainingGigabytesFromTotalKilobytes(kilobytes);
@@ -182,7 +182,7 @@ public final class MathUtil {
      * @return The formatted bytes as a string.
      */
     public static String formatBytesDynamic(final long bytes, final boolean shortNames) {
-        if (bytes <= 0) return "N/A";
+        if (bytes < 0) return "N/A";
 
         final List<Character> unitsPattern = new ArrayList<>();
         final long gb = getRemainingGigabytesFromTotalBytes(bytes);
