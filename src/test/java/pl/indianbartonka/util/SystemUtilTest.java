@@ -1,16 +1,17 @@
 package pl.indianbartonka.util;
 
+import java.io.File;
 import java.io.IOException;
+import java.util.List;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import pl.indianbartonka.util.file.FileUtil;
+import pl.indianbartonka.util.system.Disk;
 import pl.indianbartonka.util.system.SystemArch;
 import pl.indianbartonka.util.system.SystemFamily;
 import pl.indianbartonka.util.system.SystemOS;
 import pl.indianbartonka.util.system.SystemUtil;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class SystemUtilTest {
 
@@ -18,8 +19,8 @@ public class SystemUtilTest {
     public void testGetSystem() {
         System.out.println();
         final SystemOS os = SystemUtil.getSystem();
-        assertNotNull(os);
-        assertTrue(os == SystemOS.WINDOWS || os == SystemOS.LINUX || os == SystemOS.FREE_BSD || os == SystemOS.MAC);
+        Assertions.assertNotNull(os);
+        Assertions.assertNotSame(os, SystemOS.UNKNOWN);
         System.out.println(os);
     }
 
@@ -28,7 +29,7 @@ public class SystemUtilTest {
         System.out.println();
         final SystemFamily systemFamily = SystemUtil.getSystemFamily();
 
-        assertTrue(systemFamily == SystemFamily.WINDOWS || systemFamily == SystemFamily.UNIX);
+        Assertions.assertTrue(systemFamily == SystemFamily.WINDOWS || systemFamily == SystemFamily.UNIX);
         System.out.println(systemFamily);
     }
 
@@ -36,8 +37,8 @@ public class SystemUtilTest {
     public void testGetFullyOSName() {
         System.out.println();
         final String osName = SystemUtil.getFullyOSName();
-        assertNotNull(osName);
-        assertFalse(osName.isEmpty());
+        Assertions.assertNotNull(osName);
+        Assertions.assertFalse(osName.isEmpty());
         System.out.println(osName);
     }
 
@@ -45,8 +46,8 @@ public class SystemUtilTest {
     public void testGetFullOSNameWithDistribution() {
         System.out.println();
         final String fullOSName = SystemUtil.getFullOSNameWithDistribution();
-        assertNotNull(fullOSName);
-        assertFalse(fullOSName.isEmpty());
+        Assertions.assertNotNull(fullOSName);
+        Assertions.assertFalse(fullOSName.isEmpty());
         System.out.println(fullOSName);
     }
 
@@ -54,8 +55,8 @@ public class SystemUtilTest {
     public void testGetOSVersion() {
         System.out.println();
         final String osVersion = SystemUtil.getOSVersion();
-        assertNotNull(osVersion);
-        assertFalse(osVersion.isEmpty());
+        Assertions.assertNotNull(osVersion);
+        Assertions.assertFalse(osVersion.isEmpty());
         System.out.println(osVersion);
     }
 
@@ -63,7 +64,7 @@ public class SystemUtilTest {
     public void testGetCurrentArch() {
         System.out.println();
         final SystemArch arch = SystemUtil.getCurrentArch();
-        assertNotNull(arch);
+        Assertions.assertNotNull(arch);
         System.out.println(arch);
     }
 
@@ -71,8 +72,8 @@ public class SystemUtilTest {
     public void testGetFullyArchCode() {
         System.out.println();
         final String archCode = SystemUtil.getFullyArchCode();
-        assertNotNull(archCode);
-        assertFalse(archCode.isEmpty());
+        Assertions.assertNotNull(archCode);
+        Assertions.assertFalse(archCode.isEmpty());
         System.out.println(archCode);
     }
 
@@ -80,13 +81,12 @@ public class SystemUtilTest {
     public void testGetDistribution() {
         System.out.println();
         final String distribution = SystemUtil.getDistribution();
-        final SystemOS systemOS = SystemUtil.getSystem();
 
-        if (systemOS == SystemOS.LINUX || systemOS == SystemOS.FREE_BSD) {
-            assertNotNull(distribution);
-            assertFalse(distribution.isEmpty());
+        if (SystemUtil.getSystemFamily() == SystemFamily.UNIX) {
+            Assertions.assertNotNull(distribution);
+            Assertions.assertFalse(distribution.isEmpty());
         } else {
-            assertEquals("Unknown", distribution);
+            Assertions.assertEquals("Unknown", distribution);
         }
 
         System.out.println(distribution);
@@ -95,9 +95,9 @@ public class SystemUtilTest {
     @Test
     public void testGetRamUsageByPid() throws IOException {
         System.out.println();
-        final long pid = ProcessHandle.current().pid(); // Get current process ID
+        final long pid = ProcessHandle.current().pid();
         final long ramUsage = SystemUtil.getRamUsageByPid(pid);
-        assertTrue(ramUsage >= 0); // RAM usage should be non-negative
+        Assertions.assertTrue(ramUsage >= 0);
         System.out.println(ramUsage);
     }
 
@@ -105,9 +105,33 @@ public class SystemUtilTest {
     public void testDiskSpace() {
         System.out.println();
 
-        System.out.println("Dostępne: " + MathUtil.formatBytesDynamic(SystemUtil.getFreeDiskSpace(), false));
-        System.out.println("Użyte: " + MathUtil.formatBytesDynamic(SystemUtil.getUsedDiskSpace(), false));
-        System.out.println("Maksymalne: " + MathUtil.formatBytesDynamic(SystemUtil.getMaxDiskSpace(), false));
+        final List<Disk> disks = SystemUtil.getAvailableDisk();
+
+        System.out.println("Dostępne dyski: " + disks.size());
+
+        for (final Disk disk : disks) {
+            final File diskFile = disk.diskFile();
+            System.out.println();
+            System.out.println(disk.name() + " | " + diskFile.getAbsolutePath());
+            System.out.println("Typ dysku: " + disk.type());
+            System.out.println("Rozmiar bloku: " + disk.blockSize());
+            System.out.println("Tylko do odczytu: " + disk.readOnly());
+
+            System.out.println("Całkowita pamięć: " + MathUtil.formatBytesDynamic(SystemUtil.getMaxDiskSpace(diskFile), false));
+            System.out.println("Użyta pamięć: " + MathUtil.formatBytesDynamic(SystemUtil.getUsedDiskSpace(diskFile), false));
+            System.out.println("Wolna pamięć: " + MathUtil.formatBytesDynamic(SystemUtil.getFreeDiskSpace(diskFile), false));
+
+            if (!diskFile.getPath().contains("C")) {
+                System.out.println("Pozyskiwanie plików.....");
+                System.out.println();
+                for (final File file : FileUtil.listAllFiles(diskFile)) {
+                    System.out.println(String.format("%-15s | %s",
+                            MathUtil.formatBytesDynamic(FileUtil.getFileSize(file), true),
+                            file.getPath()));
+
+                }
+            }
+        }
     }
 
     @Test
