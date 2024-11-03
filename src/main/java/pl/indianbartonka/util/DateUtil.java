@@ -343,7 +343,7 @@ public final class DateUtil {
      * @return The formatted time string.
      */
     public static String formatTimeDynamic(final long millis, final boolean shortNames) {
-        if (millis == 0) return "N/A";
+        if(millis <= 0) return "0";
 
         final List<Character> unitsPattern = new ArrayList<>();
         final long days = getRemainingDays(millis);
