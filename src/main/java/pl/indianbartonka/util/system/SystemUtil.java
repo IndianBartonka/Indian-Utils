@@ -18,7 +18,6 @@ import pl.indianbartonka.util.annotation.UtilityClass;
 public final class SystemUtil {
 
     public static final Locale LOCALE = Locale.getDefault();
-    private static final File MAIN_DISK = new File(File.listRoots()[0].getPath());
 
     private SystemUtil() {
     }
@@ -133,6 +132,7 @@ public final class SystemUtil {
                 blockSize = store.getBlockSize();
 
             } catch (final IOException e) {
+                //Dla debugu takiego bo nie wiem kiedy to moze wystapic
                 e.printStackTrace();
             }
 
@@ -142,16 +142,16 @@ public final class SystemUtil {
         return disks;
     }
 
-    public static long getFreeMainDiskSpace() {
-        return getFreeDiskSpace(MAIN_DISK);
+    public static long getFreeCurrentDiskSpace() {
+        return getFreeDiskSpace(new File(System.getProperty("user.dir")));
     }
 
-    public static long getMaxMainDiskSpace() {
-        return getMaxDiskSpace(MAIN_DISK);
+    public static long getMaxCurrentDiskSpace() {
+        return getMaxDiskSpace(new File(System.getProperty("user.dir")));
     }
 
-    public static long getUsedMainDiskSpace() {
-        return getUsedDiskSpace(MAIN_DISK);
+    public static long getUsedCurrentDiskSpace() {
+        return getUsedDiskSpace(new File(System.getProperty("user.dir")));
     }
 
     public static long getFreeDiskSpace(final File diskFile) {
