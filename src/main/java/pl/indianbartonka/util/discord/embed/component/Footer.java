@@ -6,4 +6,3 @@ public record Footer(String text, String imageURL) {
         this(text, null);
     }
 }
-

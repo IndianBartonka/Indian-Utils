@@ -356,7 +356,7 @@ public final class DateUtil {
         if (seconds > 0) unitsPattern.add('s');
         if (formatedMillis > 0) unitsPattern.add('i');
 
-        if(millis == 0){
+        if (millis == 0) {
             unitsPattern.add('i');
         }
 

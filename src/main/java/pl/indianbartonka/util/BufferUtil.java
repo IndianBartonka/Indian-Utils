@@ -9,6 +9,9 @@ public final class BufferUtil {
     private static int MIN_BUFFER = 4_09;
     private static int MAX_BUFFER = (256 * 1_048_576);
 
+    /**
+     * Private constructor to prevent instantiation of the utility class.
+     */
     private BufferUtil() {
 
     }

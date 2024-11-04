@@ -87,7 +87,7 @@ public abstract class Logger {
     }
 
     protected void initializeLogFile() {
-        if(!this.configuration.isFileLogging()) return;
+        if (!this.configuration.isFileLogging()) return;
 
         final Logger parent = this.getParent();
         if (parent != null) {

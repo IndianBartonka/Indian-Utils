@@ -25,6 +25,9 @@ public final class IndianUtils {
         }
     }
 
+    /**
+     * Private constructor to prevent instantiation of the utility class.
+     */
     private IndianUtils() {
 
     }

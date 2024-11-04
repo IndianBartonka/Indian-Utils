@@ -22,6 +22,13 @@ public final class ScannerUtil {
     private static final ReentrantLock LOCK = new ReentrantLock();
 
     /**
+     * Private constructor to prevent instantiation of the utility class.
+     */
+    private ScannerUtil() {
+
+    }
+
+    /**
      * Asks a string question to the user, provides a default value if no input is given,
      * and processes the user's response.
      *

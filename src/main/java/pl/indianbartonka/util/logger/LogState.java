@@ -1,6 +1,7 @@
 package pl.indianbartonka.util.logger;
 
 public enum LogState {
+    
     NONE("&r"),
     INFO("&1"),
     ALERT("&c"),

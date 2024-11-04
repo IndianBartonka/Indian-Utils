@@ -13,6 +13,9 @@ public final class GsonUtil {
             .setStrictness(Strictness.LENIENT)
             .create();
 
+    /**
+     * Private constructor to prevent instantiation of the utility class.
+     */
     private GsonUtil() {
     }
 
