@@ -10,8 +10,6 @@ import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.attribute.BasicFileAttributes;
-import java.nio.file.attribute.FileOwnerAttributeView;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
@@ -101,16 +99,6 @@ public final class FileUtil {
                         });
             }
         }
-    }
-
-    public static String getFileOwner(final File file) throws IOException {
-        final FileOwnerAttributeView view = Files.getFileAttributeView(file.toPath(), FileOwnerAttributeView.class);
-        return view.getOwner().getName();
-    }
-
-    public static long getCreationTime(final File file) throws IOException {
-        final BasicFileAttributes attrs = Files.readAttributes(file.toPath(), BasicFileAttributes.class);
-        return attrs.creationTime().toMillis();
     }
 
     public static List<File> listAllFiles(final File file) {
