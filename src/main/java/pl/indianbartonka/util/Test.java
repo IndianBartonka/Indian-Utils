@@ -19,7 +19,11 @@ import pl.indianbartonka.util.logger.config.LoggerConfiguration;
 
 public final class Test {
 
-    private static final Logger LOGGER = new Logger(new LoggerConfiguration(true, System.getProperty("user.dir") + File.separator + "logs", true)) {
+    private static final LoggerConfiguration loggerConfiguration = LoggerConfiguration.builder()
+            .setLogsPath(System.getProperty("user.dir") + File.separator + "logs")
+            .build();
+
+    private static final Logger LOGGER = new Logger(loggerConfiguration) {
     };
     //Zaleca się tworzenie nowych loggerów na podstawie głównego
     private static final Logger LOGGER2 = LOGGER.prefixed("Logger 2");

@@ -2,57 +2,62 @@ package pl.indianbartonka.util.logger.config;
 
 public class LoggerConfiguration {
 
-    private final boolean debug;
-    private final String logsPath;
-    private final boolean logJULtoFile;
+    private boolean debug;
+    private String logsPath;
+    private boolean fileLogging;
+    private boolean logJULtoFile;
     private boolean oneLog;
     private String logName;
 
-    public LoggerConfiguration(final boolean debug, final String logsPath, final boolean logJULtoFile, final String logName) {
-        this.debug = debug;
-        this.logsPath = logsPath;
-        this.logJULtoFile = logJULtoFile;
-        this.logName = logName;
-    }
-
-    public LoggerConfiguration(final boolean debug, final String logsPath, final String logName) {
-        this.debug = debug;
-        this.logsPath = logsPath;
-        this.logJULtoFile = true;
-        this.logName = logName;
-    }
-
-    public LoggerConfiguration(final boolean debug, final String logsPath, final boolean oneLog, final boolean logJULtoFile) {
-        this.debug = debug;
-        this.logsPath = logsPath;
-        this.oneLog = oneLog;
-        this.logJULtoFile = logJULtoFile;
-    }
-
-    public LoggerConfiguration(final boolean debug, final String logsPath, final boolean oneLog) {
-        this.debug = debug;
-        this.logsPath = logsPath;
-        this.oneLog = oneLog;
-        this.logJULtoFile = true;
+    public static LoggerConfigBuilder builder() {
+        return new LoggerConfigBuilder();
     }
 
     public boolean isDebug() {
         return this.debug;
     }
 
+    public void setDebug(final boolean debug) {
+        this.debug = debug;
+    }
+
     public String getLogsPath() {
         return this.logsPath;
     }
 
-    public boolean isOneLog() {
-        return this.oneLog;
+    public void setLogsPath(final String logsPath) {
+        this.logsPath = logsPath;
+    }
+
+    public boolean isFileLogging() {
+        return this.fileLogging;
+    }
+
+    public void setFileLogging(final boolean fileLogging) {
+        this.fileLogging = fileLogging;
     }
 
     public boolean isLogJULtoFile() {
         return this.logJULtoFile;
     }
 
+    public void setLogJULtoFile(final boolean logJULtoFile) {
+        this.logJULtoFile = logJULtoFile;
+    }
+
+    public boolean isOneLog() {
+        return this.oneLog;
+    }
+
+    public void setOneLog(final boolean oneLog) {
+        this.oneLog = oneLog;
+    }
+
     public String getLogName() {
         return this.logName;
+    }
+
+    public void setLogName(final String logName) {
+        this.logName = logName;
     }
 }

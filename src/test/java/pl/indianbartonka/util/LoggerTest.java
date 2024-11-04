@@ -13,7 +13,11 @@ public class LoggerTest {
 
     @BeforeEach
     void setUp() {
-        this.logger = new Logger(new LoggerConfiguration(true, System.getProperty("user.dir") + File.separator + "logs", true)) {
+        final LoggerConfiguration loggerConfiguration = LoggerConfiguration.builder()
+                .setLogsPath( System.getProperty("user.dir") + File.separator + "logs")
+                .build();
+
+        this.logger = new Logger(loggerConfiguration) {
         };
 
         this.logger2 = new Logger(this.logger) {

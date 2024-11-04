@@ -18,7 +18,11 @@ import pl.indianbartonka.util.logger.config.LoggerConfiguration;
 
 public class WebHookClientTest {
 
-    private final Logger logger = new Logger(new LoggerConfiguration(true, System.getProperty("user.dir") + File.separator + "logs", true)) {
+    private static final LoggerConfiguration loggerConfiguration = LoggerConfiguration.builder()
+            .setLogsPath(System.getProperty("user.dir") + File.separator + "logs")
+            .build();
+
+    private final Logger logger = new Logger(loggerConfiguration) {
     };
 
     private final WebHookClient client = new WebHookClient(this.logger, false);
