@@ -13,6 +13,8 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
 import pl.indianbartonka.util.annotation.UtilityClass;
+import pl.indianbartonka.util.exception.NotImplementedException;
+import pl.indianbartonka.util.exception.UnsupportedSystemException;
 
 @UtilityClass
 public final class SystemUtil {
@@ -61,9 +63,15 @@ public final class SystemUtil {
     }
 
     public static String getFullOSNameWithDistribution() {
-        return switch (getSystem()) {
-            case WINDOWS, MAC, UNKNOWN -> getFullyOSName();
-            case LINUX, FREE_BSD -> getFullyOSName() + " (" + getDistribution() + ")";
+        return switch (getSystemFamily()) {
+            case WINDOWS, UNKNOWN -> getFullyOSName();
+            case UNIX -> {
+                if (getSystem() == SystemOS.MAC) {
+                    yield getFullyOSName();
+                } else {
+                    yield getFullyOSName() + " (" + getDistribution() + ")";
+                }
+            }
         };
     }
 
@@ -106,8 +114,27 @@ public final class SystemUtil {
             case WINDOWS -> getWindowsMemoryUsage(pid);
             case UNIX -> getUnixMemoryUsage(pid);
             default ->
-                    throw new UnsupportedOperationException("Pozyskiwanie ilosci ram dla " + getFullyOSName() + " nie jest wspierane");
+                    throw new UnsupportedSystemException("Pozyskiwanie ilosci ram dla " + getFullyOSName() + " nie jest jeszcze wspierane");
         };
+    }
+
+    public static void setConsoleName(final String name) throws IOException, InterruptedException {
+        final ProcessBuilder processBuilder = new ProcessBuilder();
+
+        switch (getSystemFamily()) {
+            case WINDOWS -> processBuilder.command("cmd.exe", "/c", "title", name);
+            case UNIX -> {
+                if (getSystem() == SystemOS.MAC) {
+                    throw new NotImplementedException("Ustawianie nazwy konsoli dla MacOs nie jest jeszcze zaimplementowane");
+                } else {
+                    processBuilder.command("bash", "-c", "printf '\\033]0;%s\\007' \"" + name + "\"");
+                }
+            }
+            default ->
+                    throw new UnsupportedSystemException("Ustawianie nazwy konsoli dla " + getFullyOSName() + " nie jest jeszcze wspierane");
+        }
+
+        processBuilder.inheritIO().start().waitFor();
     }
 
     public static List<Disk> getAvailableDisk() {
