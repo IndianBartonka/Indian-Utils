@@ -343,8 +343,6 @@ public final class DateUtil {
      * @return The formatted time string.
      */
     public static String formatTimeDynamic(final long millis, final boolean shortNames) {
-        if(millis <= 0) return "0";
-
         final List<Character> unitsPattern = new ArrayList<>();
         final long days = getRemainingDays(millis);
         final long hours = getRemainingHours(millis);
@@ -357,6 +355,10 @@ public final class DateUtil {
         if (minutes > 0) unitsPattern.add('m');
         if (seconds > 0) unitsPattern.add('s');
         if (formatedMillis > 0) unitsPattern.add('i');
+
+        if(millis == 0){
+            unitsPattern.add('i');
+        }
 
         return formatTime(millis, unitsPattern, shortNames);
     }
