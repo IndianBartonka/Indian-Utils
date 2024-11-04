@@ -4,7 +4,7 @@ import java.io.File;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import pl.indianbartonka.util.logger.Logger;
-import pl.indianbartonka.util.logger.LoggerConfiguration;
+import pl.indianbartonka.util.logger.config.LoggerConfiguration;
 
 public class LoggerTest {
 

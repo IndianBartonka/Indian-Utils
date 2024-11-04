@@ -12,6 +12,8 @@ import pl.indianbartonka.util.DateUtil;
 import pl.indianbartonka.util.color.AnsiColor;
 import pl.indianbartonka.util.exception.LoggerException;
 import pl.indianbartonka.util.file.FileUtil;
+import pl.indianbartonka.util.logger.config.FileLogFormatter;
+import pl.indianbartonka.util.logger.config.LoggerConfiguration;
 
 public abstract class Logger {
 

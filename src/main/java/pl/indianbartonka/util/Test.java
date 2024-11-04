@@ -15,7 +15,7 @@ import pl.indianbartonka.util.language.LanguageManager;
 import pl.indianbartonka.util.language.storage.impl.HashMapStorageStrategy;
 import pl.indianbartonka.util.language.storage.impl.PropertiesStorageStrategy;
 import pl.indianbartonka.util.logger.Logger;
-import pl.indianbartonka.util.logger.LoggerConfiguration;
+import pl.indianbartonka.util.logger.config.LoggerConfiguration;
 
 public final class Test {
 

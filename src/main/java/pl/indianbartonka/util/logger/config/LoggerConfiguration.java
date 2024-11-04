@@ -1,4 +1,4 @@
-package pl.indianbartonka.util.logger;
+package pl.indianbartonka.util.logger.config;
 
 public class LoggerConfiguration {
 

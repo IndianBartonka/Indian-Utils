@@ -14,7 +14,7 @@ import pl.indianbartonka.util.discord.embed.component.Field;
 import pl.indianbartonka.util.discord.embed.component.Footer;
 import pl.indianbartonka.util.discord.embed.component.Image;
 import pl.indianbartonka.util.logger.Logger;
-import pl.indianbartonka.util.logger.LoggerConfiguration;
+import pl.indianbartonka.util.logger.config.LoggerConfiguration;
 
 public class WebHookClientTest {
 
