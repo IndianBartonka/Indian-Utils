@@ -124,10 +124,6 @@ public final class FileUtil {
                 }).collect(Collectors.toList());
     }
 
-    public static Path renameFolder(final Path oldPath, final Path newPath) throws IOException {
-        return Files.move(oldPath, newPath);
-    }
-
     public static long getFileSize(final File file) {
         long size = file.length();
 
