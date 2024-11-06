@@ -15,7 +15,8 @@ public class ConnectionTest {
     @Test
     public void testConnection() throws IOException {
         final Request request = new RequestBuilder()
-                .setUrl("https://indianbartonka.pl/userInfo")
+//                .setUrl("https://indianbartonka.pl/userInfo")
+                .setUrl("https://api.mcsrvstat.us/bedrock/3/play.skyblockpe.com")
                 .GET()
                 .build();
 
