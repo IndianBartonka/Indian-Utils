@@ -146,19 +146,26 @@ public abstract class Logger {
         }
     }
 
-    public void print() {
-        this.print("");
+    public void print(final Object log) {
+        this.logState = LogState.NONE;
+        this.instantLogToFile(log);
+
+        System.out.print("\r" + AnsiColor.convertMinecraftColors(log));
     }
 
-    public void print(final Object log) {
+    public void println() {
+        this.println("");
+    }
+
+    public void println(final Object log) {
         this.logState = LogState.NONE;
         this.instantLogToFile(log);
 
         System.out.println(AnsiColor.convertMinecraftColors(log));
     }
 
-    public void print(final Object log, final Throwable throwable) {
-        this.print(log);
+    public void println(final Object log, final Throwable throwable) {
+        this.println(log);
         this.logThrowable(throwable);
     }
 
@@ -244,7 +251,7 @@ public abstract class Logger {
 
     public void logByState(final Object log, final Throwable throwable, final LogState logState) {
         switch (logState) {
-            case NONE -> this.print(log, throwable);
+            case NONE -> this.println(log, throwable);
             case INFO -> this.info(log, throwable);
             case ALERT -> this.alert(log, throwable);
             case CRITICAL -> this.critical(log, throwable);

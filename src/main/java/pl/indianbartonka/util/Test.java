@@ -201,12 +201,12 @@ public final class Test {
 
     public static void main(final String[] args) throws IOException {
         languagesTest();
-        LOGGER.print("==================");
+        LOGGER.println("==================");
 
         bufferTest();
-        LOGGER.print("==================");
+        LOGGER.println("==================");
 
         downloadFileTest();
-        LOGGER.print("==================");
+        LOGGER.println("==================");
     }
 }

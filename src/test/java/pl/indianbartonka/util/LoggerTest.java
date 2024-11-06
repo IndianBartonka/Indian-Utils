@@ -14,7 +14,7 @@ public class LoggerTest {
     @BeforeEach
     void setUp() {
         final LoggerConfiguration loggerConfiguration = LoggerConfiguration.builder()
-                .setLogsPath( System.getProperty("user.dir") + File.separator + "logs")
+                .setLogsPath(System.getProperty("user.dir") + File.separator + "logs")
                 .build();
 
         this.logger = new Logger(loggerConfiguration) {
@@ -27,17 +27,17 @@ public class LoggerTest {
     @Test
     public void testBasicLogging() {
         this.logger.info("Logger Test");
-        this.logger.print("1");
+        this.logger.println("1");
         this.logger.info("2");
         this.logger.info("2");
-        this.logger.print();
+        this.logger.println();
     }
 
     @Test
     public void testSecondaryLogger() {
-        this.logger2.print("3");
+        this.logger2.println("3");
         this.logger2.info(4);
-        this.logger2.print();
+        this.logger2.println();
     }
 
     @Test
