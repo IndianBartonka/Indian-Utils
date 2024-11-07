@@ -17,6 +17,7 @@ public final class BufferUtil {
     }
 
     public static int calculateOptimalBufferSize(final long fileSize) {
+       //TODO: Pozyskaj swap z ramem
         final long bufferPerRequest = SystemUtil.getFreeRam() / 5;
         final long bufferSize = Math.min((long) (fileSize * 0.1), bufferPerRequest);
 
