@@ -16,7 +16,7 @@ import pl.indianbartonka.util.annotation.UtilityClass;
  * Utility class providing mathematical operations, data conversions, and formatting functions.
  * </p>
  * <p>
- * Documents written by ChatGPT
+ * Documents and math operations written by ChatGPT
  * </p>
  */
 
