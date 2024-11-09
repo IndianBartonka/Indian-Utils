@@ -5,7 +5,6 @@ import java.io.IOException;
 import java.util.concurrent.TimeoutException;
 import pl.indianbartonka.util.download.DownloadListener;
 import pl.indianbartonka.util.download.DownloadTask;
-import pl.indianbartonka.util.file.FileUtil;
 import pl.indianbartonka.util.http.HttpStatusCode;
 import pl.indianbartonka.util.http.connection.Connection;
 import pl.indianbartonka.util.http.connection.request.Request;
@@ -189,21 +188,8 @@ public final class Test {
         }
     }
 
-    public static void bufferTest() {
-        final File[] files = new File(System.getProperty("user.dir")).listFiles();
-        if (files != null) {
-            for (final File file : files) {
-                final int buffer = BufferUtil.calculateOptimalBufferSize(FileUtil.getFileSize(file));
-                LOGGER.info(file.getName() + " = " + MathUtil.formatBytesDynamic(buffer, false));
-            }
-        }
-    }
-
     public static void main(final String[] args) throws IOException {
         languagesTest();
-        LOGGER.println("==================");
-
-        bufferTest();
         LOGGER.println("==================");
 
         downloadFileTest();
