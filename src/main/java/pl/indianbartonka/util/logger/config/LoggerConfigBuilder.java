@@ -6,7 +6,7 @@ public class LoggerConfigBuilder {
 
     public LoggerConfigBuilder() {
         this.loggerConfiguration = new LoggerConfiguration();
-        this.loggerConfiguration.setFileLogging(true);
+        this.loggerConfiguration.setLoggingToFile(true);
         this.loggerConfiguration.setLogsPath(System.getProperty("user.dir"));
         this.loggerConfiguration.setOneLog(true);
         this.loggerConfiguration.setLogName("Latest");
@@ -22,8 +22,8 @@ public class LoggerConfigBuilder {
         return this;
     }
 
-    public LoggerConfigBuilder setFileLogging(final boolean logFile) {
-        this.loggerConfiguration.setFileLogging(logFile);
+    public LoggerConfigBuilder setLoggingToFile(final boolean logFile) {
+        this.loggerConfiguration.setLoggingToFile(logFile);
         return this;
     }
 

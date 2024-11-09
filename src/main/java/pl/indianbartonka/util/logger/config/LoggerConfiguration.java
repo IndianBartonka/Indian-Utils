@@ -4,7 +4,7 @@ public class LoggerConfiguration {
 
     private boolean debug;
     private String logsPath;
-    private boolean fileLogging;
+    private boolean loggingToFile;
     private boolean logJULtoFile;
     private boolean oneLog;
     private String logName;
@@ -29,12 +29,12 @@ public class LoggerConfiguration {
         this.logsPath = logsPath;
     }
 
-    public boolean isFileLogging() {
-        return this.fileLogging;
+    public boolean isLoggingToFile() {
+        return this.loggingToFile;
     }
 
-    public void setFileLogging(final boolean fileLogging) {
-        this.fileLogging = fileLogging;
+    public void setLoggingToFile(final boolean loggingToFile) {
+        this.loggingToFile = loggingToFile;
     }
 
     public boolean isLogJULtoFile() {
