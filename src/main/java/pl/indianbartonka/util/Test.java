@@ -13,6 +13,7 @@ import pl.indianbartonka.util.language.Language;
 import pl.indianbartonka.util.language.LanguageManager;
 import pl.indianbartonka.util.language.storage.impl.HashMapStorageStrategy;
 import pl.indianbartonka.util.language.storage.impl.PropertiesStorageStrategy;
+import pl.indianbartonka.util.logger.LogState;
 import pl.indianbartonka.util.logger.Logger;
 import pl.indianbartonka.util.logger.config.LoggerConfiguration;
 
@@ -124,12 +125,13 @@ public final class Test {
             @Override
             public void onSecond(final int progress, final double formatedSpeed, final String remainingTimeString) {
                 //Kod wykonuje się co każdą sekunde
-                this.tempLogger.info(progress + "%&a " + formatedSpeed + "MB/s &c" + remainingTimeString);
+//                this.tempLogger.print(progress + "%&a " + formatedSpeed + "MB/s &c" + remainingTimeString);
             }
 
             @Override
             public void onProgress(final int progress, final double formatedSpeed, final String remainingTimeString) {
 //                tempLogger.info(progress + "%&a " + formatedSpeed + "MB/s &c" + remainingTimeString);
+                this.tempLogger.print(progress + "%&a " + formatedSpeed + "MB/s &c" + remainingTimeString, LogState.INFO);
             }
 
             @Override
@@ -139,11 +141,13 @@ public final class Test {
 
             @Override
             public void onEnd(final File outputFile) {
+                this.tempLogger.println();
                 this.tempLogger.info("Pobrano:&a " + outputFile.getName());
             }
 
             @Override
             public void onDownloadStop() {
+                this.tempLogger.println();
                 this.tempLogger.alert("Zatrzymano pobieranie!");
             }
         };
@@ -171,7 +175,7 @@ public final class Test {
                     final ThreadUtil threadUtil = new ThreadUtil("DownloadTest");
 
                     threadUtil.newThread(() -> {
-                        ThreadUtil.sleep(5);
+                        ThreadUtil.sleep(10);
                         LOGGER.info("Zatrzymywanie pobierania:&b " + fileName);
                         downloadTask.stopDownload();
                     }).start();
