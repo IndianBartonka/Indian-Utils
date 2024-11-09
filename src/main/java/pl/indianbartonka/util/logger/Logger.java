@@ -148,9 +148,18 @@ public abstract class Logger {
 
     public void print(final Object log) {
         this.logState = LogState.NONE;
+        this.updatePrefix();
         this.instantLogToFile(log);
 
         System.out.print("\r" + AnsiColor.convertMinecraftColors(log));
+    }
+
+    public void print(final Object log, final LogState logState) {
+        this.logState = logState;
+        this.updatePrefix();
+        this.instantLogToFile(log);
+
+        System.out.print("\r" + AnsiColor.convertMinecraftColors(this.prefix + log));
     }
 
     public void println() {
@@ -159,6 +168,7 @@ public abstract class Logger {
 
     public void println(final Object log) {
         this.logState = LogState.NONE;
+        this.updatePrefix();
         this.instantLogToFile(log);
 
         System.out.println(AnsiColor.convertMinecraftColors(log));
