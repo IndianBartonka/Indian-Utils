@@ -22,6 +22,7 @@ public final class Test {
     private static final LoggerConfiguration loggerConfiguration = LoggerConfiguration.builder()
             .setLogsPath(System.getProperty("user.dir") + File.separator + "logs")
             .setLoggingToFile(true)
+            .setOneLog(true)
             .build();
 
     private static final Logger LOGGER = new Logger(loggerConfiguration) {
