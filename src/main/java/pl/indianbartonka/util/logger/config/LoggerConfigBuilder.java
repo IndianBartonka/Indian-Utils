@@ -7,6 +7,7 @@ public class LoggerConfigBuilder {
     public LoggerConfigBuilder() {
         this.loggerConfiguration = new LoggerConfiguration();
         this.loggerConfiguration.setLoggingToFile(true);
+        this.loggerConfiguration.setLogJULtoFile(false);
         this.loggerConfiguration.setLogsPath(System.getProperty("user.dir"));
         this.loggerConfiguration.setOneLog(true);
         this.loggerConfiguration.setLogName("Latest");
