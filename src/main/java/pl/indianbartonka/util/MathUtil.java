@@ -187,6 +187,8 @@ public final class MathUtil {
         final long mb = getRemainingMegabytesFromTotalKilobytes(kilobytes);
         final long kb = getRemainingKilobytesFromTotalKilobytes(kilobytes);
 
+        if (kilobytes == 0) unitsPattern.add('k');
+
         if (gb > 0) unitsPattern.add('g');
         if (mb > 0) unitsPattern.add('m');
         if (kb > 0) unitsPattern.add('k');
@@ -210,6 +212,8 @@ public final class MathUtil {
         final long mb = getRemainingMegabytesFromTotalBytes(bytes);
         final long kb = getRemainingKilobytesFromTotalBytes(bytes);
         final long remainingBytes = getRemainingBytesFromTotalBytes(bytes);
+
+        if (bytes == 0) unitsPattern.add('b');
 
         if (gb > 0) unitsPattern.add('g');
         if (mb > 0) unitsPattern.add('m');
@@ -275,16 +279,33 @@ public final class MathUtil {
     private static Map<Character, String> getUnitBytesMap(final long bytes, final boolean shortNames) {
         final Map<Character, String> unitMap = new HashMap<>();
 
+        final long kb = getRemainingKilobytesFromTotalBytes(bytes);
+        final long mb = getRemainingMegabytesFromTotalBytes(bytes);
+        final long gb = getRemainingGigabytesFromTotalBytes(bytes);
+        final long b = getRemainingBytesFromTotalBytes(bytes);
+
         if (shortNames) {
-            unitMap.put('k', getRemainingKilobytesFromTotalBytes(bytes) + " KB");
-            unitMap.put('m', getRemainingMegabytesFromTotalBytes(bytes) + " MB");
-            unitMap.put('g', getRemainingGigabytesFromTotalBytes(bytes) + " GB");
-            unitMap.put('b', getRemainingBytesFromTotalBytes(bytes) + " B");
+            unitMap.put('k', kb + " KB");
+            unitMap.put('m', mb + " MB");
+            unitMap.put('g', gb + " GB");
+            unitMap.put('b', b + " B");
         } else {
-            unitMap.put('k', getRemainingKilobytesFromTotalBytes(bytes) + " kilobajtów");
-            unitMap.put('m', getRemainingMegabytesFromTotalBytes(bytes) + " megabajtów");
-            unitMap.put('g', getRemainingGigabytesFromTotalBytes(bytes) + " gigabajtów");
-            unitMap.put('b', getRemainingBytesFromTotalBytes(bytes) + " bajtów");
+            unitMap.put('k', kb + " kilobajtów");
+            unitMap.put('m', mb + " megabajtów");
+            unitMap.put('g', gb + " gigabajtów");
+            unitMap.put('b', b + " bajtów");
+
+            if (bytes == 0) {
+                unitMap.put('b', b + " bajtów");
+            }
+        }
+
+        if (bytes == 0) {
+            if (shortNames) {
+                unitMap.put('b', b + " B");
+            } else {
+                unitMap.put('b', b + " bajtów");
+            }
         }
 
         return unitMap;
@@ -300,14 +321,26 @@ public final class MathUtil {
     private static Map<Character, String> getUnitKilobytesMap(final long kilobytes, final boolean shortNames) {
         final Map<Character, String> unitMap = new HashMap<>();
 
+        final long kb = getRemainingKilobytesFromTotalKilobytes(kilobytes);
+        final long mb = getRemainingMegabytesFromTotalKilobytes(kilobytes);
+        final long gb = getRemainingGigabytesFromTotalKilobytes(kilobytes);
+
         if (shortNames) {
-            unitMap.put('k', getRemainingKilobytesFromTotalKilobytes(kilobytes) + " KB");
-            unitMap.put('m', getRemainingMegabytesFromTotalKilobytes(kilobytes) + " MB");
-            unitMap.put('g', getRemainingGigabytesFromTotalKilobytes(kilobytes) + " GB");
+            unitMap.put('k', kb + " KB");
+            unitMap.put('m', mb + " MB");
+            unitMap.put('g', gb + " GB");
         } else {
-            unitMap.put('k', getRemainingKilobytesFromTotalKilobytes(kilobytes) + " kilobajtów");
-            unitMap.put('m', getRemainingMegabytesFromTotalKilobytes(kilobytes) + " megabajtów");
-            unitMap.put('g', getRemainingGigabytesFromTotalKilobytes(kilobytes) + " gigabajtów");
+            unitMap.put('k', kb + " kilobajtów");
+            unitMap.put('m', mb + " megabajtów");
+            unitMap.put('g', gb + " gigabajtów");
+        }
+
+        if (kilobytes == 0) {
+            if (shortNames) {
+                unitMap.put('k', kb + " KB");
+            } else {
+                unitMap.put('k', kb + " kilobajtów");
+            }
         }
 
         return unitMap;
