@@ -9,9 +9,7 @@ import pl.indianbartonka.util.system.SystemUtil;
 
 public class BufferUtilTest {
 
-    private static final LoggerConfiguration loggerConfiguration = LoggerConfiguration.builder()
-            .setLoggingToFile(false)
-            .build();
+    private static final LoggerConfiguration loggerConfiguration = LoggerConfiguration.builder().build();
 
     private final Logger logger = new Logger(loggerConfiguration) {
     };

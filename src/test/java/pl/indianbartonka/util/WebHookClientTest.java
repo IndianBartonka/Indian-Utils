@@ -20,6 +20,7 @@ public class WebHookClientTest {
 
     private static final LoggerConfiguration loggerConfiguration = LoggerConfiguration.builder()
             .setLogsPath(System.getProperty("user.dir") + File.separator + "logs")
+            .setLoggingToFile(true)
             .build();
 
     private final Logger logger = new Logger(loggerConfiguration) {
