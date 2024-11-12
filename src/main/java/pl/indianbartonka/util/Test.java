@@ -263,4 +263,52 @@ public class PosixFileAttributesExample {
 }
 
 
+import java.awt.Desktop;
+import java.io.File;
+import java.io.IOException;
+import java.net.URI;
+
+public class DesktopExample {
+    public static void main(String[] args) {
+        // Sprawdzanie, czy klasa Desktop jest obsługiwana na tym systemie
+        if (!Desktop.isDesktopSupported()) {
+            System.out.println("Klasa Desktop nie jest obsługiwana na tym systemie.");
+            return;
+        }
+
+        Desktop desktop = Desktop.getDesktop();
+
+        // Przykłady użycia funkcji klasy Desktop
+        try {
+            // 1. Otwieranie przeglądarki internetowej i przechodzenie na stronę
+            URI uri = new URI("https://www.openai.com");
+            desktop.browse(uri);
+            System.out.println("Otworzono przeglądarkę z adresem URL: " + uri);
+
+            // 2. Otwieranie pliku
+            File file = new File("example.txt");
+            if (file.exists()) {
+                desktop.open(file);
+                System.out.println("Otworzono plik: " + file.getAbsolutePath());
+            } else {
+                System.out.println("Plik nie istnieje: " + file.getAbsolutePath());
+            }
+
+            // 3. Uruchamianie domyślnego edytora tekstu
+            File editableFile = new File("editable.txt");
+            desktop.edit(editableFile);
+            System.out.println("Otworzono plik do edycji: " + editableFile.getAbsolutePath());
+
+            // 4. Wysyłanie e-maila za pomocą domyślnego klienta poczty
+            URI mailto = new URI("mailto:someone@example.com?subject=Hello%20World");
+            desktop.mail(mailto);
+            System.out.println("Uruchomiono klienta poczty z adresem: " + mailto);
+
+        } catch (IOException e) {
+            System.err.println("Błąd operacji na plikach lub aplikacjach: " + e.getMessage());
+        } catch (Exception e) {
+            System.err.println("Wystąpił inny błąd: " + e.getMessage());
+        }
+    }
+}
 
