@@ -202,3 +202,65 @@ public final class Test {
         LOGGER.println("==================");
     }
 }
+
+//TODO: Dodja to w jakimś info o pliku 
+
+import java.nio.file.*;
+import java.nio.file.attribute.DosFileAttributes;
+import java.io.IOException;
+
+public class DosFileAttributesExample {
+    public static void main(String[] args) {
+        Path path = Paths.get("example.txt");
+
+        try {
+            DosFileAttributes dosAttrs = Files.readAttributes(path, DosFileAttributes.class);
+            
+            System.out.println("Jest ukryty: " + dosAttrs.isHidden());
+            System.out.println("Tylko do odczytu: " + dosAttrs.isReadOnly());
+            System.out.println("Atrybut archiwalny: " + dosAttrs.isArchive());
+            System.out.println("Atrybut systemowy: " + dosAttrs.isSystem());
+            
+            // Przykład ustawienia pliku jako ukrytego
+            Files.setAttribute(path, "dos:hidden", true);
+            System.out.println("Plik ustawiono jako ukryty.");
+            
+        } catch (IOException e) {
+            System.err.println("Błąd dostępu do atrybutów pliku: " + e.getMessage());
+        }
+    }
+}
+
+import java.nio.file.*;
+import java.nio.file.attribute.PosixFileAttributes;
+import java.nio.file.attribute.PosixFilePermission;
+import java.nio.file.attribute.PosixFilePermissions;
+import java.io.IOException;
+import java.util.Set;
+
+public class PosixFileAttributesExample {
+    public static void main(String[] args) {
+        Path path = Paths.get("example.txt");
+
+        try {
+            PosixFileAttributes posixAttrs = Files.readAttributes(path, PosixFileAttributes.class);
+
+            System.out.println("Właściciel: " + posixAttrs.owner().getName());
+            System.out.println("Grupa: " + posixAttrs.group().getName());
+            System.out.println("Uprawnienia: " + PosixFilePermissions.toString(posixAttrs.permissions()));
+
+            // Ustawienie uprawnień pliku na rwxr-xr--
+            Set<PosixFilePermission> perms = PosixFilePermissions.fromString("rwxr-xr--");
+            Files.setPosixFilePermissions(path, perms);
+            System.out.println("Zaktualizowano uprawnienia pliku do rwxr-xr--.");
+            
+        } catch (UnsupportedOperationException e) {
+            System.err.println("Atrybuty POSIX nie są obsługiwane w tym systemie operacyjnym.");
+        } catch (IOException e) {
+            System.err.println("Błąd dostępu do atrybutów pliku: " + e.getMessage());
+        }
+    }
+}
+
+
+
