@@ -2,6 +2,8 @@ package pl.indianbartonka.util;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.List;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -102,7 +104,7 @@ public class SystemUtilTest {
     }
 
     @Test
-    public void testDiskSpace() {
+    public void testDiskSpace() throws IOException {
         System.out.println();
 
         final List<Disk> disks = SystemUtil.getAvailableDisk();
@@ -125,10 +127,13 @@ public class SystemUtilTest {
                 System.out.println("Pozyskiwanie plików.....");
                 System.out.println();
                 for (final File file : FileUtil.listAllFiles(diskFile)) {
-                    System.out.println(String.format("%-15s | %s",
-                            MathUtil.formatBytesDynamic(FileUtil.getFileSize(file), true),
-                            file.getPath()));
-
+                    System.out.println(
+                            String.format("%-20s %-30s | %-50s",
+                                    MathUtil.formatBytesDynamic(FileUtil.getFileSize(file), true),
+                                    Files.getOwner(Path.of("pom.xml")).getName(),
+                                    file.getPath()
+                            )
+                    );
                 }
             }
         }
