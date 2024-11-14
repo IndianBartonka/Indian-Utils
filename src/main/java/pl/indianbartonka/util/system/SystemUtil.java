@@ -3,15 +3,19 @@ package pl.indianbartonka.util.system;
 import com.sun.management.OperatingSystemMXBean;
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.UncheckedIOException;
 import java.lang.management.ManagementFactory;
 import java.nio.file.FileStore;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
+import org.jetbrains.annotations.VisibleForTesting;
 import pl.indianbartonka.util.annotation.UtilityClass;
 import pl.indianbartonka.util.exception.NotImplementedException;
 import pl.indianbartonka.util.exception.UnsupportedSystemException;
@@ -138,13 +142,24 @@ public final class SystemUtil {
     }
 
     public static List<Disk> getAvailableDisk() {
+        return switch (getSystem()) {
+            //Free BSD i Mac są dla testów nie wiem jak działają :)
+            case WINDOWS, FREE_BSD, MAC -> getAvailableRootsDisk();
+            case LINUX -> getLinuxDisks();
+            case UNKNOWN ->
+                    throw new UnsupportedSystemException("Pozyskiwanie dysków dla " + getFullyOSName() + " nie jest jeszcze wspierane");
+        };
+    }
+
+    @VisibleForTesting
+    public static List<Disk> getAvailableRootsDisk() {
         final List<Disk> disks = new LinkedList<>();
 
         for (final File diskFile : File.listRoots()) {
             String name = diskFile.getPath().replaceAll(":", "").replaceAll("[/\\\\]", "").trim();
             String type = "UNKNOWN";
             boolean readOnly = false;
-            long blockSize = 0;
+            long blockSize = -1;
 
             try {
                 final FileStore store = Files.getFileStore(Paths.get(diskFile.getPath()));
@@ -166,6 +181,54 @@ public final class SystemUtil {
             disks.add(new Disk(name, diskFile, type, blockSize, readOnly));
         }
 
+        return disks;
+    }
+
+    @VisibleForTesting
+    public static List<Disk> getLinuxDisks() {
+        final List<Disk> disks = new ArrayList<>();
+
+        try (final BufferedReader br = new BufferedReader(new FileReader("/proc/mounts"))) {
+
+            String line;
+            while ((line = br.readLine()) != null) {
+                final String[] parts = line.split(" ");
+                final String mountPoint = parts[1];
+
+                if (parts[0].startsWith("/dev/")) {
+                    final File diskFile = new File(mountPoint);
+
+                    final List<String> nameList = List.of(mountPoint.split("/"));
+
+                    final String name;
+                    if (nameList.isEmpty()) {
+                        name = mountPoint;
+                    } else {
+                        name = nameList.get(nameList.size() - 1);
+                    }
+
+                    String type = "UNKNOWN";
+                    boolean readOnly = false;
+                    long blockSize = -1;
+
+                    try {
+                        final FileStore store = Files.getFileStore(Paths.get(diskFile.getPath()));
+
+                        type = store.type();
+                        readOnly = store.isReadOnly();
+                        blockSize = store.getBlockSize();
+
+                    } catch (final IOException e) {
+                        //Dla debugu takiego bo nie wiem kiedy to moze wystapic
+                        e.printStackTrace();
+                    }
+
+                    disks.add(new Disk(name, diskFile, type, blockSize, readOnly));
+                }
+            }
+        } catch (final IOException exception) {
+            throw new UncheckedIOException(exception);
+        }
         return disks;
     }
 
