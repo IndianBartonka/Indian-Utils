@@ -11,7 +11,6 @@ import java.lang.management.ManagementFactory;
 import java.nio.file.FileStore;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
@@ -186,12 +185,12 @@ public final class SystemUtil {
 
     @VisibleForTesting
     public static List<Disk> getLinuxDisks() {
-        final List<Disk> disks = new ArrayList<>();
+        final List<Disk> disks = new LinkedList<>();
 
-        try (final BufferedReader br = new BufferedReader(new FileReader("/proc/mounts"))) {
+        try (final BufferedReader bufferedReader = new BufferedReader(new FileReader("/proc/mounts"))) {
 
             String line;
-            while ((line = br.readLine()) != null) {
+            while ((line = bufferedReader.readLine()) != null) {
                 final String[] parts = line.split(" ");
                 final String mountPoint = parts[1];
 
@@ -270,12 +269,24 @@ public final class SystemUtil {
 
     public static long getMaxSwap() {
         final OperatingSystemMXBean osBean = (OperatingSystemMXBean) ManagementFactory.getOperatingSystemMXBean();
-        return osBean.getTotalSwapSpaceSize() - SystemUtil.getMaxRam();
+
+        if (getSystem() == SystemOS.WINDOWS) {
+            //Windows zwraca SWAP + RAM
+            return osBean.getTotalSwapSpaceSize() - getMaxRam();
+        } else {
+            return osBean.getTotalSwapSpaceSize();
+        }
     }
 
     public static long getFreeSwap() {
         final OperatingSystemMXBean osBean = (OperatingSystemMXBean) ManagementFactory.getOperatingSystemMXBean();
-        return osBean.getFreeSwapSpaceSize() - SystemUtil.getFreeRam();
+
+        if (getSystem() == SystemOS.WINDOWS) {
+            //Windows zwraca SWAP + RAM
+            return osBean.getFreeSwapSpaceSize() - getFreeRam();
+        } else {
+            return osBean.getFreeSwapSpaceSize();
+        }
     }
 
     public static long getUsedSwap() {
