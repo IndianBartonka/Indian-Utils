@@ -3,7 +3,6 @@ package pl.indianbartonka.util;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
-import java.nio.file.Path;
 import java.util.List;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -130,7 +129,7 @@ public class SystemUtilTest {
                     System.out.println(
                             String.format("%-20s %-30s | %-50s",
                                     MathUtil.formatBytesDynamic(FileUtil.getFileSize(file), true),
-                                    Files.getOwner(Path.of("pom.xml")).getName(),
+                                    Files.getOwner(file.toPath()).getName(),
                                     file.getPath()
                             )
                     );

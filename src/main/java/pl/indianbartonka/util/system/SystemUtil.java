@@ -194,7 +194,7 @@ public final class SystemUtil {
                 final String[] parts = line.split(" ");
                 final String mountPoint = parts[1];
 
-                if (parts[0].startsWith("/dev/")) {
+                if (parts[0].startsWith("/dev/") && (mountPoint.contains("media") || mountPoint.equals("/"))) {
                     final File diskFile = new File(mountPoint);
 
                     final List<String> nameList = List.of(mountPoint.split("/"));
