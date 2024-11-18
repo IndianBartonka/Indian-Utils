@@ -9,9 +9,12 @@ package pl.indianbartonka.util;
 public enum MemoryUnit {
 
     BYTES(1),
-    KILOBYTES(1024),
-    MEGABYTES(1024 * 1024),
-    GIGABYTES(1024 * 1024 * 1024);
+    KILOBYTES(1000),
+    MEGABYTES(1000 * 1000),
+    GIGABYTES(1000 * 1000 * 1000),
+    KIBIBYTES(1024),
+    MEBIBYTES(1024 * 1024),
+    GIBIBYTES(1024 * 1024 * 1024);
 
     private final double bytes;
 
