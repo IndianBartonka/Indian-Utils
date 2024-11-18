@@ -93,7 +93,7 @@ public final class MathUtil {
      * @return The remaining gigabytes.
      */
     public static long getRemainingGigabytesFromTotalBytes(final long bytes) {
-        return (bytes % (1024L * 1024 * 1024 * 1024)) / (1024 * 1024 * 1024);
+        return (bytes % (1000L * 1000 * 1000 * 1000)) / (1000 * 1000 * 1000);
     }
 
     /**
@@ -103,7 +103,7 @@ public final class MathUtil {
      * @return The remaining megabytes.
      */
     public static long getRemainingMegabytesFromTotalBytes(final long bytes) {
-        return (bytes % (1024 * 1024 * 1024)) / (1024 * 1024);
+        return (bytes % (1000 * 1000 * 1000)) / (1000 * 1000);
     }
 
     /**
@@ -113,18 +113,18 @@ public final class MathUtil {
      * @return The remaining kilobytes.
      */
     public static long getRemainingKilobytesFromTotalBytes(final long bytes) {
-        return (bytes % (1024 * 1024)) / 1024;
+        return (bytes % (1000 * 1000)) / 1000;
     }
 
     /**
      * Extracts the remaining bytes from a total number of bytes, after accounting for complete kilobytes.
-     * This method calculates the remainder of bytes that don't form a full kilobyte (1024 bytes).
+     * This method calculates the remainder of bytes that don't form a full kilobyte (1000 bytes).
      *
      * @param bytes The total number of bytes.
-     * @return The remaining bytes, which are less than 1024.
+     * @return The remaining bytes, which are less than 1000.
      */
     public static long getRemainingBytesFromTotalBytes(final long bytes) {
-        return bytes % 1024;
+        return bytes % 1000;
     }
 
     /**
@@ -134,7 +134,7 @@ public final class MathUtil {
      * @return The remaining gigabytes.
      */
     public static long getRemainingGigabytesFromTotalKilobytes(final long kilobytes) {
-        return kilobytes / (1024 * 1024);  // Convert kilobytes to full gigabytes
+        return kilobytes / (1000 * 1000);  // Convert kilobytes to full gigabytes
     }
 
     /**
@@ -144,7 +144,7 @@ public final class MathUtil {
      * @return The remaining megabytes.
      */
     public static long getRemainingMegabytesFromTotalKilobytes(final long kilobytes) {
-        return (kilobytes % (1024 * 1024)) / 1024;
+        return (kilobytes % (1000 * 1000)) / 1000;
     }
 
     /**
@@ -154,7 +154,7 @@ public final class MathUtil {
      * @return the remaining kilobytes after full megabytes
      */
     public static long getRemainingKilobytesFromTotalKilobytes(final long kilobytes) {
-        return kilobytes % 1024;
+        return kilobytes % 1000;
     }
 
     // Formatting methods
