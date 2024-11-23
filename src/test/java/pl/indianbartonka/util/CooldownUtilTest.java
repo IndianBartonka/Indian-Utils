@@ -10,12 +10,31 @@ public class CooldownUtilTest {
     public void cooldown() {
         final long startTime = System.currentTimeMillis();
 
-//        do {
-//            System.out.println(cooldown.hasCooldown("siur"));
-//        } while (cooldown.cooldown("siur", 20, TimeUnit.SECONDS));
-
         System.out.println("Nadawanie cooldownu i czekanie...");
         CooldownUtil.cooldownWait("siur", 10, TimeUnit.SECONDS);
+
+        System.out.println(DateUtil.formatTimeDynamic((System.currentTimeMillis() - startTime)));
+
+        Assertions.assertFalse(CooldownUtil.hasCooldown("siur"));
+    }
+
+
+    @Test
+    public void cooldownRemove() {
+        final long startTime = System.currentTimeMillis();
+
+        CooldownUtil.cooldown("siur", 10, TimeUnit.SECONDS);
+
+        int tries = 0;
+
+        while (CooldownUtil.hasCooldown("siur")) {
+            if (tries == 10) {
+                CooldownUtil.removeCooldown("siur");
+            }
+
+            System.out.println("Próba nr: " + tries);
+            tries++;
+        }
 
         System.out.println(DateUtil.formatTimeDynamic((System.currentTimeMillis() - startTime)));
 

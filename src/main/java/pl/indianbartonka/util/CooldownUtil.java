@@ -56,6 +56,17 @@ public final class CooldownUtil {
     }
 
     /**
+     * Removes the cooldown for the specified name.
+     * This will clear the cooldown immediately, allowing the name to bypass any remaining cooldown time.
+     *
+     * @param name the name for which to remove the cooldown
+     */
+    public static void removeCooldown(@NotNull final String name) {
+        COOLDOWN.remove(name);
+        TIME_MAP.remove(name);
+    }
+
+    /**
      * Gets the duration of the cooldown for the specified name.
      *
      * @param name the name to get the cooldown duration for
