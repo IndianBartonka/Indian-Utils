@@ -87,14 +87,12 @@ public final class NetworkUtil {
                 case MAC, UNKNOWN ->
                         throw new UnsupportedSystemException("Pozyskiwanie nazwy sieci WiFi dla " + SystemUtil.getFullyOSName() + " nie jest jeszcze wspierane");
             };
-        } catch (final Exception exception) {
-            exception.printStackTrace();
+        } catch (final Exception ignore) {
         }
 
         return "UNKNOWN";
     }
 
-    //TODO: Ulepszyć to
     private static String getUnixWiFiSSID() throws IOException {
         final Process process = Runtime.getRuntime().exec("nmcli -t -f name connection show --active");
         try (final BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()))) {

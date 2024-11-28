@@ -2,8 +2,8 @@ package pl.indianbartonka.util;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.EnumSet;
 import java.util.List;
+import java.util.Set;
 import pl.indianbartonka.util.annotation.UtilityClass;
 
 /**
@@ -178,7 +178,7 @@ public final class MessageUtil {
      * @param <E>     The type of the enum.
      * @return The joined string.
      */
-    public static <E extends Enum<E>> String enumSetToString(final EnumSet<E> enumSet, String split) {
+    public static <E extends Enum<E>> String enumSetToString(final Set<E> enumSet, String split) {
         if (split == null) split = "";
         if (enumSet == null || enumSet.isEmpty()) return "";
         return String.join(split, enumSet.stream().map(Enum::toString).toArray(String[]::new));

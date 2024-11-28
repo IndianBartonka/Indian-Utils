@@ -70,7 +70,7 @@ public record BedrockQuery(String serverAddress, String hostAddress, boolean onl
                 dataOutputStream.writeLong(dialerId++);
 
                 final byte[] requestData = outputStream.toByteArray();
-                final byte[] responseData = new byte[(4 * 1_048_576)];
+                final byte[] responseData = new byte[(int) MemoryUnit.BYTES.from(4, MemoryUnit.KIBIBYTES)];
 
                 final DatagramPacket requestPacket = new DatagramPacket(requestData, requestData.length, address, port);
                 final DatagramPacket responsePacket = new DatagramPacket(responseData, responseData.length);
