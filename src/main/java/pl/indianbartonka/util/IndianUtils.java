@@ -7,7 +7,9 @@ import java.io.InputStreamReader;
 
 public final class IndianUtils {
 
-    public static String VERSION = "UNKNOWN";
+    //Popraw fo bo powinno być lower casse
+    public static String version = "UNKNOWN";
+    //TODO: dodaj Debug który będzie wywalał jeśli włączony te exception 
 
     static {
         final InputStream inputStream = IndianUtils.class.getResourceAsStream("/IndianUtils.version");
