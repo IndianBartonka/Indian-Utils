@@ -4,12 +4,12 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.concurrent.TimeUnit;
 
 public final class IndianUtils {
 
-    //Popraw fo bo powinno być lower casse
     public static String version = "UNKNOWN";
-    //TODO: dodaj Debug który będzie wywalał jeśli włączony te exception 
+    public static boolean debug;
 
     static {
         final InputStream inputStream = IndianUtils.class.getResourceAsStream("/IndianUtils.version");
@@ -19,7 +19,7 @@ public final class IndianUtils {
                 String line;
 
                 while ((line = reader.readLine()) != null) {
-                    VERSION = line;
+                    version = line;
                 }
             } catch (final IOException ignored) {
 
@@ -32,5 +32,41 @@ public final class IndianUtils {
      */
     private IndianUtils() {
 
+    }
+
+    public static void setDebug(final boolean debug) {
+        IndianUtils.debug = debug;
+    }
+
+    private static boolean wineCheck() {
+        try {
+            final Process process = Runtime.getRuntime().exec("wine --version");
+            try (final BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()))) {
+                String line;
+                while ((line = reader.readLine()) != null) {
+                    if (line.contains("wine-")) return true;
+                }
+            }
+            if (!process.waitFor(30, TimeUnit.MILLISECONDS)) process.destroy();
+        } catch (final Exception exception) {
+
+        }
+        return false;
+    }
+
+    private static boolean box64() {
+        try {
+            final Process process = Runtime.getRuntime().exec("box64 --version");
+            try (final BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()))) {
+                String line;
+                while ((line = reader.readLine()) != null) {
+                    if (line.contains("Box64")) return true;
+                }
+            }
+            if (!process.waitFor(30, TimeUnit.MILLISECONDS)) process.destroy();
+        } catch (final Exception exception) {
+
+        }
+        return false;
     }
 }

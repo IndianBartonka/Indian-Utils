@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.List;
 import org.jetbrains.annotations.VisibleForTesting;
+import pl.indianbartonka.util.IndianUtils;
 import pl.indianbartonka.util.exception.UnsupportedSystemException;
 import pl.indianbartonka.util.system.SystemUtil;
 
@@ -44,7 +45,7 @@ public final class NetworkUtil {
                 }
             }
         } catch (final SocketException socketException) {
-            socketException.printStackTrace();
+            if (IndianUtils.debug) socketException.printStackTrace();
         }
 
         return ipList;
@@ -73,7 +74,7 @@ public final class NetworkUtil {
                 }
             }
         } catch (final SocketException socketException) {
-            socketException.printStackTrace();
+            if (IndianUtils.debug) socketException.printStackTrace();
         }
 
         return ipList;

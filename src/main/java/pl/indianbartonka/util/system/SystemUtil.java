@@ -15,6 +15,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
 import org.jetbrains.annotations.VisibleForTesting;
+import pl.indianbartonka.util.IndianUtils;
 import pl.indianbartonka.util.annotation.UtilityClass;
 import pl.indianbartonka.util.exception.NotImplementedException;
 import pl.indianbartonka.util.exception.UnsupportedSystemException;
@@ -172,9 +173,9 @@ public final class SystemUtil {
                 readOnly = store.isReadOnly();
                 blockSize = store.getBlockSize();
 
-            } catch (final IOException e) {
+            } catch (final IOException ioException) {
                 //Dla debugu takiego bo nie wiem kiedy to moze wystapic
-                e.printStackTrace();
+                if (IndianUtils.debug) ioException.printStackTrace();
             }
 
             disks.add(new Disk(name, diskFile, type, blockSize, readOnly));
@@ -217,9 +218,9 @@ public final class SystemUtil {
                         readOnly = store.isReadOnly();
                         blockSize = store.getBlockSize();
 
-                    } catch (final IOException e) {
+                    } catch (final IOException ioException) {
                         //Dla debugu takiego bo nie wiem kiedy to moze wystapic
-                        e.printStackTrace();
+                        if (IndianUtils.debug) ioException.printStackTrace();
                     }
 
                     disks.add(new Disk(name, diskFile, type, blockSize, readOnly));
