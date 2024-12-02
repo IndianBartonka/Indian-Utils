@@ -144,8 +144,8 @@ public final class SystemUtil {
     public static List<Disk> getAvailableDisk() {
         return switch (getSystem()) {
             //Free BSD i Mac są dla testów nie wiem jak działają :)
-            case WINDOWS, FREE_BSD, MAC -> getAvailableRootsDisk();
-            case LINUX -> getLinuxDisks();
+            case WINDOWS, MAC -> getAvailableRootsDisk();
+            case LINUX, FREE_BSD -> getLinuxDisks();
             case UNKNOWN ->
                     throw new UnsupportedSystemException("Pozyskiwanie dysków dla " + getFullyOSName() + " nie jest jeszcze wspierane");
         };
