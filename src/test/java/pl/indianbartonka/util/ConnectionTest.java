@@ -30,7 +30,12 @@ public class ConnectionTest {
 
             System.out.println("Czy jest zabezpieczone? " + connection.isHttps());
             System.out.println("Wiadomość: " + connection.getResponseMessage());
-            System.out.println("Kod odpowiedzi: " + statusCode + " (" + statusCode.getCode() + ")");
+
+            if(statusCode == HttpStatusCode.UNKNOWN){
+                System.out.println("Kod odpowiedzi: " + connection.getRawStatusCode());
+            } else {
+                System.out.println("Kod odpowiedzi: " + statusCode + " (" + statusCode.getCode() + ")");
+            }
             System.out.println();
 
             System.out.println("Headery Odpowiedzi:");

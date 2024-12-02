@@ -20,6 +20,7 @@ public class Connection implements AutoCloseable {
 
     private final HttpURLConnection urlConnection;
     private final boolean https;
+    private final int rawStatusCode;
     private final HttpStatusCode httpStatusCode;
     private final long contentLength;
     private final Map<String, String> headers;
@@ -51,7 +52,8 @@ public class Connection implements AutoCloseable {
             this.headers.put(entry.getKey(), MessageUtil.listToSpacedString(entry.getValue()));
         }
 
-        this.httpStatusCode = HttpStatusCode.getByCode(this.urlConnection.getResponseCode());
+        this.rawStatusCode = this.urlConnection.getResponseCode();
+        this.httpStatusCode = HttpStatusCode.getByCode(this.rawStatusCode);
 
         if (this.httpStatusCode.isSuccess()) {
             this.contentLength = this.urlConnection.getContentLength();
@@ -118,6 +120,10 @@ public class Connection implements AutoCloseable {
 
     public boolean isHttps() {
         return this.https;
+    }
+
+    public int getRawStatusCode() {
+        return this.rawStatusCode;
     }
 
     public HttpStatusCode getHttpStatusCode() {
