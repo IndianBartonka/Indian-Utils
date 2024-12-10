@@ -7,16 +7,16 @@ import org.jetbrains.annotations.NotNull;
 import pl.indianbartonka.util.annotation.UtilityClass;
 
 @UtilityClass
-public final class CooldownUtil {
+public class Cooldown {
 
-    private static final Map<String, Long> COOLDOWN = new ConcurrentHashMap<>();
-    private static final Map<String, Long> TIME_MAP = new ConcurrentHashMap<>();
+    private final String name;
+    private final Map<String, Long> cooldown;
+    private final Map<String, Long> timeMap;
 
-    /**
-     * Private constructor to prevent instantiation of the utility class.
-     */
-    private CooldownUtil() {
-        // Prevent instantiation
+    public Cooldown(final String name) {
+        this.name = name;
+        this.cooldown = new ConcurrentHashMap<>();
+        this.timeMap = new ConcurrentHashMap<>();
     }
 
     /**
@@ -27,13 +27,13 @@ public final class CooldownUtil {
      * @param timeUnit the time unit of the duration
      * @return true if the cooldown was successfully set, false if it was already active
      */
-    public static boolean cooldown(@NotNull final String name, final long duration, @NotNull final TimeUnit timeUnit) {
+    public boolean cooldown(@NotNull final String name, final long duration, @NotNull final TimeUnit timeUnit) {
         final long time = timeUnit.toMillis(duration);
 
-        COOLDOWN.put(name, System.currentTimeMillis());
-        TIME_MAP.put(name, time);
+        this.cooldown.put(name, System.currentTimeMillis());
+        this.timeMap.put(name, time);
 
-        return hasCooldown(name);
+        return this.hasCooldown(name);
     }
 
     /**
@@ -44,15 +44,15 @@ public final class CooldownUtil {
      * @param duration the duration of the cooldown
      * @param timeUnit the time unit of the duration
      */
-    public static void cooldownWait(@NotNull final String name, final long duration, @NotNull final TimeUnit timeUnit) {
-        if (COOLDOWN.containsKey(name)) return;
+    public void cooldownWait(@NotNull final String name, final long duration, @NotNull final TimeUnit timeUnit) {
+        if (this.cooldown.containsKey(name)) return;
 
         final long time = timeUnit.toMillis(duration);
 
-        COOLDOWN.put(name, System.currentTimeMillis());
-        TIME_MAP.put(name, time);
+        this.cooldown.put(name, System.currentTimeMillis());
+        this.timeMap.put(name, time);
 
-        waitFor(name);
+        this.waitFor(name);
     }
 
     /**
@@ -61,9 +61,9 @@ public final class CooldownUtil {
      *
      * @param name the name for which to remove the cooldown
      */
-    public static void removeCooldown(@NotNull final String name) {
-        COOLDOWN.remove(name);
-        TIME_MAP.remove(name);
+    public void removeCooldown(@NotNull final String name) {
+        this.cooldown.remove(name);
+        this.timeMap.remove(name);
     }
 
     /**
@@ -72,8 +72,8 @@ public final class CooldownUtil {
      * @param name the name to get the cooldown duration for
      * @return the cooldown duration in milliseconds
      */
-    public static long getTime(@NotNull final String name) {
-        return TIME_MAP.getOrDefault(name, 0L);
+    public long getTime(@NotNull final String name) {
+        return this.timeMap.getOrDefault(name, 0L);
     }
 
     /**
@@ -82,11 +82,11 @@ public final class CooldownUtil {
      * @param name the name to check the remaining cooldown for
      * @return the remaining time in milliseconds
      */
-    public static long getRemainingTime(@NotNull final String name) {
-        if (!COOLDOWN.containsKey(name)) return 0;
+    public long getRemainingTime(@NotNull final String name) {
+        if (!this.cooldown.containsKey(name)) return 0;
 
-        final long startTime = COOLDOWN.get(name);
-        final long cooldownDuration = getTime(name);
+        final long startTime = this.cooldown.get(name);
+        final long cooldownDuration = this.getTime(name);
         final long elapsedTime = System.currentTimeMillis() - startTime;
 
         return cooldownDuration - elapsedTime;
@@ -97,9 +97,9 @@ public final class CooldownUtil {
      *
      * @param name the name to wait for
      */
-    public static void waitFor(@NotNull final String name) {
-        while (hasCooldown(name)) {
-            final long remaining = getRemainingTime(name);
+    public void waitFor(@NotNull final String name) {
+        while (this.hasCooldown(name)) {
+            final long remaining = this.getRemainingTime(name);
 
             if (remaining > 100) {
                 ThreadUtil.sleep(100L);
@@ -108,8 +108,8 @@ public final class CooldownUtil {
             }
         }
 
-        COOLDOWN.remove(name);
-        TIME_MAP.remove(name);
+        this.cooldown.remove(name);
+        this.timeMap.remove(name);
     }
 
     /**
@@ -118,7 +118,16 @@ public final class CooldownUtil {
      * @param name the name to check for cooldown
      * @return true if there is an active cooldown, false otherwise
      */
-    public static boolean hasCooldown(@NotNull final String name) {
-        return COOLDOWN.containsKey(name) && (System.currentTimeMillis() - COOLDOWN.get(name)) < getTime(name);
+    public boolean hasCooldown(@NotNull final String name) {
+        return this.cooldown.containsKey(name) && (System.currentTimeMillis() - this.cooldown.get(name)) < this.getTime(name);
+    }
+
+    /**
+     * Giving name of current the cooldown class
+     *
+     * @return name of the cooldown
+     */
+    public String getName() {
+        return this.name;
     }
 }
