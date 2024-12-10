@@ -88,20 +88,9 @@ public final class NetworkUtil {
                 case MAC, UNKNOWN ->
                         throw new UnsupportedSystemException("Pozyskiwanie nazwy sieci WiFi dla " + SystemUtil.getFullyOSName() + " nie jest jeszcze wspierane");
             };
-        } catch (final Exception ignore) {
+        } catch (final IOException ignore) {
         }
 
-        return "UNKNOWN";
-    }
-
-    private static String getUnixWiFiSSID() throws IOException {
-        final Process process = Runtime.getRuntime().exec("nmcli -t -f name connection show --active");
-        try (final BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()))) {
-            String ssid;
-            while ((ssid = reader.readLine()) != null) {
-                if (!ssid.equalsIgnoreCase("lo") && !ssid.isEmpty()) return ssid;
-            }
-        }
         return "UNKNOWN";
     }
 
@@ -117,5 +106,46 @@ public final class NetworkUtil {
         }
         return "UNKNOWN";
     }
-}
 
+    private static String getUnixWiFiSSID() {
+        final String nm = getNmWiFiSSID();
+
+        if (nm.equals("preconfigured") || nm.equals("UNKNOWN")) {
+            return getWpaWiFiSSID();
+        } else {
+            return nm;
+        }
+    }
+
+    private static String getWpaWiFiSSID() {
+        try {
+            final Process process = Runtime.getRuntime().exec("wpa_cli status");
+            try (final BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()))) {
+                String ssid;
+                while ((ssid = reader.readLine()) != null) {
+                    if (ssid.contains("ssid=") && !ssid.contains("bssid=")) {
+                        return ssid.substring(5);
+                    }
+                }
+            }
+        } catch (final IOException ignored) {
+
+        }
+        return "UNKNOWN";
+    }
+
+    private static String getNmWiFiSSID() {
+        try {
+            final Process process = Runtime.getRuntime().exec("nmcli -t -f name connection show --active");
+            try (final BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()))) {
+                String ssid;
+                while ((ssid = reader.readLine()) != null) {
+                    if (!ssid.equalsIgnoreCase("lo") && !ssid.isEmpty()) return ssid;
+                }
+            }
+        } catch (final IOException ignored) {
+
+        }
+        return "UNKNOWN";
+    }
+}
