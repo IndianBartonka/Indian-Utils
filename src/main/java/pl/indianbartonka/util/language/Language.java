@@ -16,7 +16,11 @@ public abstract class Language {
         this.storageStrategy = storageStrategy;
         this.langFile = new File(languageManager.getLanguagesDir() + File.separator + (this.languageCodeName + ".lang"));
     }
-//TODO Dodaj set message 
+
+    public void setMessage(final String key, final String message) {
+        this.storageStrategy.setMessage(key, message);
+    }
+
     public void addMessage(final String key, final String message) {
         if (!this.storageStrategy.containsKey(key)) {
             this.storageStrategy.setMessage(key, message);
