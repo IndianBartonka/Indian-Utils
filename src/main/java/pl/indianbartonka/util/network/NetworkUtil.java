@@ -80,6 +80,8 @@ public final class NetworkUtil {
         return ipList;
     }
 
+    
+    //TODO: Tam gdzie zwracam string poprostu zwróć info a nie exception 
     public static String getWiFiSSID() {
         try {
             return switch (SystemUtil.getSystem()) {
