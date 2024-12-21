@@ -103,15 +103,10 @@ public abstract class Logger {
         }
 
         try {
-            if (this.configuration.isOneLog()) {
-                this.logFile = new File(logsDir, this.configuration.getLogName() + ".log");
+            this.logFile = new File(logsDir, this.configuration.getLogName() + ".log");
 
-                if (this.logFile.exists() && !this.logFile.delete()) {
-                    FileUtil.writeText(this.logFile, List.of(""));
-                }
-
-            } else {
-                this.logFile = new File(logsDir, this.configuration.getLogName() + ".log");
+            if (this.configuration.isOneLog() && this.logFile.exists() && !this.logFile.delete()) {
+                FileUtil.writeText(this.logFile, List.of(""));
             }
 
             final FileOutputStream fileOutputStream = new FileOutputStream(this.logFile, true);
