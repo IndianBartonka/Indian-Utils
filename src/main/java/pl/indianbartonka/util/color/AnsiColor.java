@@ -78,6 +78,10 @@ public final class AnsiColor {
     public static final String MATERIAL_DIAMOND = "\u001B[38;2;44;186;168m";
     public static final String MATERIAL_LAPIS = "\u001B[38;2;33;73;123m";
     public static final String MATERIAL_AMETHYST = "\u001B[38;2;154;92;198m";
+ 
+    /**
+     * Maps
+    */
     private static final Map<String, String> COLOR_MAP = new HashMap<>();
     private static final Map<String, Color> COLORS = new HashMap<>();
 
@@ -216,6 +220,8 @@ public final class AnsiColor {
         return input.toString();
     }
 
+    //TODO: Dodaj metode removeMinecraftColor
+    
     public static String removeAnsiColors(final Object input) {
         if (input instanceof String in) {
             for (final Map.Entry<String, String> entry : COLOR_MAP.entrySet()) {
