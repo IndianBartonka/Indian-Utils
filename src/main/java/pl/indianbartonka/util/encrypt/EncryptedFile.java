@@ -3,6 +3,7 @@ package pl.indianbartonka.util.encrypt;
 import java.io.File;
 
 public class EncryptedFile {
+    //TODO: Rozważ zmienienie tego w Record
 
     private final long encryptTime;
     private final long fileSize;
