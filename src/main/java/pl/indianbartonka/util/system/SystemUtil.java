@@ -17,7 +17,6 @@ import java.util.Locale;
 import org.jetbrains.annotations.VisibleForTesting;
 import pl.indianbartonka.util.IndianUtils;
 import pl.indianbartonka.util.annotation.UtilityClass;
-import pl.indianbartonka.util.exception.NotImplementedException;
 import pl.indianbartonka.util.exception.UnsupportedSystemException;
 
 @UtilityClass
@@ -113,32 +112,33 @@ public final class SystemUtil {
     }
 
     //Nie wiadomo czy działa to dobrze na mac
-    public static long getRamUsageByPid(final long pid) throws IOException {
-        return switch (getSystemFamily()) {
-            case WINDOWS -> getWindowsMemoryUsage(pid);
-            case UNIX -> getUnixMemoryUsage(pid);
-            default ->
-                    throw new UnsupportedSystemException("Pozyskiwanie ilosci ram dla " + getFullyOSName() + " nie jest jeszcze wspierane");
-        };
+    public static long getRamUsageByPid(final long pid) {
+        try {
+            return switch (getSystemFamily()) {
+                case WINDOWS -> getWindowsMemoryUsage(pid);
+                case UNIX -> getLinuxMemoryUsage(pid);
+                default -> throw new UnsupportedSystemException("Pozyskiwanie ilosci ram dla " + getFullyOSName() + " nie jest jeszcze zaimplementowane");
+            };
+        } catch (final IOException ioException) {
+            throw new UnsupportedSystemException("Pozyskiwanie ilosci ram dla " + getFullyOSName() + " nie jest prawodopodobnie jeszcze wspierane", ioException);
+        }
     }
 
-    public static void setConsoleName(final String name) throws IOException, InterruptedException {
-        final ProcessBuilder processBuilder = new ProcessBuilder();
+    public static void setConsoleName(final String name) {
+        try {
+            final ProcessBuilder processBuilder = new ProcessBuilder();
 
-        switch (getSystemFamily()) {
-            case WINDOWS -> processBuilder.command("cmd.exe", "/c", "title", name);
-            case UNIX -> {
-                if (getSystem() == SystemOS.MAC) {
-                    throw new NotImplementedException("Ustawianie nazwy konsoli dla MacOs nie jest jeszcze zaimplementowane");
-                } else {
-                    processBuilder.command("bash", "-c", "printf '\\033]0;%s\\007' \"" + name + "\"");
-                }
+            switch (getSystemFamily()) {
+                case WINDOWS -> processBuilder.command("cmd.exe", "/c", "title", name);
+                case UNIX -> processBuilder.command("bash", "-c", "printf '\\033]0;%s\\007' \"" + name + "\"");
+                default ->
+                        throw new UnsupportedSystemException("Ustawianie nazwy konsoli dla " + getFullyOSName() + " nie jest jeszcze zaimplementowane");
             }
-            default ->
-                    throw new UnsupportedSystemException("Ustawianie nazwy konsoli dla " + getFullyOSName() + " nie jest jeszcze wspierane");
-        }
 
-        processBuilder.inheritIO().start().waitFor();
+            processBuilder.inheritIO().start().waitFor();
+        } catch (final IOException | InterruptedException exception) {
+            throw new UnsupportedSystemException("Ustawianie nazwy konsoli dla " + getFullyOSName() + " nie jest jeszcze zaimplementowane", exception);
+        }
     }
 
     public static List<Disk> getAvailableDisk() {
@@ -147,7 +147,7 @@ public final class SystemUtil {
             case WINDOWS, MAC -> getAvailableRootsDisk();
             case LINUX, FREE_BSD -> getLinuxDisks();
             case UNKNOWN ->
-                    throw new UnsupportedSystemException("Pozyskiwanie dysków dla " + getFullyOSName() + " nie jest jeszcze wspierane");
+                    throw new UnsupportedSystemException("Pozyskiwanie dysków dla " + getFullyOSName() + " nie jest jeszcze zaimplementowane");
         };
     }
 
@@ -311,7 +311,7 @@ public final class SystemUtil {
         return -1;
     }
 
-    private static long getUnixMemoryUsage(final long pid) throws IOException {
+    private static long getLinuxMemoryUsage(final long pid) throws IOException {
         final Process process = Runtime.getRuntime().exec("ps -p " + pid + " -o rss=");
 
         try (final BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()))) {

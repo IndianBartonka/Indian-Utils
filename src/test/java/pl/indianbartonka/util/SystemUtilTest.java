@@ -94,7 +94,7 @@ public class SystemUtilTest {
     }
 
     @Test
-    public void testGetRamUsageByPid() throws IOException {
+    public void testGetRamUsageByPid() {
         System.out.println();
         final long pid = ProcessHandle.current().pid();
         final long ramUsage = SystemUtil.getRamUsageByPid(pid);
