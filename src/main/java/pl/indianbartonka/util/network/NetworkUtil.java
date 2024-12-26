@@ -84,11 +84,12 @@ public final class NetworkUtil {
         try {
             return switch (SystemUtil.getSystem()) {
                 case WINDOWS -> getWindowsWiFiSSID();
-                case LINUX, FREE_BSD -> getUnixWiFiSSID();
+                case LINUX, FREE_BSD -> getLinuxWiFiSSID();
                 case MAC, UNKNOWN ->
-                        throw new UnsupportedSystemException("Pozyskiwanie nazwy sieci WiFi dla " + SystemUtil.getFullyOSName() + " nie jest jeszcze wspierane");
+                        throw new UnsupportedSystemException("Pozyskiwanie nazwy sieci WiFi dla " + SystemUtil.getFullyOSName() + " nie jest jeszcze zaimplementowane");
             };
-        } catch (final IOException ignore) {
+        } catch (final IOException ioException) {
+            if (IndianUtils.debug) ioException.printStackTrace();
         }
 
         return "UNKNOWN";
@@ -107,7 +108,7 @@ public final class NetworkUtil {
         return "UNKNOWN";
     }
 
-    private static String getUnixWiFiSSID() {
+    private static String getLinuxWiFiSSID() {
         final String nm = getNmWiFiSSID();
 
         if (nm.equals("preconfigured") || nm.equals("UNKNOWN")) {
