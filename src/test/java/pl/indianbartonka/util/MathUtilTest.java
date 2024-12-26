@@ -27,14 +27,14 @@ public class MathUtilTest {
 
     @Test
     public void testFormatKilobytesDynamic() {
-        assertEquals("1 MB", MathUtil.formatKilobytesDynamic(1024, true));
-        assertEquals("1 kilobajtów", MathUtil.formatBytesDynamic(1024, false));
+        assertEquals("1 MB 24 KB", MathUtil.formatKilobytesDynamic(1024, true));
+        assertEquals("1 kilobajtów 24 bajtów", MathUtil.formatBytesDynamic(1024, false));
     }
 
     @Test
     public void testFormatBytesDynamic() {
-        assertEquals("1 MB", MathUtil.formatBytesDynamic(1024 * 1024, true));
-        assertEquals("1 megabajtów", MathUtil.formatBytesDynamic(1024 * 1024, false));
+        assertEquals("1 MB 48 KB 576 B", MathUtil.formatBytesDynamic(1024 * 1024, true));
+        assertEquals("1 megabajtów 48 kilobajtów 576 bajtów", MathUtil.formatBytesDynamic(1024 * 1024, false));
     }
 
     @Test
