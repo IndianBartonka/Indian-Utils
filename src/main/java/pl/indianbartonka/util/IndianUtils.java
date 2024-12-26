@@ -38,7 +38,7 @@ public final class IndianUtils {
         IndianUtils.debug = debug;
     }
 
-    private static boolean wineCheck() {
+    public static boolean wineCheck() {
         try {
             final Process process = Runtime.getRuntime().exec("wine --version");
             try (final BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()))) {
@@ -54,7 +54,7 @@ public final class IndianUtils {
         return false;
     }
 
-    private static boolean box64Check() {
+    public static boolean box64Check() {
         try {
             final Process process = Runtime.getRuntime().exec("box64 --version");
             try (final BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()))) {
