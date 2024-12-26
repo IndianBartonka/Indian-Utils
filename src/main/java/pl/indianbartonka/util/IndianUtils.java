@@ -54,7 +54,7 @@ public final class IndianUtils {
         return false;
     }
 
-    private static boolean box64() {
+    private static boolean box64Check() {
         try {
             final Process process = Runtime.getRuntime().exec("box64 --version");
             try (final BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()))) {
