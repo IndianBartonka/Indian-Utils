@@ -193,7 +193,7 @@ public final class SystemUtil {
             String line;
             while ((line = bufferedReader.readLine()) != null) {
                 final String[] parts = line.split(" ");
-                final String mountPoint = parts[1];
+                final String mountPoint = parts[1].replaceAll("\\\\040", " ");
 
                 if (parts[0].startsWith("/dev/") && (mountPoint.contains("media") || mountPoint.equals("/"))) {
                     final File diskFile = new File(mountPoint);
