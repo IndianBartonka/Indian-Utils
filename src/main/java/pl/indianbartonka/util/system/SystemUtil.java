@@ -199,7 +199,7 @@ public final class SystemUtil {
                     final File diskFile = new File(mountPoint);
 
                     final List<String> nameList = List.of(mountPoint.split("/"));
-
+                    
                     final String name;
                     if (nameList.isEmpty()) {
                         name = mountPoint;
@@ -212,8 +212,9 @@ public final class SystemUtil {
                     long blockSize = -1;
 
                     try {
-                        final FileStore store = Files.getFileStore(Paths.get(diskFile.getPath()));
+                        final FileStore store = Files.getFileStore(diskFile.toPatch());
 
+                        sout(store.name());
                         type = store.type();
                         readOnly = store.isReadOnly();
                         blockSize = store.getBlockSize();
