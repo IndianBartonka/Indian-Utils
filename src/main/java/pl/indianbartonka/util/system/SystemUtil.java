@@ -162,7 +162,7 @@ public final class SystemUtil {
             long blockSize = -1;
 
             try {
-                final FileStore store = Files.getFileStore(Paths.get(diskFile.getPath()));
+                final FileStore store = Files.getFileStore(diskFile.toPath());
                 final String diskName = store.name();
 
                 if (!diskName.isEmpty()) {
@@ -212,9 +212,8 @@ public final class SystemUtil {
                     long blockSize = -1;
 
                     try {
-                        final FileStore store = Files.getFileStore(diskFile.toPatch());
+                        final FileStore store = Files.getFileStore(diskFile.toPath());
 
-                        sout(store.name());
                         type = store.type();
                         readOnly = store.isReadOnly();
                         blockSize = store.getBlockSize();
