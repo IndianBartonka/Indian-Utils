@@ -43,6 +43,7 @@ public final class ZipUtil {
      * @param compressionLevel The compression level to be used, ranging from 0 (no compression) to 9 (maximum compression).
      *                         If the specified level is outside this range, it will be adjusted to fit within the limits.
      */
+    //TODO: Zmien nazwę na parent
     public static void init(final @Nullable Logger logger, final int compressionLevel) {
         if (logger != null) {
             ZipUtil.logger = logger.prefixed("ZipUtil");
