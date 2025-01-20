@@ -39,14 +39,13 @@ public final class ZipUtil {
     /**
      * Initializes the ZipUtil class with a logger instance and sets the compression level.
      *
-     * @param logger           The Logger instance used for logging, can be null.
+     * @param parent           The Logger instance used for logging, can be null.
      * @param compressionLevel The compression level to be used, ranging from 0 (no compression) to 9 (maximum compression).
      *                         If the specified level is outside this range, it will be adjusted to fit within the limits.
      */
-    //TODO: Zmien nazwę na parent
-    public static void init(final @Nullable Logger logger, final int compressionLevel) {
-        if (logger != null) {
-            ZipUtil.logger = logger.prefixed("ZipUtil");
+    public static void init(final @Nullable Logger parent, final int compressionLevel) {
+        if (parent != null) {
+            ZipUtil.logger = parent.prefixed("ZipUtil");
         }
         ZipUtil.compressionLevel = MathUtil.getCorrectNumber(compressionLevel, 0, 9);
     }

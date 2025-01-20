@@ -117,7 +117,8 @@ public final class SystemUtil {
             return switch (getSystemFamily()) {
                 case WINDOWS -> getWindowsMemoryUsage(pid);
                 case UNIX -> getLinuxMemoryUsage(pid);
-                default -> throw new UnsupportedSystemException("Pozyskiwanie ilosci ram dla " + getFullyOSName() + " nie jest jeszcze zaimplementowane");
+                default ->
+                        throw new UnsupportedSystemException("Pozyskiwanie ilosci ram dla " + getFullyOSName() + " nie jest jeszcze zaimplementowane");
             };
         } catch (final IOException ioException) {
             throw new UnsupportedSystemException("Pozyskiwanie ilosci ram dla " + getFullyOSName() + " nie jest prawodopodobnie jeszcze wspierane", ioException);
@@ -199,7 +200,7 @@ public final class SystemUtil {
                     final File diskFile = new File(mountPoint);
 
                     final List<String> nameList = List.of(mountPoint.split("/"));
-                    
+
                     final String name;
                     if (nameList.isEmpty()) {
                         name = mountPoint;
