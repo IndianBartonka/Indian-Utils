@@ -73,6 +73,30 @@ public final class MathUtil {
     }
 
     /**
+     * Clamps long number to be within the specified minimum and maximum range.
+     *
+     * @param number The number to clamp.
+     * @param min    The minimum allowable value.
+     * @param max    The maximum allowable value.
+     * @return The clamped value within the range.
+     */
+    public static long getCorrectNumber(final long number, final long min, final long max) {
+        return Math.max(min, Math.min(max, number));
+    }
+
+    /**
+     * Clamps float number to be within the specified minimum and maximum range.
+     *
+     * @param number The number to clamp.
+     * @param min    The minimum allowable value.
+     * @param max    The maximum allowable value.
+     * @return The clamped value within the range.
+     */
+    public static float getCorrectNumber(final float number, final float min, final float max) {
+        return Math.max(min, Math.min(max, number));
+    }
+
+    /**
      * Clamps a double number to be within the specified minimum and maximum range.
      *
      * @param number The number to clamp.
