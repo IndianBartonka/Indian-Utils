@@ -38,6 +38,7 @@ public final class IndianUtils {
         IndianUtils.debug = debug;
     }
 
+    //TODO: Dodaj check do Box86
     public static boolean wineCheck() {
         try {
             final Process process = Runtime.getRuntime().exec("wine --version");
