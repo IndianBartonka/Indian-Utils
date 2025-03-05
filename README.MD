@@ -12,6 +12,8 @@ Utile używane w różnych projektach przez Indiana
 
 **Java**: 17+
 
+//TODO: Wypisz na czym było testowane 
+
 # Biblioteki użyte w projekcie
 
 ### [JetBrains Annotations 26.0.1](https://github.com/JetBrains/java-annotations)
