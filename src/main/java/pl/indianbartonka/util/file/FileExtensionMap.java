@@ -1,3 +1,4 @@
+//TODO: Usuń to 
 package pl.indianbartonka.util.file;
 
 import java.util.HashMap;
