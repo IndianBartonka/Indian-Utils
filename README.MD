@@ -20,7 +20,7 @@ Utile używane w różnych projektach przez Indiana
 
 ### Linux
 * FerenOs (5.15.0-131-generic)
-* Debian
+* Debian (6.1.0-31-amd64)
 * Debian ARM (Raspberry Edition 6.6.74+rpt-rpi-v8)
 
 # Biblioteki użyte w projekcie
