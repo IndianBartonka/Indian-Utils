@@ -12,19 +12,28 @@ Utile używane w różnych projektach przez Indiana
 
 **Java**: 17+
 
-//TODO: Wypisz na czym było testowane 
+## Testowano na
+
+### Windows
+
+* Windows 11 (26100.3194)
+
+### Linux
+* FerenOs (5.15.0-131-generic)
+* Debian
+* Debian ARM (Raspberry Edition 6.6.74+rpt-rpi-v8)
 
 # Biblioteki użyte w projekcie
 
-### [JetBrains Annotations 26.0.1](https://github.com/JetBrains/java-annotations)
+### [JetBrains Annotations 26.0.2](https://github.com/JetBrains/java-annotations)
 
 Używane do lepszego wyglądu kodu i ewentualnych informacjach dla użytkownika.
 
-### [Gson 2.11.0](https://github.com/google/gson)
+### [Gson 2.12.1](https://github.com/google/gson)
 
 Używane do łatwiej serializacji i deserializacji Json
 
-### [JUnit Jupiter API 5.11.3](https://junit.org/junit5/)
+### [JUnit Jupiter API 5.12.0](https://junit.org/junit5/)
 
 Używane do prostych testów jednostkowych.
 
