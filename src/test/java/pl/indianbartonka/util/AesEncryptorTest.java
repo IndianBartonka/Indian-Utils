@@ -13,7 +13,7 @@ import pl.indianbartonka.util.encrypt.aes.AESEncryptor;
 import pl.indianbartonka.util.encrypt.aes.AESSettings;
 import pl.indianbartonka.util.exception.encryption.DecryptException;
 import pl.indianbartonka.util.exception.encryption.EncryptException;
-import pl.indianbartonka.util.file.FileUtil;
+import pl.indianbartonka.util.FileUtil;
 
 public class AesEncryptorTest {
 

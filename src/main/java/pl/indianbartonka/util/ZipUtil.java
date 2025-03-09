@@ -12,7 +12,7 @@ import java.util.zip.ZipInputStream;
 import java.util.zip.ZipOutputStream;
 import org.jetbrains.annotations.Nullable;
 import pl.indianbartonka.util.annotation.UtilityClass;
-import pl.indianbartonka.util.file.FileUtil;
+import pl.indianbartonka.util.FileUtil;
 import pl.indianbartonka.util.logger.Logger;
 
 /**

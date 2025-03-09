@@ -8,7 +8,7 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import pl.indianbartonka.util.file.FileUtil;
+import pl.indianbartonka.util.FileUtil;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
 

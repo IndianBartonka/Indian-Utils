@@ -9,9 +9,8 @@ import java.util.Map;
 
 public final class EnvironmentReader {
 
-    private static File environmentFile = new File(".env");
-
     private static final Map<String, String> keys = new LinkedHashMap<>();
+    private static File environmentFile = new File(".env");
 
     public static void read() {
         try (final BufferedReader reader = new BufferedReader(new FileReader(environmentFile))) {

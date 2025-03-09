@@ -1,4 +1,4 @@
-package pl.indianbartonka.util.file;
+package pl.indianbartonka.util;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -15,14 +15,10 @@ import java.util.Arrays;
 import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public final class FileUtil {
-
-    private static final FileExtensionMap FILE_EXTENSION_MAP = new FileExtensionMap();
-    private static final Map<String, String> EXTENSIONS_MAP = FILE_EXTENSION_MAP.getExtensionsMap();
 
     private FileUtil() {
     }
@@ -142,20 +138,5 @@ public final class FileUtil {
         }
 
         return size;
-    }
-
-    public static String getFileTypeInfo(final String fileName) {
-        final int dotIndex = fileName.lastIndexOf('.');
-        final String fileExtension = ((dotIndex > 0) ? fileName.substring(dotIndex + 1) : fileName);
-
-        return EXTENSIONS_MAP.getOrDefault(fileExtension.toLowerCase(), fileExtension);
-    }
-
-    public static void addExtensionName(final String extensionName, final String description) {
-        FILE_EXTENSION_MAP.addExtension(extensionName, description);
-    }
-
-    public static void addExtensionName(final List<String> extensions, final String description) {
-        FILE_EXTENSION_MAP.addExtension(extensions, description);
     }
 }

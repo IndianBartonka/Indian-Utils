@@ -2,6 +2,11 @@ package pl.indianbartonka.util;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
+import java.security.Security;
+import java.util.Base64;
+import java.util.Set;
 import java.util.concurrent.TimeoutException;
 import pl.indianbartonka.util.download.DownloadListener;
 import pl.indianbartonka.util.download.DownloadTask;
@@ -194,57 +199,44 @@ public final class Test {
         }
     }
 
+    public static String calculateHashBase64(final String input, final String algorithm) {
+        try {
+            // Tworzymy instancję algorytmu
+            final MessageDigest digest = MessageDigest.getInstance(algorithm);
+
+            // Obliczamy hash
+            final byte[] hashBytes = digest.digest(input.getBytes(StandardCharsets.UTF_8));
+
+            // Kodujemy hash w Base64
+            return Base64.getEncoder().encodeToString(hashBytes);
+        } catch (final Exception e) {
+            throw new RuntimeException("Błąd podczas obliczania hasha w Base64", e);
+        }
+    }
+
     public static void main(final String[] args) throws IOException {
+        // Pobieramy dostępne algorytmy MessageDigest
+        final Set<String> algorithms = Security.getAlgorithms("MessageDigest");
+
+        // Iterujemy przez wszystkie dostępne algorytmy
+        for (final String algorithm : algorithms) {
+            try {
+                // Obliczamy hash i wypisujemy w formacie Base64
+                final String hashBase64 = calculateHashBase64("Siur", algorithm);
+                System.out.println(algorithm + " (Base64): " + hashBase64);
+            } catch (final Exception e) {
+                // W przypadku błędu (np. niezainstalowanego algorytmu) ignorujemy
+                System.out.println(algorithm + " (Base64): Błąd");
+            }
+        }
+
+        // Wyświetlamy dostępne algorytmy
+        System.out.println("Dostępne algorytmy " + algorithms.size() + " : " + algorithms);
+
         languagesTest();
         LOGGER.println("==================");
 
         downloadFileTest();
         LOGGER.println("==================");
-    }
-}
-
-
-
-import java.nio.charset.StandardCharsets;
-import java.security.MessageDigest;
-import java.security.Security;
-import java.util.Base64;
-import java.util.Set;
-
-public class DynamicHashExample {
-    // Metoda do obliczania hash w Base64
-    public static String calculateHashBase64(String input, String algorithm) {
-        try {
-            // Tworzymy instancję algorytmu
-            MessageDigest digest = MessageDigest.getInstance(algorithm);
-            
-            // Obliczamy hash
-            byte[] hashBytes = digest.digest(input.getBytes(StandardCharsets.UTF_8));
-            
-            // Kodujemy hash w Base64
-            return Base64.getEncoder().encodeToString(hashBytes);
-        } catch (Exception e) {
-            throw new RuntimeException("Błąd podczas obliczania hasha w Base64", e);
-        }
-    }
-
-    public static void main(String[] args) {
-        // Pobieramy dostępne algorytmy MessageDigest
-        Set<String> algorithms = Security.getAlgorithms("MessageDigest");
-        
-        // Iterujemy przez wszystkie dostępne algorytmy
-        for (String algorithm : algorithms) {
-            try {
-                // Obliczamy hash i wypisujemy w formacie Base64
-                String hashBase64 = calculateHashBase64(args[0], algorithm);
-                System.out.println(algorithm + " (Base64): " + hashBase64);
-            } catch (Exception e) {
-                // W przypadku błędu (np. niezainstalowanego algorytmu) ignorujemy
-                System.out.println(algorithm + " (Base64): Błąd");
-            }
-        }
-        
-        // Wyświetlamy dostępne algorytmy
-        System.out.println("Dostępne algorytmy "+algorithms.size()+" : " + algorithms);
     }
 }
