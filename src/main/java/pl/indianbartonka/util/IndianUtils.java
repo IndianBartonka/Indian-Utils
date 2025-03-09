@@ -38,7 +38,6 @@ public final class IndianUtils {
         IndianUtils.debug = debug;
     }
 
-    //TODO: Dodaj check do Box86
     public static boolean wineCheck() {
         try {
             final Process process = Runtime.getRuntime().exec("wine --version");
@@ -50,7 +49,7 @@ public final class IndianUtils {
             }
             if (!process.waitFor(30, TimeUnit.MILLISECONDS)) process.destroy();
         } catch (final Exception exception) {
-
+            if (IndianUtils.debug) exception.printStackTrace();
         }
         return false;
     }
@@ -66,7 +65,23 @@ public final class IndianUtils {
             }
             if (!process.waitFor(30, TimeUnit.MILLISECONDS)) process.destroy();
         } catch (final Exception exception) {
+            if (IndianUtils.debug) exception.printStackTrace();
+        }
+        return false;
+    }
 
+    public static boolean box86Check() {
+        try {
+            final Process process = Runtime.getRuntime().exec("box86 --version");
+            try (final BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()))) {
+                String line;
+                while ((line = reader.readLine()) != null) {
+                    if (line.contains("Box86")) return true;
+                }
+            }
+            if (!process.waitFor(30, TimeUnit.MILLISECONDS)) process.destroy();
+        } catch (final Exception exception) {
+            if (IndianUtils.debug) exception.printStackTrace();
         }
         return false;
     }
