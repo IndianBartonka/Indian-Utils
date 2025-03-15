@@ -5,6 +5,7 @@ import java.io.DataOutputStream;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
+import org.jetbrains.annotations.CheckReturnValue;
 
 /**
  * <p><b>Copyright (c) 2023 Justin</b></p>
@@ -56,6 +57,7 @@ public record BedrockQuery(String serverAddress, String hostAddress, boolean onl
      * @param port          the port of the Bedrock server to query
      * @return a {@code BedrockQuery} instance containing the server details, or an offline instance if an error occurs
      */
+    @CheckReturnValue
     public static BedrockQuery create(final String serverAddress, final int port) {
         try {
             final InetAddress address = InetAddress.getByName(serverAddress);

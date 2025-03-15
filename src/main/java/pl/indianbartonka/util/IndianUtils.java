@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.concurrent.TimeUnit;
+import org.jetbrains.annotations.VisibleForTesting;
 
 public final class IndianUtils {
 
@@ -38,6 +39,7 @@ public final class IndianUtils {
         IndianUtils.debug = debug;
     }
 
+    @VisibleForTesting
     public static boolean wineCheck() {
         try {
             final Process process = Runtime.getRuntime().exec("wine --version");
@@ -54,6 +56,7 @@ public final class IndianUtils {
         return false;
     }
 
+    @VisibleForTesting
     public static boolean box64Check() {
         try {
             final Process process = Runtime.getRuntime().exec("box64 --version");
@@ -70,6 +73,7 @@ public final class IndianUtils {
         return false;
     }
 
+    @VisibleForTesting
     public static boolean box86Check() {
         try {
             final Process process = Runtime.getRuntime().exec("box86 --version");

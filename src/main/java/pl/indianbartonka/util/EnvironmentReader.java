@@ -6,6 +6,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import org.jetbrains.annotations.CheckReturnValue;
 
 public final class EnvironmentReader {
 
@@ -28,6 +29,7 @@ public final class EnvironmentReader {
         }
     }
 
+    @CheckReturnValue
     public static String getEnvironment(final String key) {
         if (keys.isEmpty()) read();
 

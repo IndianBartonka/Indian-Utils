@@ -17,6 +17,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+import org.jetbrains.annotations.CheckReturnValue;
 
 public final class FileUtil {
 
@@ -51,15 +52,18 @@ public final class FileUtil {
         writeText(file, lines, true);
     }
 
+    @CheckReturnValue
     public static boolean canExecute(final String filePath) {
         return Files.isExecutable(Path.of(URLDecoder.decode(filePath.replace("/C", "C"), StandardCharsets.UTF_8)));
     }
 
+    @CheckReturnValue
     public static boolean addExecutePerm(final String filePath) {
         final File file = new File(filePath);
         return file.setExecutable(true, false);
     }
 
+    @CheckReturnValue
     public static boolean directoryIsEmpty(final File directory) {
         if (!directory.exists()) return false;
         if (!directory.isDirectory()) {
@@ -97,6 +101,7 @@ public final class FileUtil {
         }
     }
 
+    @CheckReturnValue
     public static List<File> listAllFiles(final File file) {
         final File[] files = file.listFiles();
 
@@ -105,6 +110,7 @@ public final class FileUtil {
         return listAllFiles(Arrays.asList(files));
     }
 
+    @CheckReturnValue
     public static List<File> listAllFiles(final List<File> files) {
         return files.stream()
                 .flatMap(file -> {
@@ -120,6 +126,7 @@ public final class FileUtil {
                 }).collect(Collectors.toList());
     }
 
+    @CheckReturnValue
     public static long getFileSize(final File file) {
         long size = file.length();
 

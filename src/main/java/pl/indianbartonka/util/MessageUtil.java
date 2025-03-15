@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
+import org.jetbrains.annotations.CheckReturnValue;
 import pl.indianbartonka.util.annotation.UtilityClass;
 
 /**
@@ -27,6 +28,7 @@ public final class MessageUtil {
      * @param length The length of the code to generate.
      * @return A random code as a string.
      */
+    @CheckReturnValue
     public static String generateCode(final int length) {
         final StringBuilder code = new StringBuilder(length);
         for (int i = 0; i < length; i++) {
@@ -41,6 +43,7 @@ public final class MessageUtil {
      * @param args The array of arguments to build the message from.
      * @return The constructed message as a string.
      */
+    @CheckReturnValue
     public static String buildMessageFromArgs(final String[] args) {
         return buildMessageFromArgs(args, null);
     }
@@ -52,6 +55,7 @@ public final class MessageUtil {
      * @param includeArgs The array of arguments to exclude.
      * @return The constructed message as a string.
      */
+    @CheckReturnValue
     public static String buildMessageFromArgs(final String[] args, final String[] includeArgs) {
         if (args == null) return "";
         final StringBuilder message = new StringBuilder();
@@ -69,6 +73,7 @@ public final class MessageUtil {
      * @param formatArgs The arguments to replace in the message.
      * @return The formatted message as a string.
      */
+    @CheckReturnValue
     public static String formatMessage(String message, final Object... formatArgs) {
         for (final Object object : formatArgs) {
             message = message.replaceFirst("%s", object.toString());
@@ -82,6 +87,7 @@ public final class MessageUtil {
      * @param input The string to convert.
      * @return An array of arguments.
      */
+    @CheckReturnValue
     public static String[] stringToArgs(final String input) {
         return input.split("\\s+");
     }
@@ -92,6 +98,7 @@ public final class MessageUtil {
      * @param args The array of arguments.
      * @return An array of arguments after removing the first element.
      */
+    @CheckReturnValue
     public static String[] removeFirstArgs(final String[] args) {
         return removeArgs(args, 1);
     }
@@ -103,6 +110,7 @@ public final class MessageUtil {
      * @param startFrom The index from which to start removing arguments.
      * @return An array of arguments after removal.
      */
+    @CheckReturnValue
     public static String[] removeArgs(final String[] args, final int startFrom) {
         if (args == null || args.length <= startFrom) return new String[]{};
         return Arrays.copyOfRange(args, startFrom, args.length);
@@ -115,6 +123,7 @@ public final class MessageUtil {
      * @param argsToRemove The array of arguments to remove.
      * @return An array of arguments after removal.
      */
+    @CheckReturnValue
     public static String[] removeArgs(final String[] args, final String[] argsToRemove) {
         if (args == null || argsToRemove == null) return args;
 
@@ -129,6 +138,7 @@ public final class MessageUtil {
      * @param list The list of strings to join.
      * @return The joined string.
      */
+    @CheckReturnValue
     public static String listToSpacedString(final List<String> list) {
         return stringListToString(list, " ");
     }
@@ -139,6 +149,7 @@ public final class MessageUtil {
      * @param list The list of strings to join.
      * @return The joined string.
      */
+    @CheckReturnValue
     public static String listToNewLineString(final List<String> list) {
         return stringListToString(list, "\n");
     }
@@ -150,6 +161,7 @@ public final class MessageUtil {
      * @param split The delimiter to use for joining.
      * @return The joined string.
      */
+    @CheckReturnValue
     public static String stringListToString(final List<String> list, String split) {
         if (split == null) split = "";
         if (list == null || list.isEmpty()) return "";
@@ -164,6 +176,7 @@ public final class MessageUtil {
      * @param <T>   The type of the objects in the list.
      * @return The joined string.
      */
+    @CheckReturnValue
     public static <T> String objectListToString(final List<T> list, String split) {
         if (split == null) split = "";
         if (list == null || list.isEmpty()) return "";
@@ -178,6 +191,7 @@ public final class MessageUtil {
      * @param <E>     The type of the enum.
      * @return The joined string.
      */
+    @CheckReturnValue
     public static <E extends Enum<E>> String enumSetToString(final Set<E> enumSet, String split) {
         if (split == null) split = "";
         if (enumSet == null || enumSet.isEmpty()) return "";
@@ -191,6 +205,7 @@ public final class MessageUtil {
      * @param split The delimiter to use for splitting.
      * @return A list of strings.
      */
+    @CheckReturnValue
     public static List<String> stringToStringList(final String text, String split) {
         if (split == null) split = "\\s+";
         if (text == null || text.isEmpty()) return new ArrayList<>();
@@ -203,6 +218,7 @@ public final class MessageUtil {
      * @param throwable The throwable to convert.
      * @return The stack trace as a string.
      */
+    @CheckReturnValue
     public static String getStackTraceAsString(final Throwable throwable) {
         if (throwable == null) return "";
         final StringBuilder stackTraceBuilder = new StringBuilder();

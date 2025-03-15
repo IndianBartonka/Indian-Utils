@@ -3,6 +3,7 @@ package pl.indianbartonka.util.language;
 import java.io.File;
 import java.io.IOException;
 import java.util.Map;
+import org.jetbrains.annotations.CheckReturnValue;
 import pl.indianbartonka.util.language.storage.StorageStrategy;
 
 public abstract class Language {
@@ -27,6 +28,7 @@ public abstract class Language {
         }
     }
 
+    @CheckReturnValue
     public String getMessage(final String key) {
         return this.storageStrategy.getMessage(key);
     }
