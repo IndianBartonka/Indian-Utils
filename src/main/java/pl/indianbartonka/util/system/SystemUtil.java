@@ -11,11 +11,13 @@ import java.lang.management.ManagementFactory;
 import java.nio.file.FileStore;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
 import org.jetbrains.annotations.VisibleForTesting;
 import pl.indianbartonka.util.IndianUtils;
+import pl.indianbartonka.util.MessageUtil;
 import pl.indianbartonka.util.annotation.UtilityClass;
 import pl.indianbartonka.util.exception.UnsupportedSystemException;
 
@@ -94,6 +96,49 @@ public final class SystemUtil {
 
     public static String getFullyArchCode() {
         return System.getProperty("os.arch");
+    }
+
+    @VisibleForTesting
+    public static String getProcesorName() {
+        try {
+            return switch (getSystemFamily()) {
+                case WINDOWS -> getWindowsProcesorName();
+                case UNIX, UNKNOWN -> "Aktualnie pozyskanie nazwy procesora nie jest wspierane dla tego systemu";
+            };
+        } catch (final IOException ioException) {
+            return "Nie udało się pozyskać nazwy procesora";
+        }
+    }
+
+    private static String getWindowsProcesorName() throws IOException {
+        final Process process = new ProcessBuilder("powershell.exe", "-Command", "Get-CimInstance", "Win32_Processor", "|", "Select-Object", "-ExpandProperty", "Name").start();
+
+        try (final BufferedReader bufferedReader = new BufferedReader(process.inputReader())) {
+            return bufferedReader.readLine();
+        }
+    }
+
+    @VisibleForTesting
+    public static String getGraphicCardName() {
+        try {
+            return switch (getSystemFamily()) {
+                case WINDOWS -> getWindowsGraphicCardName();
+                case UNIX, UNKNOWN -> "Aktualnie pozyskanie nazwy karty graficznej nie jest wspierane dla tego systemu";
+            };
+        } catch (final IOException ioException) {
+            return "Nie udało się pozyskać nazwy karty graficznej";
+        }
+    }
+
+    private static String getWindowsGraphicCardName() throws IOException {
+        final Process process = new ProcessBuilder("powershell.exe", "-Command", "Get-CimInstance", "Win32_VideoController", "|", "Select-Object", "-ExpandProperty", "Name").start();
+
+        final List<String> graphicCards = new ArrayList<>();
+        try (final BufferedReader bufferedReader = new BufferedReader(process.inputReader())) {
+            graphicCards.add(bufferedReader.readLine());
+        }
+
+        return MessageUtil.stringListToString(graphicCards, ", ");
     }
 
     public static String getDistribution() {
