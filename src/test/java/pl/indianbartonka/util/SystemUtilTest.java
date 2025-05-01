@@ -19,6 +19,12 @@ public class SystemUtilTest {
     @Test
     public void testGetSystem() {
         System.out.println();
+        System.out.println(SystemUtil.getProcesorName());
+        System.out.println();
+
+        System.out.println(SystemUtil.getGraphicCardsName());
+        System.out.println();
+
         final SystemOS os = SystemUtil.getSystem();
         Assertions.assertNotNull(os);
         Assertions.assertNotSame(os, SystemOS.UNKNOWN);

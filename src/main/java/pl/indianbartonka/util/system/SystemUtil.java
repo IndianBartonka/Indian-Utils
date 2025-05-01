@@ -119,10 +119,10 @@ public final class SystemUtil {
     }
 
     @VisibleForTesting
-    public static String getGraphicCardName() {
+    public static String getGraphicCardsName() {
         try {
             return switch (getSystemFamily()) {
-                case WINDOWS -> getWindowsGraphicCardName();
+                case WINDOWS -> getWindowsGraphicCardsName();
                 case UNIX, UNKNOWN -> "Aktualnie pozyskanie nazwy karty graficznej nie jest wspierane dla tego systemu";
             };
         } catch (final IOException ioException) {
@@ -130,7 +130,7 @@ public final class SystemUtil {
         }
     }
 
-    private static String getWindowsGraphicCardName() throws IOException {
+    private static String getWindowsGraphicCardsName() throws IOException {
         final Process process = new ProcessBuilder("powershell.exe", "-Command", "Get-CimInstance", "Win32_VideoController", "|", "Select-Object", "-ExpandProperty", "Name").start();
 
         final List<String> graphicCards = new ArrayList<>();
