@@ -21,11 +21,11 @@ import javax.crypto.spec.IvParameterSpec;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import pl.indianbartonka.util.BufferUtil;
+import pl.indianbartonka.util.FileUtil;
 import pl.indianbartonka.util.encrypt.EncryptedFile;
 import pl.indianbartonka.util.encrypt.Encryptor;
 import pl.indianbartonka.util.exception.encryption.DecryptException;
 import pl.indianbartonka.util.exception.encryption.EncryptException;
-import pl.indianbartonka.util.FileUtil;
 import pl.indianbartonka.util.logger.Logger;
 
 public final class AESEncryptor implements Encryptor {

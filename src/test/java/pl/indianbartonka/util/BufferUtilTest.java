@@ -2,7 +2,6 @@ package pl.indianbartonka.util;
 
 import java.io.File;
 import org.junit.jupiter.api.Test;
-import pl.indianbartonka.util.FileUtil;
 import pl.indianbartonka.util.logger.Logger;
 import pl.indianbartonka.util.logger.config.LoggerConfiguration;
 import pl.indianbartonka.util.system.SystemUtil;

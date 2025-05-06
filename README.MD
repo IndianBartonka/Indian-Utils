@@ -19,6 +19,7 @@ Utile używane w różnych projektach przez Indiana
 * Windows 11 (26100.3194)
 
 ### Linux
+
 * FerenOs (5.15.0-131-generic)
 * Debian (6.1.0-31-amd64)
 * Debian ARM (Raspberry Edition 6.6.74+rpt-rpi-v8)
