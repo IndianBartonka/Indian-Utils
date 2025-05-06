@@ -2,11 +2,9 @@ package pl.indianbartonka.util;
 
 import java.io.File;
 import java.io.IOException;
-import java.nio.file.Files;
 import java.util.List;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import pl.indianbartonka.util.FileUtil;
 import pl.indianbartonka.util.system.Disk;
 import pl.indianbartonka.util.system.SystemArch;
 import pl.indianbartonka.util.system.SystemFamily;
@@ -124,23 +122,28 @@ public class SystemUtilTest {
             System.out.println("Rozmiar bloku: " + disk.blockSize());
             System.out.println("Tylko do odczytu: " + disk.readOnly());
 
+            System.out.println();
+            System.out.println("Testowanie szybkości zapisu pliku 100mb 3razy");
+            System.out.println(DateUtil.formatTimeDynamic(SystemUtil.testDisk(disk, 100, 3)));
+            System.out.println();
+
             System.out.println("Całkowita pamięć: " + MathUtil.formatBytesDynamic(SystemUtil.getMaxDiskSpace(diskFile), false));
             System.out.println("Użyta pamięć: " + MathUtil.formatBytesDynamic(SystemUtil.getUsedDiskSpace(diskFile), false));
             System.out.println("Wolna pamięć: " + MathUtil.formatBytesDynamic(SystemUtil.getFreeDiskSpace(diskFile), false));
 
-            if (!diskFile.getPath().contains("C")) {
-                System.out.println("Pozyskiwanie plików.....");
-                System.out.println();
-                for (final File file : FileUtil.listAllFiles(diskFile)) {
-                    System.out.println(
-                            String.format("%-20s %-30s | %-50s",
-                                    MathUtil.formatBytesDynamic(FileUtil.getFileSize(file), true),
-                                    Files.getOwner(file.toPath()).getName(),
-                                    file.getPath()
-                            )
-                    );
-                }
-            }
+//            if (!diskFile.getPath().contains("C")) {
+//                System.out.println("Pozyskiwanie plików.....");
+//                System.out.println();
+//                for (final File file : FileUtil.listAllFiles(diskFile)) {
+//                    System.out.println(
+//                            String.format("%-20s %-30s | %-50s",
+//                                    MathUtil.formatBytesDynamic(FileUtil.getFileSize(file), true),
+//                                    Files.getOwner(file.toPath()).getName(),
+//                                    file.getPath()
+//                            )
+//                    );
+//                }
+//            }
         }
     }
 

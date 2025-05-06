@@ -6,6 +6,7 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.RandomAccessFile;
 import java.io.UncheckedIOException;
 import java.lang.management.ManagementFactory;
 import java.nio.file.FileStore;
@@ -15,8 +16,12 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
+import java.util.UUID;
+import org.jetbrains.annotations.CheckReturnValue;
 import org.jetbrains.annotations.VisibleForTesting;
+import pl.indianbartonka.util.FileUtil;
 import pl.indianbartonka.util.IndianUtils;
+import pl.indianbartonka.util.MemoryUnit;
 import pl.indianbartonka.util.MessageUtil;
 import pl.indianbartonka.util.annotation.UtilityClass;
 import pl.indianbartonka.util.exception.UnsupportedSystemException;
@@ -195,6 +200,37 @@ public final class SystemUtil {
             case UNKNOWN ->
                     throw new UnsupportedSystemException("Pozyskiwanie dysków dla " + getFullyOSName() + " nie jest jeszcze zaimplementowane");
         };
+    }
+
+    @VisibleForTesting
+    @CheckReturnValue
+    public static long testDisk(final Disk disk, final int mbSize, final int totalWrites) throws IOException {
+        final File fileDir = new File(disk.diskFile(), String.valueOf(UUID.randomUUID()));
+        final File file = new File(fileDir, "testFile.dat");
+
+        try {
+            Files.createDirectories(fileDir.toPath());
+
+            if (!file.createNewFile()) {
+                throw new IOException("Nie można utworzyć pliku testowego z nieznanych przyczyn");
+            }
+
+            final long startTime = System.currentTimeMillis();
+
+            try (final RandomAccessFile randomAccessFile = new RandomAccessFile(file, "rw")) {
+                final byte[] buffer = new byte[Math.toIntExact(MemoryUnit.MEGABYTES.to(mbSize, MemoryUnit.BYTES))];
+
+                for (int i = 0; i < totalWrites; i++) {
+                    randomAccessFile.write(buffer);
+                    randomAccessFile.getChannel().force(false);
+                }
+            }
+
+            return System.currentTimeMillis() - startTime;
+        } finally {
+            FileUtil.deleteFile(file);
+            FileUtil.deleteFile(fileDir);
+        }
     }
 
     @VisibleForTesting
