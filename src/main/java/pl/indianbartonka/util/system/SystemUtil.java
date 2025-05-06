@@ -9,6 +9,7 @@ import java.io.InputStreamReader;
 import java.io.RandomAccessFile;
 import java.io.UncheckedIOException;
 import java.lang.management.ManagementFactory;
+import java.nio.file.AccessDeniedException;
 import java.nio.file.FileStore;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -227,9 +228,11 @@ public final class SystemUtil {
             }
 
             return System.currentTimeMillis() - startTime;
+        } catch (final AccessDeniedException accessDeniedException) {
+            return -1;
         } finally {
-            FileUtil.deleteFile(file);
-            FileUtil.deleteFile(fileDir);
+            if (file.exists()) FileUtil.deleteFile(file);
+            if (fileDir.exists()) FileUtil.deleteFile(fileDir);
         }
     }
 
