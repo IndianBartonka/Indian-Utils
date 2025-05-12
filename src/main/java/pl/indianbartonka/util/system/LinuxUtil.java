@@ -73,7 +73,7 @@ public final class LinuxUtil {
     public static List<String> getGraphicCardsName() throws IOException {
         final List<String> cards = new ArrayList<>();
 
-
+        //TODO: Dodać wasparcie dla zintegrowanych układów graficznych
         final Process process = new ProcessBuilder("sh", "-c", "lspci | grep -i 'vga\\|3d\\|2d' | cut -d ':' -f3").start();
         try (final BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()))) {
             String line;

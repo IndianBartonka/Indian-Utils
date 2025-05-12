@@ -42,6 +42,7 @@ public final class WindowsUtil {
     public static List<String> getGraphicCardsName() throws IOException {
         final Process process = new ProcessBuilder("powershell.exe", "-Command", "Get-CimInstance", "Win32_VideoController", "|", "Select-Object", "-ExpandProperty", "Name").start();
 
+        //TODO:Przetestować z systemem który ma dwa układy graficzne
         final List<String> graphicCards = new ArrayList<>();
         try (final BufferedReader bufferedReader = new BufferedReader(process.inputReader())) {
             graphicCards.add(bufferedReader.readLine().trim());
