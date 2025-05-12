@@ -1,27 +1,19 @@
 package pl.indianbartonka.util.system;
 
 import com.sun.management.OperatingSystemMXBean;
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.io.RandomAccessFile;
-import java.io.UncheckedIOException;
 import java.lang.management.ManagementFactory;
 import java.nio.file.AccessDeniedException;
-import java.nio.file.FileStore;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
 import java.util.UUID;
 import org.jetbrains.annotations.CheckReturnValue;
 import org.jetbrains.annotations.VisibleForTesting;
 import pl.indianbartonka.util.FileUtil;
-import pl.indianbartonka.util.IndianUtils;
 import pl.indianbartonka.util.MemoryUnit;
 import pl.indianbartonka.util.MessageUtil;
 import pl.indianbartonka.util.annotation.UtilityClass;
@@ -107,44 +99,28 @@ public final class SystemUtil {
     @VisibleForTesting
     public static String getProcesorName() {
         try {
-            return switch (getSystemFamily()) {
-                case WINDOWS -> getWindowsProcesorName();
-                case UNIX, UNKNOWN -> "Aktualnie pozyskanie nazwy procesora nie jest wspierane dla tego systemu";
+            return switch (getSystem()) {
+                case WINDOWS -> WindowsUtil.getProcessorName();
+                case LINUX, FREE_BSD -> LinuxUtil.getProcessorName();
+                case MAC, UNKNOWN -> "Aktualnie pozyskanie nazwy procesora nie jest wspierane dla tego systemu";
             };
         } catch (final IOException ioException) {
-            return "Nie udało się pozyskać nazwy procesora";
-        }
-    }
-
-    private static String getWindowsProcesorName() throws IOException {
-        final Process process = new ProcessBuilder("powershell.exe", "-Command", "Get-CimInstance", "Win32_Processor", "|", "Select-Object", "-ExpandProperty", "Name").start();
-
-        try (final BufferedReader bufferedReader = new BufferedReader(process.inputReader())) {
-            return bufferedReader.readLine();
+            return "Nie udało się pozyskać nazwy procesora, " + MessageUtil.getStackTraceAsString(ioException);
         }
     }
 
     @VisibleForTesting
-    public static String getGraphicCardsName() {
+    public static List<String> getGraphicCardsName() {
         try {
-            return switch (getSystemFamily()) {
-                case WINDOWS -> getWindowsGraphicCardsName();
-                case UNIX, UNKNOWN -> "Aktualnie pozyskanie nazwy karty graficznej nie jest wspierane dla tego systemu";
+            return switch (getSystem()) {
+                case WINDOWS -> WindowsUtil.getGraphicCardsName();
+                case LINUX, FREE_BSD -> LinuxUtil.getGraphicCardsName();
+                case MAC, UNKNOWN ->
+                        List.of("Aktualnie pozyskanie nazwy karty graficznej nie jest wspierane dla tego systemu");
             };
         } catch (final IOException ioException) {
-            return "Nie udało się pozyskać nazwy karty graficznej";
+            return List.of("Nie udało się pozyskać nazwy karty graficznej, " + MessageUtil.getStackTraceAsString(ioException));
         }
-    }
-
-    private static String getWindowsGraphicCardsName() throws IOException {
-        final Process process = new ProcessBuilder("powershell.exe", "-Command", "Get-CimInstance", "Win32_VideoController", "|", "Select-Object", "-ExpandProperty", "Name").start();
-
-        final List<String> graphicCards = new ArrayList<>();
-        try (final BufferedReader bufferedReader = new BufferedReader(process.inputReader())) {
-            graphicCards.add(bufferedReader.readLine());
-        }
-
-        return MessageUtil.stringListToString(graphicCards, ", ");
     }
 
     public static String getDistribution() {
@@ -166,8 +142,8 @@ public final class SystemUtil {
     public static long getRamUsageByPid(final long pid) {
         try {
             return switch (getSystemFamily()) {
-                case WINDOWS -> getWindowsMemoryUsage(pid);
-                case UNIX -> getLinuxMemoryUsage(pid);
+                case WINDOWS -> WindowsUtil.getMemoryUsage(pid);
+                case UNIX -> LinuxUtil.getMemoryUsage(pid);
                 default ->
                         throw new UnsupportedSystemException("Pozyskiwanie ilosci ram dla " + getFullyOSName() + " nie jest jeszcze zaimplementowane");
             };
@@ -196,8 +172,8 @@ public final class SystemUtil {
     public static List<Disk> getAvailableDisk() {
         return switch (getSystem()) {
             //Free BSD i Mac są dla testów nie wiem jak działają :)
-            case WINDOWS, MAC -> getAvailableRootsDisk();
-            case LINUX, FREE_BSD -> getLinuxDisks();
+            case WINDOWS, MAC -> WindowsUtil.getAvailableDisks();
+            case LINUX, FREE_BSD -> LinuxUtil.getAvailableDisks() ;
             case UNKNOWN ->
                     throw new UnsupportedSystemException("Pozyskiwanie dysków dla " + getFullyOSName() + " nie jest jeszcze zaimplementowane");
         };
@@ -234,87 +210,6 @@ public final class SystemUtil {
             if (file.exists()) FileUtil.deleteFile(file);
             if (fileDir.exists()) FileUtil.deleteFile(fileDir);
         }
-    }
-
-    @VisibleForTesting
-    public static List<Disk> getAvailableRootsDisk() {
-        final List<Disk> disks = new LinkedList<>();
-
-        for (final File diskFile : File.listRoots()) {
-            String name = diskFile.getPath().replaceAll(":", "").replaceAll("[/\\\\]", "").trim();
-            String type = "UNKNOWN";
-            boolean readOnly = false;
-            long blockSize = -1;
-
-            try {
-                final FileStore store = Files.getFileStore(diskFile.toPath());
-                final String diskName = store.name();
-
-                if (!diskName.isEmpty()) {
-                    name = diskName;
-                }
-
-                type = store.type();
-                readOnly = store.isReadOnly();
-                blockSize = store.getBlockSize();
-
-            } catch (final IOException ioException) {
-                //Dla debugu takiego bo nie wiem kiedy to moze wystapic
-                if (IndianUtils.debug) ioException.printStackTrace();
-            }
-
-            disks.add(new Disk(name, diskFile, type, blockSize, readOnly));
-        }
-
-        return disks;
-    }
-
-    @VisibleForTesting
-    public static List<Disk> getLinuxDisks() {
-        final List<Disk> disks = new LinkedList<>();
-
-        try (final BufferedReader bufferedReader = new BufferedReader(new FileReader("/proc/mounts"))) {
-
-            String line;
-            while ((line = bufferedReader.readLine()) != null) {
-                final String[] parts = line.split(" ");
-                final String mountPoint = parts[1].replaceAll("\\\\040", " ");
-
-                if (parts[0].startsWith("/dev/")) {
-                    final File diskFile = new File(mountPoint);
-
-                    final List<String> nameList = List.of(mountPoint.split("/"));
-
-                    final String name;
-                    if (nameList.isEmpty()) {
-                        name = mountPoint;
-                    } else {
-                        name = nameList.get(nameList.size() - 1);
-                    }
-
-                    String type = "UNKNOWN";
-                    boolean readOnly = false;
-                    long blockSize = -1;
-
-                    try {
-                        final FileStore store = Files.getFileStore(diskFile.toPath());
-
-                        type = store.type();
-                        readOnly = store.isReadOnly();
-                        blockSize = store.getBlockSize();
-
-                    } catch (final IOException ioException) {
-                        //Dla debugu takiego bo nie wiem kiedy to moze wystapic
-                        if (IndianUtils.debug) ioException.printStackTrace();
-                    }
-
-                    disks.add(new Disk(name, diskFile, type, blockSize, readOnly));
-                }
-            }
-        } catch (final IOException exception) {
-            throw new UncheckedIOException(exception);
-        }
-        return disks;
     }
 
     public static long getFreeCurrentDiskSpace() {
@@ -377,40 +272,5 @@ public final class SystemUtil {
 
     public static long getUsedSwap() {
         return getMaxSwap() - getFreeSwap();
-    }
-
-    private static long getWindowsMemoryUsage(final long pid) throws IOException {
-        final Process process = Runtime.getRuntime().exec("tasklist /NH /FI \"PID eq " + pid + "\"");
-        try (final BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()))) {
-            String line;
-            while ((line = reader.readLine()) != null) {
-                if (line.contains(".exe")) {
-                    final String[] tokens = line.split("\\s+");
-                    if (tokens.length > 4) {
-                        final String memoryStr = tokens[4].replaceAll("\\D", "");
-                        return Long.parseLong(memoryStr);
-                    }
-                }
-            }
-        }
-        return -1;
-    }
-
-    private static long getLinuxMemoryUsage(final long pid) throws IOException {
-        final Process process = Runtime.getRuntime().exec("ps -p " + pid + " -o rss=");
-
-        try (final BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()))) {
-            //Robie tak na wszelki wypadek gdyby jakis system mial jakis niepotrzebny header w tym poleceniu
-            String line;
-            while ((line = reader.readLine()) != null) {
-                try {
-                    return Long.parseLong(line);
-                } catch (final NumberFormatException ignored) {
-
-                }
-            }
-        }
-
-        return -1;
     }
 }

@@ -14,7 +14,9 @@ import java.util.List;
 import org.jetbrains.annotations.VisibleForTesting;
 import pl.indianbartonka.util.IndianUtils;
 import pl.indianbartonka.util.exception.UnsupportedSystemException;
+import pl.indianbartonka.util.system.LinuxUtil;
 import pl.indianbartonka.util.system.SystemUtil;
+import pl.indianbartonka.util.system.WindowsUtil;
 
 @VisibleForTesting
 public final class NetworkUtil {
@@ -83,8 +85,8 @@ public final class NetworkUtil {
     public static String getWiFiSSID() {
         try {
             return switch (SystemUtil.getSystem()) {
-                case WINDOWS -> getWindowsWiFiSSID();
-                case LINUX, FREE_BSD -> getLinuxWiFiSSID();
+                case WINDOWS -> WindowsUtil.getWiFiSSID();
+                case LINUX, FREE_BSD -> LinuxUtil.getWiFiSSID();
                 case MAC, UNKNOWN ->
                         throw new UnsupportedSystemException("Pozyskiwanie nazwy sieci WiFi dla " + SystemUtil.getFullyOSName() + " nie jest jeszcze zaimplementowane");
             };
@@ -92,61 +94,6 @@ public final class NetworkUtil {
             if (IndianUtils.debug) ioException.printStackTrace();
         }
 
-        return "UNKNOWN";
-    }
-
-    private static String getWindowsWiFiSSID() throws IOException {
-        final Process process = Runtime.getRuntime().exec("netsh wlan show interfaces");
-        try (final BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()))) {
-            String line;
-            while ((line = reader.readLine()) != null) {
-                if (line.trim().startsWith("SSID")) {
-                    return line.split(":")[1].trim();
-                }
-            }
-        }
-        return "UNKNOWN";
-    }
-
-    private static String getLinuxWiFiSSID() {
-        final String nm = getNmWiFiSSID();
-
-        if (nm.equals("preconfigured") || nm.equals("UNKNOWN")) {
-            return getWpaWiFiSSID();
-        } else {
-            return nm;
-        }
-    }
-
-    private static String getWpaWiFiSSID() {
-        try {
-            final Process process = Runtime.getRuntime().exec("wpa_cli status");
-            try (final BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()))) {
-                String ssid;
-                while ((ssid = reader.readLine()) != null) {
-                    if (ssid.contains("ssid=") && !ssid.contains("bssid=")) {
-                        return ssid.substring(5);
-                    }
-                }
-            }
-        } catch (final IOException ignored) {
-
-        }
-        return "UNKNOWN";
-    }
-
-    private static String getNmWiFiSSID() {
-        try {
-            final Process process = Runtime.getRuntime().exec("nmcli -t -f name connection show --active");
-            try (final BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()))) {
-                String ssid;
-                while ((ssid = reader.readLine()) != null) {
-                    if (!ssid.equalsIgnoreCase("lo") && !ssid.isEmpty()) return ssid;
-                }
-            }
-        } catch (final IOException ignored) {
-
-        }
         return "UNKNOWN";
     }
 }
