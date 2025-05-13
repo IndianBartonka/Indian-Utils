@@ -19,12 +19,16 @@ public final class WindowsUtil {
     }
 
     public static String getWiFiSSID() throws IOException {
-        final Process process = Runtime.getRuntime().exec("netsh wlan show interfaces");
-        try (final BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()))) {
+        final Process process = new ProcessBuilder("powershell.exe", "Get-NetConnectionProfile").start();
+
+        try (final BufferedReader reader = new BufferedReader(process.inputReader())) {
             String line;
             while ((line = reader.readLine()) != null) {
-                if (line.trim().startsWith("SSID")) {
-                    return line.split(":")[1].trim();
+                if (line.trim().startsWith("Name")) {
+                    final String[] parts = line.split(":", 2);
+                    if (parts.length == 2) {
+                        return parts[1].trim();
+                    }
                 }
             }
         }
@@ -45,7 +49,10 @@ public final class WindowsUtil {
         //TODO:Przetestować z systemem który ma dwa układy graficzne
         final List<String> graphicCards = new ArrayList<>();
         try (final BufferedReader bufferedReader = new BufferedReader(process.inputReader())) {
-            graphicCards.add(bufferedReader.readLine().trim());
+            String line;
+            while ((line = bufferedReader.readLine()) != null) {
+                graphicCards.add(line.trim());
+            }
         }
 
         return graphicCards;
