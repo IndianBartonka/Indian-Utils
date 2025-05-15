@@ -10,33 +10,29 @@ import org.jetbrains.annotations.CheckReturnValue;
 
 public final class EnvironmentReader {
 
-    private static final Map<String, String> keys = new LinkedHashMap<>();
-    private static File environmentFile = new File(".env");
+    private final Map<String, String> keys = new LinkedHashMap<>();
+    private final File environmentFile;
 
-    public static void read() {
-        try (final BufferedReader reader = new BufferedReader(new FileReader(environmentFile))) {
+    public EnvironmentReader(final File environmentFile) {
+        this.environmentFile = environmentFile;
+    }
+
+    public void read() throws IOException {
+        this.keys.clear();
+        try (final BufferedReader reader = new BufferedReader(new FileReader(this.environmentFile))) {
             String line;
             while ((line = reader.readLine()) != null) {
                 final String[] parts = line.split("=", 2);
                 if (parts.length == 2) {
                     final String value = parts[1].trim().replace("\\n", "\n").replace("\\t", "\t");
-
-                    keys.put(parts[0].trim(), value);
+                    this.keys.put(parts[0].trim(), value);
                 }
             }
-        } catch (final IOException ioException) {
-            if (IndianUtils.debug) ioException.printStackTrace();
         }
     }
 
     @CheckReturnValue
-    public static String getEnvironment(final String key) {
-        if (keys.isEmpty()) read();
-
-        return keys.get(key);
-    }
-
-    public static void setEnvironmentFile(final File environmentFile) {
-        EnvironmentReader.environmentFile = environmentFile;
+    public String getEnvironment(final String key) {
+        return this.keys.get(key);
     }
 }
