@@ -13,8 +13,8 @@ import pl.indianbartonka.util.language.storage.StorageStrategy;
 
 public class JsonStorageStrategy implements StorageStrategy {
 
-    private final Gson gson;
     private final Map<String, String> messages;
+    private Gson gson;
 
     public JsonStorageStrategy() {
         this.gson = GsonUtil.getGson();
@@ -75,6 +75,14 @@ public class JsonStorageStrategy implements StorageStrategy {
     @Override
     public void clear() {
         this.messages.clear();
+    }
+
+    public Gson getGson() {
+        return this.gson;
+    }
+
+    public void setGson(final Gson gson) {
+        this.gson = gson;
     }
 
     @Override
