@@ -13,7 +13,9 @@ import java.util.LinkedList;
 import java.util.List;
 import org.jetbrains.annotations.VisibleForTesting;
 import pl.indianbartonka.util.IndianUtils;
+import pl.indianbartonka.util.annotation.UtilityClass;
 
+@UtilityClass
 public final class LinuxUtil {
 
     private LinuxUtil() {

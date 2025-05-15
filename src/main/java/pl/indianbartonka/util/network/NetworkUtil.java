@@ -1,8 +1,6 @@
 package pl.indianbartonka.util.network;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.net.Inet4Address;
 import java.net.Inet6Address;
 import java.net.InetAddress;
@@ -13,12 +11,12 @@ import java.util.Enumeration;
 import java.util.List;
 import org.jetbrains.annotations.VisibleForTesting;
 import pl.indianbartonka.util.IndianUtils;
-import pl.indianbartonka.util.exception.UnsupportedSystemException;
+import pl.indianbartonka.util.annotation.UtilityClass;
 import pl.indianbartonka.util.system.LinuxUtil;
 import pl.indianbartonka.util.system.SystemUtil;
 import pl.indianbartonka.util.system.WindowsUtil;
 
-@VisibleForTesting
+@UtilityClass
 public final class NetworkUtil {
 
     private NetworkUtil() {
@@ -88,7 +86,7 @@ public final class NetworkUtil {
                 case WINDOWS -> WindowsUtil.getWiFiSSID();
                 case LINUX, FREE_BSD -> LinuxUtil.getWiFiSSID();
                 case MAC, UNKNOWN ->
-                        throw new UnsupportedSystemException("Pozyskiwanie nazwy sieci WiFi dla " + SystemUtil.getFullyOSName() + " nie jest jeszcze zaimplementowane");
+                        "Pozyskiwanie nazwy sieci WiFi dla " + SystemUtil.getFullyOSName() + " nie jest jeszcze zaimplementowane";
             };
         } catch (final IOException ioException) {
             if (IndianUtils.debug) ioException.printStackTrace();

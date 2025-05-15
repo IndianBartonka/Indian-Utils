@@ -14,8 +14,8 @@ import pl.indianbartonka.util.system.SystemUtil;
 @UtilityClass
 public final class BufferUtil {
 
-    private static int MIN_BUFFER = 4_09;
-    private static int MAX_BUFFER = (256 * 1_048_576);
+    private static int MIN_BUFFER = (4_09);
+    private static int MAX_BUFFER = (int) MemoryUnit.BYTES.from(256, MemoryUnit.MEBIBYTES);
     private static int RAM_USAGE_DIVISOR = 5;
 
     /**

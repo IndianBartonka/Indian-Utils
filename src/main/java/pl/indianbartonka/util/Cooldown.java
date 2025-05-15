@@ -3,6 +3,7 @@ package pl.indianbartonka.util;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.TimeUnit;
+import org.jetbrains.annotations.CheckReturnValue;
 import org.jetbrains.annotations.NotNull;
 import pl.indianbartonka.util.annotation.UtilityClass;
 
@@ -27,6 +28,7 @@ public class Cooldown {
      * @param timeUnit the time unit of the duration
      * @return true if the cooldown was successfully set, false if it was already active
      */
+    @CheckReturnValue
     public boolean cooldown(@NotNull final String name, final long duration, @NotNull final TimeUnit timeUnit) {
         final long time = timeUnit.toMillis(duration);
 
@@ -72,6 +74,7 @@ public class Cooldown {
      * @param name the name to get the cooldown duration for
      * @return the cooldown duration in milliseconds
      */
+    @CheckReturnValue
     public long getTime(@NotNull final String name) {
         return this.timeMap.getOrDefault(name, 0L);
     }
@@ -82,6 +85,7 @@ public class Cooldown {
      * @param name the name to check the remaining cooldown for
      * @return the remaining time in milliseconds
      */
+    @CheckReturnValue
     public long getRemainingTime(@NotNull final String name) {
         if (!this.cooldown.containsKey(name)) return 0;
 
@@ -118,6 +122,7 @@ public class Cooldown {
      * @param name the name to check for cooldown
      * @return true if there is an active cooldown, false otherwise
      */
+    @CheckReturnValue
     public boolean hasCooldown(@NotNull final String name) {
         return this.cooldown.containsKey(name) && (System.currentTimeMillis() - this.cooldown.get(name)) < this.getTime(name);
     }

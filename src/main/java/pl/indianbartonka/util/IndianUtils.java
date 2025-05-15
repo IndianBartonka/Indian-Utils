@@ -6,7 +6,9 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.concurrent.TimeUnit;
 import org.jetbrains.annotations.VisibleForTesting;
+import pl.indianbartonka.util.annotation.UtilityClass;
 
+@UtilityClass
 public final class IndianUtils {
 
     public static String version = "UNKNOWN";

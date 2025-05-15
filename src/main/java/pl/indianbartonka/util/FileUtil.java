@@ -18,7 +18,9 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import org.jetbrains.annotations.CheckReturnValue;
+import pl.indianbartonka.util.annotation.UtilityClass;
 
+@UtilityClass
 public final class FileUtil {
 
     private FileUtil() {

@@ -173,7 +173,7 @@ public final class SystemUtil {
         return switch (getSystem()) {
             //Free BSD i Mac są dla testów nie wiem jak działają :)
             case WINDOWS, MAC -> WindowsUtil.getAvailableDisks();
-            case LINUX, FREE_BSD -> LinuxUtil.getAvailableDisks() ;
+            case LINUX, FREE_BSD -> LinuxUtil.getAvailableDisks();
             case UNKNOWN ->
                     throw new UnsupportedSystemException("Pozyskiwanie dysków dla " + getFullyOSName() + " nie jest jeszcze zaimplementowane");
         };

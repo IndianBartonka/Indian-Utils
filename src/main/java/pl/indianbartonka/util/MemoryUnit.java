@@ -1,11 +1,14 @@
 package pl.indianbartonka.util;
 
+import pl.indianbartonka.util.annotation.UtilityClass;
+
 /**
  * Enum representing different memory units.
  * <p>
  * Documents and math operations written by ChatGPT
  * </p>
  */
+@UtilityClass
 public enum MemoryUnit {
 
     BYTES(1),
