@@ -20,9 +20,9 @@ Utile używane w różnych projektach przez Indiana
 
 ### Linux
 
-* FerenOs (5.15.0-131-generic)
+* FerenOs (6.8.0-57-generic)
 * Debian (6.1.0-31-amd64)
-* Debian ARM (Raspberry Edition 6.6.74+rpt-rpi-v8)
+* Debian ARM (Raspberry Edition 6.12.25+rpt-rpi-2712)
 
 # Biblioteki użyte w projekcie
 
@@ -30,11 +30,11 @@ Utile używane w różnych projektach przez Indiana
 
 Używane do lepszego wyglądu kodu i ewentualnych informacjach dla użytkownika.
 
-### [Gson 2.12.1](https://github.com/google/gson)
+### [Gson 2.13.1](https://github.com/google/gson)
 
 Używane do łatwiej serializacji i deserializacji Json
 
-### [JUnit Jupiter API 5.12.0](https://junit.org/junit5/)
+### [JUnit Jupiter API 5.13.0-M3](https://junit.org/junit5/)
 
 Używane do prostych testów jednostkowych.
 
