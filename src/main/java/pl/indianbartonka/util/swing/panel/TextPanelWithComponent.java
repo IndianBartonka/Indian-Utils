@@ -4,7 +4,9 @@ import java.awt.Component;
 import java.awt.FlowLayout;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import pl.indianbartonka.util.annotation.Since;
 
+@Since("0.0.9.3")
 public class TextPanelWithComponent extends JPanel {
 
     public TextPanelWithComponent(final String labelText, final Component component) {

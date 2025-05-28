@@ -11,9 +11,11 @@ import java.util.LinkedList;
 import java.util.List;
 import org.jetbrains.annotations.VisibleForTesting;
 import pl.indianbartonka.util.IndianUtils;
+import pl.indianbartonka.util.annotation.Since;
 import pl.indianbartonka.util.annotation.UtilityClass;
 
 @UtilityClass
+@Since("0.0.9.3")
 public final class WindowsUtil {
 
     private WindowsUtil() {
@@ -47,7 +49,7 @@ public final class WindowsUtil {
 
     public static List<String> getGraphicCardsName() throws IOException {
         final Process process = new ProcessBuilder("powershell.exe", "-Command", "Get-CimInstance", "Win32_VideoController", "|", "Select-Object", "-ExpandProperty", "Name").start();
-        
+
         final List<String> graphicCards = new ArrayList<>();
         try (final BufferedReader bufferedReader = new BufferedReader(process.inputReader())) {
             String line;
@@ -109,6 +111,7 @@ public final class WindowsUtil {
         return -1;
     }
 
+    @Since("0.0.9.3")
     public static List<Ram> getRamData() throws IOException {
         final List<String> lines = new ArrayList<>();
         final List<Ram> ram = new ArrayList<>();

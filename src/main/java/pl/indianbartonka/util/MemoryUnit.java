@@ -1,5 +1,6 @@
 package pl.indianbartonka.util;
 
+import pl.indianbartonka.util.annotation.Since;
 import pl.indianbartonka.util.annotation.UtilityClass;
 
 /**
@@ -69,5 +70,29 @@ public enum MemoryUnit {
      */
     public long from(final long value, final MemoryUnit sourceUnit) {
         return (long) this.from((double) value, sourceUnit);
+    }
+
+    /**
+     * Converts an int value from the current memory unit to the target memory unit.
+     *
+     * @param value      The int value to be converted from the current memory unit.
+     * @param targetUnit The target memory unit to which the value will be converted.
+     * @return The converted value in the target memory unit as an int.
+     */
+    @Since("0.0.9.3")
+    public int to(final int value, final MemoryUnit targetUnit) {
+        return (int) this.to((double) value, targetUnit);
+    }
+
+    /**
+     * Converts an int value from the specified source memory unit to the current memory unit.
+     *
+     * @param value      The int value to be converted from the source memory unit.
+     * @param sourceUnit The source memory unit from which the value will be converted.
+     * @return The converted value in the current memory unit as an int.
+     */
+    @Since("0.0.9.3")
+    public int from(final int value, final MemoryUnit sourceUnit) {
+        return (int) this.from((double) value, sourceUnit);
     }
 }

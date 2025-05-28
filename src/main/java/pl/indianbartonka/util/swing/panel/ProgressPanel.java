@@ -3,7 +3,9 @@ package pl.indianbartonka.util.swing.panel;
 import javax.swing.BoxLayout;
 import javax.swing.JPanel;
 import javax.swing.JProgressBar;
+import pl.indianbartonka.util.annotation.Since;
 
+@Since("0.0.9.3")
 public class ProgressPanel extends JPanel {
 
     private final JProgressBar progressBar;

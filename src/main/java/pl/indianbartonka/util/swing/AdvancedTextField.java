@@ -4,7 +4,9 @@ import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
 import javax.swing.JTextField;
 import javax.swing.text.Document;
+import pl.indianbartonka.util.annotation.Since;
 
+@Since("0.0.9.3")
 public class AdvancedTextField extends JTextField {
 
     private String cut = "Wytnij";

@@ -16,6 +16,7 @@ import org.jetbrains.annotations.VisibleForTesting;
 import pl.indianbartonka.util.FileUtil;
 import pl.indianbartonka.util.MemoryUnit;
 import pl.indianbartonka.util.MessageUtil;
+import pl.indianbartonka.util.annotation.Since;
 import pl.indianbartonka.util.annotation.UtilityClass;
 import pl.indianbartonka.util.exception.UnsupportedSystemException;
 
@@ -179,6 +180,7 @@ public final class SystemUtil {
         };
     }
 
+    @Since("0.0.9.3")
     public static List<Ram> getRamData() {
         try {
             return switch (getSystem()) {
@@ -193,6 +195,7 @@ public final class SystemUtil {
     }
 
     @VisibleForTesting
+    @Since("0.0.9.3")
     @CheckReturnValue
     public static long testDisk(final Disk disk, final int mbSize, final int totalWrites) throws IOException {
         final File fileDir = new File(disk.diskFile(), String.valueOf(UUID.randomUUID()));

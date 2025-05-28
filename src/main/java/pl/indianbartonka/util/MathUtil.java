@@ -9,6 +9,7 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Random;
 import org.jetbrains.annotations.VisibleForTesting;
+import pl.indianbartonka.util.annotation.Since;
 import pl.indianbartonka.util.annotation.UtilityClass;
 
 /**
@@ -221,6 +222,17 @@ public final class MathUtil {
     }
 
     /**
+     * Formats kilobytes dynamically based on their magnitude, using either short or long names.
+     *
+     * @param kilobytes The number of kilobytes to format.
+     * @return The formatted kilobytes as a string.
+     */
+    @Since("0.0.9.3")
+    public static String formatKilobytesDynamic(final long kilobytes) {
+        return formatKilobytesDynamic(kilobytes, true);
+    }
+
+    /**
      * Formats bytes dynamically based on their magnitude, using either short or long names.
      *
      * @param bytes      The number of bytes to format.
@@ -245,6 +257,17 @@ public final class MathUtil {
         if (remainingBytes > 0) unitsPattern.add('b');
 
         return formatBytes(bytes, unitsPattern, shortNames);
+    }
+
+    /**
+     * Formats bytes dynamically based on their magnitude, using either short or long names.
+     *
+     * @param bytes The number of bytes to format.
+     * @return The formatted bytes as a string.
+     */
+    @Since("0.0.9.3")
+    public static String formatBytesDynamic(final long bytes) {
+        return formatBytesDynamic(bytes, true);
     }
 
     /**

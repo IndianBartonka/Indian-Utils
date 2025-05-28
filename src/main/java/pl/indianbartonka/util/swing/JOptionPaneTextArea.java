@@ -6,7 +6,9 @@ import java.awt.Toolkit;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.text.Document;
+import pl.indianbartonka.util.annotation.Since;
 
+@Since("0.0.9.3")
 public class JOptionPaneTextArea extends JScrollPane {
 
     private final JTextArea jTextArea;
@@ -58,7 +60,7 @@ public class JOptionPaneTextArea extends JScrollPane {
         return new Dimension(Math.min(textWidth + 20, (int) (screenSize.width * 0.4)), Math.min(textHeight + 20, (int) (screenSize.height * 0.7)));
     }
 
-    public void setText(final String text){
+    public void setText(final String text) {
         this.jTextArea.setText(text);
         this.setPreferredSize(this.calculateDynamicSize(text));
     }
