@@ -12,7 +12,7 @@ import pl.indianbartonka.util.system.SystemUtil;
 
 public class BufferUtilTest {
 
-    private static final LoggerConfiguration loggerConfiguration = LoggerConfiguration.builder().setOneLog(true).build();
+    private static final LoggerConfiguration loggerConfiguration = LoggerConfiguration.builder().setLogsPath(System.getProperty("user.dir") + File.separator + "logs").setLoggingToFile(true).build();
 
     private final Logger logger = new Logger(loggerConfiguration) {
     };

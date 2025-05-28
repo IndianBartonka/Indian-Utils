@@ -16,7 +16,7 @@ public class LoggerTest {
         final LoggerConfiguration loggerConfiguration = LoggerConfiguration.builder()
                 .setLogsPath(System.getProperty("user.dir") + File.separator + "logs")
                 .setLoggingToFile(true)
-                .setOneLog(true)
+                .setLogJULtoFile(true)
                 .build();
 
         this.logger = new Logger(loggerConfiguration) {
