@@ -124,21 +124,20 @@ public final class Test {
             final Logger tempLogger = LOGGER.tempLogger(fileName);
 
             @Override
-            public void onStart(final int definedBuffer, final File outputFile) {
+            public void onStart(final int definedBuffer, final long fileSize, final File outputFile) {
                 this.tempLogger.info("Pobieranie:&a " + outputFile.getName());
+                this.tempLogger.info("Rozmiar pliku to:&a " + MathUtil.formatBytesDynamic(fileSize));
                 this.tempLogger.info("Ustalony buffer dla naszego pliku to:&a " + MathUtil.formatBytesDynamic(definedBuffer, false));
             }
 
             @Override
             public void onSecond(final int progress, final double formatedSpeed, final String remainingTimeString) {
-                //Kod wykonuje się co każdą sekunde
-//                this.tempLogger.print(progress + "%&a " + formatedSpeed + "MB/s &c" + remainingTimeString);
+                this.tempLogger.print(progress + "%&a " + formatedSpeed + "MB/s &c" + remainingTimeString, LogState.INFO);
             }
 
             @Override
             public void onProgress(final int progress, final double formatedSpeed, final String remainingTimeString) {
-//                tempLogger.info(progress + "%&a " + formatedSpeed + "MB/s &c" + remainingTimeString);
-                this.tempLogger.print(progress + "%&a " + formatedSpeed + "MB/s &c" + remainingTimeString, LogState.INFO);
+
             }
 
             @Override
@@ -160,7 +159,7 @@ public final class Test {
         };
 
         final Request request = new RequestBuilder()
-                .setUrl("https://minecraft.azureedge.net/bin-win/bedrock-server-1.21.23.01.zip")
+                .setUrl("https://www.minecraft.net/bedrockdedicatedserver/bin-win/bedrock-server-1.21.83.1.zip")
                 .GET()
                 .build();
 
@@ -183,6 +182,7 @@ public final class Test {
 
                     threadUtil.newThread(() -> {
                         ThreadUtil.sleep(10);
+                        LOGGER.println();
                         LOGGER.info("Zatrzymywanie pobierania:&b " + fileName);
                         downloadTask.stopDownload();
                     }).start();
@@ -233,10 +233,10 @@ public final class Test {
         // Wyświetlamy dostępne algorytmy
         System.out.println("Dostępne algorytmy " + algorithms.size() + " : " + algorithms);
 
-        languagesTest();
+        downloadFileTest();
         LOGGER.println("==================");
 
-        downloadFileTest();
+        languagesTest();
         LOGGER.println("==================");
     }
 }

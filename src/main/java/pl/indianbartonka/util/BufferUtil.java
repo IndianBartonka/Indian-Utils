@@ -1,5 +1,8 @@
 package pl.indianbartonka.util;
 
+import java.lang.management.ManagementFactory;
+import java.lang.management.MemoryUsage;
+import pl.indianbartonka.util.annotation.Since;
 import pl.indianbartonka.util.annotation.UtilityClass;
 import pl.indianbartonka.util.system.SystemUtil;
 
@@ -14,9 +17,12 @@ import pl.indianbartonka.util.system.SystemUtil;
 @UtilityClass
 public final class BufferUtil {
 
-    private static int MIN_BUFFER = (4_09);
-    private static int MAX_BUFFER = (int) MemoryUnit.BYTES.from(256, MemoryUnit.MEBIBYTES);
+    private static int MIN_BUFFER = 4_09;
+    private static int MAX_BUFFER = MemoryUnit.BYTES.from(256, MemoryUnit.MEBIBYTES);
     private static int RAM_USAGE_DIVISOR = 5;
+
+    @Since("0.0.9.3")
+    private static int fileSizePercent = 10;
 
     /**
      * Private constructor to prevent instantiation of the utility class.
@@ -32,10 +38,31 @@ public final class BufferUtil {
      * @return The optimal buffer size in bytes.
      */
     public static int calculateOptimalBufferSize(final long fileSize) {
-        final long bufferPerRequest = (SystemUtil.getFreeRam() + SystemUtil.getFreeSwap()) / RAM_USAGE_DIVISOR;
-        final long bufferSize = Math.min((long) (fileSize * 0.1), bufferPerRequest);
+        final long bufferPerRequest = getJvmUsableRam() / RAM_USAGE_DIVISOR;
+        final long bufferSize = Math.min((long) (fileSize * (fileSizePercent / 100.0)), bufferPerRequest);
 
-        return (int) MathUtil.getCorrectNumber(bufferSize, MIN_BUFFER, MAX_BUFFER);
+        return Math.toIntExact(MathUtil.getCorrectNumber(bufferSize, MIN_BUFFER, MAX_BUFFER));
+    }
+
+    /**
+     * Calculates the amount of RAM that can be safely used by the JVM for buffer operations.
+     * <p>
+     * The usable RAM is determined as the minimum between:
+     * <ul>
+     *   <li>The remaining available heap memory in the JVM (max heap - used heap)</li>
+     *   <li>The actual free system RAM available to the operating system</li>
+     * </ul>
+     * This ensures that the buffer allocation does not exceed what the system or the JVM can handle,
+     * avoiding potential OutOfMemoryError or excessive memory pressure.
+     *
+     * @return The number of bytes that can be safely used by the JVM for buffer allocation.
+     */
+    @Since("0.0.9.3")
+    public static long getJvmUsableRam() {
+        final MemoryUsage heapMemoryUsage = ManagementFactory.getMemoryMXBean().getHeapMemoryUsage();
+        final long jvmRam = heapMemoryUsage.getMax() - heapMemoryUsage.getUsed();
+
+        return Math.min(jvmRam, SystemUtil.getFreeRam());
     }
 
     /**
@@ -92,5 +119,25 @@ public final class BufferUtil {
      */
     public static void setRamUsageDivisor(final int ramUsageDivisor) {
         RAM_USAGE_DIVISOR = MathUtil.getCorrectNumber(ramUsageDivisor, 1, Integer.MAX_VALUE);
+    }
+
+    /**
+     * Gets the percentage of the file size used to calculate buffer size.
+     *
+     * @return The file size percentage.
+     */
+    public static int getFileSizePercent() {
+        return fileSizePercent;
+    }
+
+    /**
+     * Sets the percentage of the file size used to calculate buffer size.
+     * Ensures the value is a positive integer greater than 0.
+     * If out of range, the value is clamped to the valid bounds.
+     *
+     * @param fileSizePercent The file size percentage.
+     */
+    public static void setFileSizePercent(final int fileSizePercent) {
+        BufferUtil.fileSizePercent = MathUtil.getCorrectNumber(fileSizePercent, 1, Integer.MAX_VALUE);
     }
 }
