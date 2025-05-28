@@ -198,6 +198,9 @@ public final class SystemUtil {
         final File fileDir = new File(disk.diskFile(), String.valueOf(UUID.randomUUID()));
         final File file = new File(fileDir, "testFile.dat");
 
+        fileDir.deleteOnExit();
+        file.deleteOnExit();
+
         try {
             Files.createDirectories(fileDir.toPath());
 
