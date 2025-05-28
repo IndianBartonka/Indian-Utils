@@ -47,8 +47,7 @@ public final class WindowsUtil {
 
     public static List<String> getGraphicCardsName() throws IOException {
         final Process process = new ProcessBuilder("powershell.exe", "-Command", "Get-CimInstance", "Win32_VideoController", "|", "Select-Object", "-ExpandProperty", "Name").start();
-
-        //TODO:Przetestować z systemem który ma dwa układy graficzne
+        
         final List<String> graphicCards = new ArrayList<>();
         try (final BufferedReader bufferedReader = new BufferedReader(process.inputReader())) {
             String line;
@@ -108,5 +107,88 @@ public final class WindowsUtil {
             }
         }
         return -1;
+    }
+
+    public static List<Ram> getRamData() throws IOException {
+        final List<String> lines = new ArrayList<>();
+        final List<Ram> ram = new ArrayList<>();
+
+        final String psScript = "Get-CimInstance Win32_PhysicalMemory | ForEach-Object { " +
+                "Write-Output ('Size : ' + $_.Capacity); " +
+                "Write-Output ('BasicSpeed : ' + $_.Speed); " +
+                "Write-Output ('ConfiguredSpeed : ' + $_.ConfiguredClockSpeed); " +
+                "Write-Output ('MemoryType : ' + $_.SMBIOSMemoryType); " +
+                "Write-Output ('PartNumber : ' + $_.PartNumber); " +
+                "Write-Output ('BankLabel : ' + $_.BankLabel); " +
+                "Write-Output ''; " +
+                "}";
+
+        final Process process = new ProcessBuilder("powershell.exe", "-Command", psScript).start();
+
+        try (final BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()))) {
+
+            String line;
+            while ((line = reader.readLine()) != null) {
+                if (line.isEmpty()) {
+                    ram.add(ramParser(lines));
+                    lines.clear();
+                } else {
+                    lines.add(line);
+                }
+            }
+        }
+
+        return ram;
+    }
+
+    private static Ram ramParser(final List<String> lines) {
+        long size = -1;
+        long basicSpeed = -1;
+        long configuredSpeed = -1;
+        String memoryType = "";
+        String partNumber = "";
+        String bankLabel = "";
+
+        for (final String line : lines) {
+            if (line.contains("Size")) {
+                final String[] parts = line.split(":");
+                size = Long.parseLong(parts[1].trim());
+            }
+
+            if (line.contains("BasicSpeed")) {
+                final String[] parts = line.split(":");
+                basicSpeed = Long.parseLong(parts[1].trim());
+            }
+
+            if (line.contains("ConfiguredSpeed")) {
+                final String[] parts = line.split(":");
+                configuredSpeed = Long.parseLong(parts[1].trim());
+            }
+
+            if (line.contains("MemoryType")) {
+                final String[] parts = line.split(":");
+                memoryType = switch (Integer.parseInt(parts[1].trim())) {
+                    case 20 -> "DDR";
+                    case 21 -> "DDR2";
+                    case 22 -> "DDR2 FB-DIMM";
+                    case 24 -> "DDR3";
+                    case 26 -> "DDR4";
+                    case 27 -> "DDR5";
+                    default -> "Unknown";
+                };
+            }
+
+            if (line.contains("PartNumber")) {
+                final String[] parts = line.split(":");
+                partNumber = parts[1].trim();
+            }
+
+            if (line.contains("BankLabel")) {
+                final String[] parts = line.split(":");
+                bankLabel = parts[1].trim();
+            }
+        }
+
+        return new Ram(size, basicSpeed, configuredSpeed, memoryType, partNumber, bankLabel);
     }
 }

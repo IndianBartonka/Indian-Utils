@@ -6,6 +6,7 @@ import java.util.List;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import pl.indianbartonka.util.system.Disk;
+import pl.indianbartonka.util.system.Ram;
 import pl.indianbartonka.util.system.SystemArch;
 import pl.indianbartonka.util.system.SystemFamily;
 import pl.indianbartonka.util.system.SystemOS;
@@ -154,5 +155,17 @@ public class SystemUtilTest {
         System.out.println("Dostępne: " + MathUtil.formatBytesDynamic(SystemUtil.getFreeRam(), false));
         System.out.println("Użyte: " + MathUtil.formatBytesDynamic(SystemUtil.getUsedRam(), false));
         System.out.println("Maksymalne: " + MathUtil.formatBytesDynamic(SystemUtil.getMaxRam(), false));
+        System.out.println();
+
+        for (final Ram ram : SystemUtil.getRamData()) {
+            System.out.println("Pojemność RAM: " + MathUtil.formatBytesDynamic(ram.size(), false));
+            System.out.println("Nominalna prędkość (Speed): " + ram.basicSpeed() + " MHz");
+            System.out.println("Aktualne taktowanie (ConfiguredClockSpeed): " + ram.configuredSpeed() + " MHz");
+            System.out.println("Typ pamięci: " + ram.memoryType());
+            System.out.println("Numer katalogowy (Part Number): " + ram.partNumber());
+            System.out.println("Slot pamięci (Bank Label): " + ram.bankLabel());
+            System.out.println();
+        }
+
     }
 }

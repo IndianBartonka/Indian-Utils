@@ -179,6 +179,19 @@ public final class SystemUtil {
         };
     }
 
+    public static List<Ram> getRamData() {
+        try {
+            return switch (getSystem()) {
+                case WINDOWS, MAC -> WindowsUtil.getRamData();
+                case LINUX, FREE_BSD -> List.of();
+                case UNKNOWN ->
+                        throw new UnsupportedSystemException("Pozyskiwanie dysków dla " + getFullyOSName() + " nie jest jeszcze zaimplementowane");
+            };
+        } catch (final IOException ioException) {
+            throw new UnsupportedSystemException("Pozyskiwanie danych o ram dla" + getFullyOSName() + " nie jest jeszcze zaimplementowane", ioException);
+        }
+    }
+
     @VisibleForTesting
     @CheckReturnValue
     public static long testDisk(final Disk disk, final int mbSize, final int totalWrites) throws IOException {
