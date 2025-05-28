@@ -53,7 +53,7 @@ public class DownloadTask {
             final byte[] buffer = new byte[definedBuffer];
 
             if (this.downloadListener != null) {
-                this.downloadListener.onStart(definedBuffer, this.outputFile);
+                this.downloadListener.onStart(definedBuffer, this.fileSize, this.outputFile);
             }
 
             int bytesRead;
