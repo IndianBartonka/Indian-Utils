@@ -49,5 +49,6 @@ public class ProgressPanel extends JPanel {
 
     public void removePanel() {
         this.canRemove = true;
+        //TODO: Spróbuj brać rodzica i usuwać się od niego 
     }
 }
