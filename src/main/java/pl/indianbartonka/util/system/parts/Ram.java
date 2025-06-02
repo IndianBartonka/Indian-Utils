@@ -1,4 +1,4 @@
-package pl.indianbartonka.util.system;
+package pl.indianbartonka.util.system.parts;
 
 import pl.indianbartonka.util.annotation.Since;
 

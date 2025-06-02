@@ -19,6 +19,8 @@ import pl.indianbartonka.util.MessageUtil;
 import pl.indianbartonka.util.annotation.Since;
 import pl.indianbartonka.util.annotation.UtilityClass;
 import pl.indianbartonka.util.exception.UnsupportedSystemException;
+import pl.indianbartonka.util.system.parts.Disk;
+import pl.indianbartonka.util.system.parts.Ram;
 
 @UtilityClass
 public final class SystemUtil {
