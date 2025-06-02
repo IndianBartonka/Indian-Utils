@@ -1,5 +1,6 @@
 package pl.indianbartonka.util.swing.panel;
 
+import java.awt.Container;
 import javax.swing.BoxLayout;
 import javax.swing.JPanel;
 import javax.swing.JProgressBar;
@@ -9,7 +10,6 @@ import pl.indianbartonka.util.annotation.Since;
 public class ProgressPanel extends JPanel {
 
     private final JProgressBar progressBar;
-    private boolean canRemove;
 
     public ProgressPanel() {
         this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
@@ -18,8 +18,6 @@ public class ProgressPanel extends JPanel {
         this.progressBar.setStringPainted(true);
 
         this.add(this.progressBar);
-
-        this.canRemove = false;
     }
 
     @Deprecated
@@ -42,13 +40,11 @@ public class ProgressPanel extends JPanel {
     public JProgressBar getProgressBar() {
         return this.progressBar;
     }
-
-    public boolean canRemove() {
-        return this.canRemove;
-    }
-
+    
     public void removePanel() {
-        this.canRemove = true;
-        //TODO: Spróbuj brać rodzica i usuwać się od niego 
+       final Container parent = this.getParent();
+        parent.remove(this);
+        parent.revalidate();
+        parent.repaint();
     }
 }

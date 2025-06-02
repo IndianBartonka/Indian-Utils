@@ -8,6 +8,9 @@ import java.security.Security;
 import java.util.Base64;
 import java.util.Set;
 import java.util.concurrent.TimeoutException;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JPanel;
 import pl.indianbartonka.util.download.DownloadListener;
 import pl.indianbartonka.util.download.DownloadTask;
 import pl.indianbartonka.util.http.HttpStatusCode;
@@ -21,9 +24,12 @@ import pl.indianbartonka.util.language.storage.impl.PropertiesStorageStrategy;
 import pl.indianbartonka.util.logger.LogState;
 import pl.indianbartonka.util.logger.Logger;
 import pl.indianbartonka.util.logger.config.LoggerConfiguration;
+import pl.indianbartonka.util.swing.panel.ProgressPanel;
+import pl.indianbartonka.util.swing.panel.TextPanelWithComponent;
 
 public final class Test {
 
+    private static final JFrame frame = new JFrame();
     private static final LoggerConfiguration loggerConfiguration = LoggerConfiguration.builder()
             .setLogsPath(System.getProperty("user.dir") + File.separator + "logs")
             .setLoggingToFile(true)
@@ -121,17 +127,24 @@ public final class Test {
 
         final DownloadListener downloadListener = new DownloadListener() {
             final Logger tempLogger = LOGGER.tempLogger(fileName);
+            final ProgressPanel panel = new ProgressPanel();
 
             @Override
             public void onStart(final int definedBuffer, final long fileSize, final File outputFile) {
                 this.tempLogger.info("Pobieranie:&a " + outputFile.getName());
                 this.tempLogger.info("Rozmiar pliku to:&a " + MathUtil.formatBytesDynamic(fileSize));
                 this.tempLogger.info("Ustalony buffer dla naszego pliku to:&a " + MathUtil.formatBytesDynamic(definedBuffer, false));
+
+                frame.add(this.panel);
+                this.panel.setText("Rozpoczynanie");
+                this.panel.setValue(0);
             }
 
             @Override
             public void onSecond(final int progress, final double formatedSpeed, final String remainingTimeString) {
                 this.tempLogger.print(progress + "%&a " + formatedSpeed + "MB/s &c" + remainingTimeString, LogState.INFO);
+                this.panel.setText(progress + "% " + formatedSpeed + "MB/s " + remainingTimeString);
+                this.panel.setValue(progress);
             }
 
             @Override
@@ -148,12 +161,14 @@ public final class Test {
             public void onEnd(final File outputFile) {
                 this.tempLogger.println();
                 this.tempLogger.info("Pobrano:&a " + outputFile.getName());
+                this.panel.removePanel();
             }
 
             @Override
             public void onDownloadStop() {
                 this.tempLogger.println();
                 this.tempLogger.alert("Zatrzymano pobieranie!");
+                this.panel.removePanel();
             }
         };
 
@@ -214,6 +229,22 @@ public final class Test {
     }
 
     public static void main(final String[] args) throws IOException {
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setSize(500, 250);
+        frame.setLocationRelativeTo(null);
+        frame.setResizable(true);
+        frame.setAlwaysOnTop(true);
+        frame.setVisible(true);
+
+        final JButton jButton = new JButton("Wyłącz");
+
+        jButton.addActionListener(l -> System.exit(0));
+
+        final JPanel content = new JPanel();
+        content.add(new TextPanelWithComponent("Wyłacz", jButton));
+
+        frame.setContentPane(content);
+
         // Pobieramy dostępne algorytmy MessageDigest
         final Set<String> algorithms = Security.getAlgorithms("MessageDigest");
 
