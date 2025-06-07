@@ -13,6 +13,8 @@ import org.jetbrains.annotations.VisibleForTesting;
 import pl.indianbartonka.util.IndianUtils;
 import pl.indianbartonka.util.annotation.Since;
 import pl.indianbartonka.util.annotation.UtilityClass;
+import pl.indianbartonka.util.system.parts.Disk;
+import pl.indianbartonka.util.system.parts.Ram;
 
 @UtilityClass
 @Since("0.0.9.3")
