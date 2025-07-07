@@ -1,38 +1,25 @@
-import java.util.Scanner;
+package pl.indianbartonka.util.encrypt;
 
-public class BinarnyEncryptionUtil {
-    public static void main(String[] args) {
-        Scanner scanner = new Scanner(System.in);
+public final class BinarnyEncryptionUtil {
 
-        System.out.print("Podaj kod binarny (np. 01000001 01101000): ");
-        String binarny = scanner.nextLine();
+    public static String decrypt(final String binarny) {
+        final String[] binarneZnaki = binarny.split(" ");
+        final StringBuilder tekst = new StringBuilder();
 
-        String tekst = binarnyNaTekst(binarny);
-        System.out.println("Odszyfrowany tekst: " + tekst);
-    }
-
-    public static String binarnyNaTekst(String binarny) {
-        String[] binarneZnaki = binarny.split(" ");
-        StringBuilder tekst = new StringBuilder();
-
-        for (String bin : binarneZnaki) {
-            int znak = Integer.parseInt(bin, 2);
-            tekst.append((char) znak);
+        for (final String bin : binarneZnaki) {
+            tekst.append((char) Integer.parseInt(bin, 2));
         }
 
         return tekst.toString();
     }
-    
-    public static String (){
-            StringBuilder binaryOutput = new StringBuilder();
 
-        for (char c : input.toCharArray()) {
-            String binaryChar = String.format("%8s", Integer.toBinaryString(c))
-                                      .replace(' ', '0'); // Dopisuje zera z przodu
-            binaryOutput.append(binaryChar).append(" ");
+    public static String encrypt(final String input) {
+        final StringBuilder binaryOutput = new StringBuilder();
+
+        for (final char c : input.toCharArray()) {
+            binaryOutput.append(String.format("%8s", Integer.toBinaryString(c)).replace(' ', '0')).append(" ");
         }
 
-        System.out.println("Kod binarny: " + binaryOutput.toString().trim());
-   
-   }
+        return binaryOutput.toString().trim();
+    }
 }
