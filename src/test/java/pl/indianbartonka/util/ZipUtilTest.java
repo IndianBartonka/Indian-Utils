@@ -5,16 +5,27 @@ import java.io.IOException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import pl.indianbartonka.util.logger.Logger;
+import pl.indianbartonka.util.logger.config.LoggerConfiguration;
 
 public class ZipUtilTest {
 
+    private static Logger logger;
     private static final String LOGS_DIR = "logs";
     private static final String ZIP_FILE_NAME = "logs.zip";
     private static final String UNZIP_DIR = "tescik";
 
+
     @BeforeEach
     void setUp() {
-        ZipUtil.init(9);
+        final LoggerConfiguration loggerConfiguration = LoggerConfiguration.builder()
+                .setLogsPath(System.getProperty("user.dir") + File.separator + "logs")
+                .setLogName("ZipLog").setLoggingToFile(true).setLogJULtoFile(true).setDebug(true).build();
+
+        logger = new Logger(loggerConfiguration) {
+        };
+
+        ZipUtil.init(logger, 9);
     }
 
     @Test
@@ -29,6 +40,7 @@ public class ZipUtilTest {
             final File directory = new File(LOGS_DIR);
             final File zipFile = ZipUtil.zipFolder(directory.getPath(), ZIP_FILE_NAME);
             Assertions.assertTrue(zipFile.exists(), "Plik zip powinien zostać utworzony.");
+            logger.info("&aSpakowano pliki");
         } catch (final IOException ioException) {
             //Tu moze byc Odmowa dostepu bo logger uyzwa pliku Logu
             ioException.printStackTrace();

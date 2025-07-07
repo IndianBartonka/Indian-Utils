@@ -85,30 +85,6 @@ public final class ZipUtil {
     }
 
     /**
-     * Zips multiple files and directories into a single ZIP file.
-     *
-     * @param srcFiles    Array of files and directories to be zipped.
-     * @param zipFilePath Path where the ZIP file will be created.
-     * @throws IOException If an error occurs during the zipping process.
-     */
-    public static File zipFiles(final File[] srcFiles, final String zipFilePath) throws IOException {
-        try (final FileOutputStream fos = new FileOutputStream(zipFilePath);
-             final ZipOutputStream zipOut = new ZipOutputStream(fos)) {
-            zipOut.setLevel(compressionLevel);
-            for (final File srcFile : srcFiles) {
-                if (srcFile.exists()) {
-                    if (srcFile.isDirectory()) {
-                        addDirectoryToZip(srcFile, srcFile.getName(), zipOut);
-                    } else {
-                        addFileToZip(srcFile, zipOut);
-                    }
-                }
-            }
-        }
-        return new File(zipFilePath);
-    }
-
-    /**
      * Returns the compression level used in zip operations.
      *
      * <p>
@@ -135,8 +111,7 @@ public final class ZipUtil {
      */
     private static void addDirectoryToZip(final File folder, final String parentName, final ZipOutputStream zos) throws IOException {
         if (logger != null) logger.debug("Packing: " + folder.getPath());
-
-        //TODO: Użyj FileUtil do listowania plików 
+        
         final File[] files = folder.listFiles();
         if (files != null) {
             for (final File file : files) {
@@ -213,30 +188,6 @@ public final class ZipUtil {
                     FileUtil.deleteFile(path.toFile());
                 }
             }
-        }
-    }
-
-
-    /**
-     * Adds a file to the ZIP output stream.
-     *
-     * @param file The file to add.
-     * @param zos  The ZipOutputStream to write to.
-     * @throws IOException If an error occurs during the zipping process.
-     */
-    private static void addFileToZip(final File file, final ZipOutputStream zos) throws IOException {
-        if (logger != null) logger.debug("Packing: " + file.getPath());
-
-        final byte[] buffer = new byte[BufferUtil.calculateOptimalBufferSize(file.length())];
-
-        try (final FileInputStream fis = new FileInputStream(file)) {
-            final ZipEntry zipEntry = new ZipEntry(file.getName());
-            zos.putNextEntry(zipEntry);
-            int length;
-            while ((length = fis.read(buffer)) > 0) {
-                zos.write(buffer, 0, length);
-            }
-            zos.closeEntry();
         }
     }
 
