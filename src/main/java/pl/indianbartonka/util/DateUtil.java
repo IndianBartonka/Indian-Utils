@@ -76,7 +76,7 @@ public final class DateUtil {
     public static void setZone(final ZoneId zoneId) {
         defaultZone = zoneId;
     }
-
+//TODO: Dodaj getter do zone
     /**
      * Gets the current date and time in "yyyy-MM-dd HH-mm-ss" format, with colons replaced by hyphens.
      *
