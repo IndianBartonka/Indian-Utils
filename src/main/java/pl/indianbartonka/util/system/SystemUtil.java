@@ -87,11 +87,11 @@ public final class SystemUtil {
 
     public static SystemArch getCurrentArch() {
         return switch (System.getProperty("os.arch")) {
-            case "amd64", "x86_64" -> SystemArch.AMD_X64;
-            case "x86", "i386", "i486", "i586", "i686" -> SystemArch.AMD_X32;
-            case "aarch64" -> SystemArch.ARM_64X;
-            case "arm", "arm32", "armv7", "armv8" -> SystemArch.ARM_32X;
-            default -> SystemArch.UNKNOWN;
+            case "amd64", "x86_64" -> X86_64;
+            case "x86", "i386", "i486", "i586", "i686" -> X86_32;
+            case "aarch64", "arm64", "armv8" -> AARCH64;
+            case "arm", "arm32", "armv7" -> ARM_32;
+            default -> UNKNOWN;
         };
     }
 
