@@ -86,12 +86,12 @@ public final class SystemUtil {
     }
 
     public static SystemArch getCurrentArch() {
-        return switch (System.getProperty("os.arch")) {
-            case "amd64", "x86_64" -> X86_64;
-            case "x86", "i386", "i486", "i586", "i686" -> X86_32;
-            case "aarch64", "arm64", "armv8" -> AARCH64;
-            case "arm", "arm32", "armv7" -> ARM_32;
-            default -> UNKNOWN;
+        return switch (getFullyArchCode()) {
+            case "amd64", "x86_64" -> SystemArch.X86_64;
+            case "x86", "i386", "i486", "i586", "i686" -> SystemArch.X86_32;
+            case "aarch64", "arm64", "armv8" -> SystemArch.ARM_64X;
+            case "arm", "arm32", "armv7" -> SystemArch.ARM_32X;
+            default -> SystemArch.UNKNOWN;
         };
     }
 
