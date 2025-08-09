@@ -26,16 +26,12 @@ public class Cooldown {
      * @param name     the name to set the cooldown for
      * @param duration the duration of the cooldown
      * @param timeUnit the time unit of the duration
-     * @return true if the cooldown was successfully set, false if it was already active
      */
-    @CheckReturnValue
-    public boolean cooldown(@NotNull final String name, final long duration, @NotNull final TimeUnit timeUnit) {
+    public void cooldown(@NotNull final String name, final long duration, @NotNull final TimeUnit timeUnit) {
         final long time = timeUnit.toMillis(duration);
 
         this.cooldown.put(name, System.currentTimeMillis());
         this.timeMap.put(name, time);
-
-        return this.hasCooldown(name);
     }
 
     /**
