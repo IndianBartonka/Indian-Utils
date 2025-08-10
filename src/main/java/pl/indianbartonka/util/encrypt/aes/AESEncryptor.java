@@ -50,6 +50,7 @@ public final class AESEncryptor implements Encryptor {
         this.provider = provider;
         this.encryptedDir = System.getProperty("user.dir") + File.separator + "encrypted_dir" + File.separator;
         this.userDir = System.getProperty("user.dir") + File.separator;
+        //TODO: Usun te diry w metodach daj pliki do których mają trafić dane 
         this.fileExtension = ".aes";
     }
 
