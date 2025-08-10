@@ -1,4 +1,4 @@
-package pl.indianbartonka.util;
+package pl.indianbartonka.util.minecraft;
 
 import java.io.ByteArrayOutputStream;
 import java.io.DataOutputStream;
@@ -6,6 +6,9 @@ import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
 import org.jetbrains.annotations.CheckReturnValue;
+import pl.indianbartonka.util.DateUtil;
+import pl.indianbartonka.util.MathUtil;
+import pl.indianbartonka.util.MemoryUnit;
 
 /**
  * <p><b>Copyright (c) 2023 Justin</b></p>
