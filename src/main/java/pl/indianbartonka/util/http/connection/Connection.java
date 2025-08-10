@@ -1,7 +1,9 @@
 package pl.indianbartonka.util.http.connection;
 
+import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -12,6 +14,7 @@ import javax.net.ssl.HttpsURLConnection;
 import org.jetbrains.annotations.Nullable;
 import pl.indianbartonka.util.BufferUtil;
 import pl.indianbartonka.util.MessageUtil;
+import pl.indianbartonka.util.annotation.Since;
 import pl.indianbartonka.util.http.HttpStatusCode;
 import pl.indianbartonka.util.http.connection.request.Request;
 import pl.indianbartonka.util.http.connection.request.RequestBody;
@@ -122,6 +125,11 @@ public class Connection implements AutoCloseable {
         return this.https;
     }
 
+    @Since("0.0.9.4")
+    public boolean isSuccessful() {
+        return this.httpStatusCode.isSuccess();
+    }
+
     public int getRawStatusCode() {
         return this.rawStatusCode;
     }
@@ -146,6 +154,22 @@ public class Connection implements AutoCloseable {
     @Nullable
     public String getResponseMessage() {
         return this.responseMessage;
+    }
+
+    @Nullable
+    @Since("0.0.9.4")
+    public String getBodyAsString() throws IOException {
+        final StringBuilder builder = new StringBuilder();
+
+        try (final InputStreamReader streamReader = new InputStreamReader(this.inputStream); final BufferedReader reader = new BufferedReader(streamReader)) {
+            String line;
+
+            while ((line = reader.readLine()) != null) {
+                builder.append(line);
+            }
+        }
+
+        return builder.toString();
     }
 
     @Override
