@@ -120,22 +120,22 @@ public final class AnsiColor {
         COLOR_MAP.put("&t", MATERIAL_LAPIS);
         COLOR_MAP.put("&u", MATERIAL_AMETHYST);
 
-        COLOR_MAP.put("^#0", BLACK_BACKGROUND);
-        COLOR_MAP.put("^#1", BLUE_BACKGROUND);
-        COLOR_MAP.put("^#2", GREEN_BACKGROUND);
-        COLOR_MAP.put("^#3", CYAN_BACKGROUND);
-        COLOR_MAP.put("^#4", RED_BACKGROUND);
-        COLOR_MAP.put("^#5", PURPLE_BACKGROUND);
-        COLOR_MAP.put("^#6", YELLOW_BACKGROUND);
-        COLOR_MAP.put("^#7", DARK_GRAY_BACKGROUND);
-        COLOR_MAP.put("^#8", BRIGHT_BLACK_BACKGROUND);
-        COLOR_MAP.put("^#9", BLUE_BACKGROUND);
-        COLOR_MAP.put("^#a", BRIGHT_GREEN_BACKGROUND);
-        COLOR_MAP.put("^#b", BRIGHT_CYAN_BACKGROUND);
-        COLOR_MAP.put("^#c", BRIGHT_RED_BACKGROUND);
-        COLOR_MAP.put("^#d", BRIGHT_PURPLE_BACKGROUND);
-        COLOR_MAP.put("^#e", YELLOW_BACKGROUND);
-        COLOR_MAP.put("^#f", WHITE_BACKGROUND);
+        COLOR_MAP.put("##0", BLACK_BACKGROUND);
+        COLOR_MAP.put("##1", BLUE_BACKGROUND);
+        COLOR_MAP.put("##2", GREEN_BACKGROUND);
+        COLOR_MAP.put("##3", CYAN_BACKGROUND);
+        COLOR_MAP.put("##4", RED_BACKGROUND);
+        COLOR_MAP.put("##5", PURPLE_BACKGROUND);
+        COLOR_MAP.put("##6", YELLOW_BACKGROUND);
+        COLOR_MAP.put("##7", DARK_GRAY_BACKGROUND);
+        COLOR_MAP.put("##8", BRIGHT_BLACK_BACKGROUND);
+        COLOR_MAP.put("##9", BLUE_BACKGROUND);
+        COLOR_MAP.put("##a", BRIGHT_GREEN_BACKGROUND);
+        COLOR_MAP.put("##b", BRIGHT_CYAN_BACKGROUND);
+        COLOR_MAP.put("##c", BRIGHT_RED_BACKGROUND);
+        COLOR_MAP.put("##d", BRIGHT_PURPLE_BACKGROUND);
+        COLOR_MAP.put("##e", YELLOW_BACKGROUND);
+        COLOR_MAP.put("##f", WHITE_BACKGROUND);
 
         COLORS.put(BLACK, Color.BLACK);
         COLORS.put(BLUE, Color.BLUE);
