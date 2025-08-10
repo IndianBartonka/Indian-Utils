@@ -10,6 +10,8 @@ import java.util.logging.FileHandler;
 import java.util.logging.Handler;
 import pl.indianbartonka.util.DateUtil;
 import pl.indianbartonka.util.FileUtil;
+import pl.indianbartonka.util.IndianUtils;
+import pl.indianbartonka.util.annotation.Since;
 import pl.indianbartonka.util.color.AnsiColor;
 import pl.indianbartonka.util.exception.LoggerException;
 import pl.indianbartonka.util.logger.config.FileLogFormatter;
@@ -32,10 +34,11 @@ public abstract class Logger {
         this.children = new ArrayList<>();
         this.logState = LogState.NONE;
         this.updatePrefix();
-        this.initializeLogFile();
 
         parent.children.add(this);
         this.debug = parent.configuration.isDebug();
+
+        this.initializeLogFile();
     }
 
     protected Logger(final LoggerConfiguration loggerConfiguration) {
@@ -43,8 +46,8 @@ public abstract class Logger {
         this.children = new ArrayList<>();
         this.logState = LogState.NONE;
         this.updatePrefix();
-        this.initializeLogFile();
         this.debug = loggerConfiguration.isDebug();
+        this.initializeLogFile();
     }
 
     public Logger prefixed(final String loggerPrefix) {
@@ -135,9 +138,29 @@ public abstract class Logger {
                 final FileHandler fileHandler = new FileHandler(file.getAbsolutePath(), true);
                 fileHandler.setFormatter(new FileLogFormatter());
                 rootLogger.addHandler(fileHandler);
+
+                this.deleteLockFiles();
             }
         } catch (final IOException exception) {
-            this.debug("&cNie udało przekazac się logowania do pliku:&b " + file.getName(), exception);
+            this.debug("&cNie udało przekazać się logowania do pliku:&b " + file.getName(), exception);
+        }
+    }
+
+    @Since("0.0.9.4")
+    private void deleteLockFiles() {
+        try {
+            final File[] files = new File(this.configuration.getLogsPath()).listFiles();
+
+            if (files == null) return;
+
+            for (final File file : files) {
+                if (!file.isFile() && !file.getName().contains(".lck") continue;
+                FileUtil.deleteFile(file);
+            }
+        } catch (final IOException ioException) {
+            if (IndianUtils.debug) {
+                this.debug("&cNie udało się usunać nie potrzebnych plików&e ##1LCK&r", ioException);
+            }
         }
     }
 
