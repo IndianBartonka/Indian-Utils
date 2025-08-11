@@ -8,6 +8,7 @@ import javax.crypto.spec.IvParameterSpec;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import pl.indianbartonka.util.encrypt.EncryptedFile;
 import pl.indianbartonka.util.encrypt.Encryptor;
 import pl.indianbartonka.util.encrypt.aes.AESEncryptor;
 import pl.indianbartonka.util.encrypt.aes.AESSettings;
@@ -25,21 +26,20 @@ public class AesEncryptorTest {
         System.out.println("Algorytm: " + this.encryptor.getAlgorithm());
         System.out.println("ExtensionFile: " + this.encryptor.getFileExtension());
         System.out.println("Provider: " + this.encryptor.getProvider());
-        System.out.println("EncryptedDir: " + this.encryptor.getEncryptedDir());
-        System.out.println("UserDir: " + this.encryptor.getUserDir());
         System.out.println();
     }
 
     @Test
     public void encrypt() throws IOException {
-        final File file = new File("./Test.txt");
+        final File file = new File("Test.txt");
 
         if (!file.exists()) {
             FileUtil.writeText(file, List.of("DuDuDuDuDu223$%^#%$!%^&#^%$@%^523617"));
         }
 
         try {
-            this.encryptor.encryptFile(file, this.secretKey);
+            EncryptedFile encryptedFile = this.encryptor.encryptFile(file, this.secretKey);
+            System.out.println(encryptedFile.encryptedFile().getAbsolutePath());
             System.out.println("Zszyfrowano");
         } catch (final EncryptException exception) {
             exception.printStackTrace();
@@ -48,10 +48,11 @@ public class AesEncryptorTest {
 
     @Test
     public void decrypt() {
-        final File encryptedFile = new File(this.encryptor.getEncryptedDir(), "Test.txt" + this.encryptor.getFileExtension());
+        final File encryptedFile = new File("Test.txt" + this.encryptor.getFileExtension());
 
         try {
             final File decryptedFile = this.encryptor.decryptFile(encryptedFile, this.secretKey);
+            System.out.println(decryptedFile.getAbsolutePath());
             System.out.println("Odszyfrowano");
 
             Assertions.assertNotNull(decryptedFile, "Odszyfrowany plik nie powinien być nullem");

@@ -108,16 +108,6 @@ public final class AESSettings {
             this.ivSize = ivSize;
         }
 
-        public static int getPlace(final AESMode aesMode) {
-            int counter = 0;
-            for (final AESMode mode : values()) {
-                if (mode == aesMode) return counter;
-                counter++;
-            }
-
-            return counter;
-        }
-
         public String getMode() {
             return this.mode;
         }
@@ -136,16 +126,6 @@ public final class AESSettings {
 
         AESPadding(final String padding) {
             this.padding = padding;
-        }
-
-        public static int getPlace(final AESPadding padding) {
-            int counter = 0;
-            for (final AESPadding padding1 : values()) {
-                if (padding1 == padding) return counter;
-                counter++;
-            }
-
-            return counter;
         }
 
         public String getPadding() {

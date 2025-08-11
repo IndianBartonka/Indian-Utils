@@ -4,8 +4,6 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
 import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
@@ -35,8 +33,6 @@ public final class AESEncryptor implements Encryptor {
     private AESSettings.AESPadding aesPadding;
     private IvParameterSpec ivParameterSpec;
     private String provider;
-    private String encryptedDir;
-    private String userDir;
     private Logger logger;
 
     public AESEncryptor(final AESSettings.AESMode aesMode, final AESSettings.AESPadding aesPadding, final IvParameterSpec ivParameterSpec) {
@@ -48,8 +44,6 @@ public final class AESEncryptor implements Encryptor {
         this.aesPadding = aesPadding;
         this.ivParameterSpec = ivParameterSpec;
         this.provider = provider;
-        this.encryptedDir = System.getProperty("user.dir") + File.separator + "encrypted_dir" + File.separator;
-        this.userDir = System.getProperty("user.dir") + File.separator;
         //TODO: Usun te diry w metodach daj pliki do których mają trafić dane 
         this.fileExtension = ".aes";
     }
@@ -57,9 +51,8 @@ public final class AESEncryptor implements Encryptor {
     @Override
     public EncryptedFile encryptFile(final @NotNull File inputFile, final @NotNull SecretKey key) throws EncryptException {
         try {
-            this.createMissingDirs();
             // Append .aes extension to the encrypted file
-            final File encryptedFile = new File(this.encryptedDir, inputFile.getName() + this.fileExtension);
+            final File encryptedFile = new File(inputFile.getParentFile(), inputFile.getName() + this.fileExtension);
             final Cipher cipher = AESSettings.createCipher(this.aesMode, this.aesPadding, key, this.ivParameterSpec, this.provider, true);
             if (this.logger != null) this.logger.debug("Encrypting file: " + inputFile.getPath());
             this.processFile(cipher, inputFile, encryptedFile);
@@ -74,9 +67,8 @@ public final class AESEncryptor implements Encryptor {
     @Override
     public File decryptFile(final @NotNull File inputFile, final @NotNull SecretKey key) throws DecryptException {
         try {
-            this.createMissingDirs();
             // Create decrypted file without .aes extension
-            final File decryptedFile = new File(this.userDir, inputFile.getName().replace(this.fileExtension, ""));
+            final File decryptedFile = new File(inputFile.getParentFile(), inputFile.getName().replace(this.fileExtension, ""));
             final Cipher cipher = AESSettings.createCipher(this.aesMode, this.aesPadding, key, this.ivParameterSpec, this.provider, false);
             if (this.logger != null) this.logger.debug("Decrypting file: " + inputFile.getPath());
             this.processFile(cipher, inputFile, decryptedFile);
@@ -180,34 +172,5 @@ public final class AESEncryptor implements Encryptor {
 
     public void setAesPadding(final AESSettings.AESPadding aesPadding) {
         this.aesPadding = aesPadding;
-    }
-
-    public void createMissingDirs() throws IOException {
-        Files.createDirectories(Path.of(this.userDir));
-        Files.createDirectories(Path.of(this.encryptedDir));
-    }
-
-    @Override
-    public String getEncryptedDir() {
-        return this.encryptedDir;
-    }
-
-    @Override
-    public void setEncryptedDir(final @NotNull String encryptedDir) throws IOException {
-        this.encryptedDir = encryptedDir;
-
-        Files.createDirectories(Path.of(encryptedDir));
-    }
-
-    @Override
-    public String getUserDir() {
-        return this.userDir;
-    }
-
-    @Override
-    public void setUserDir(final @NotNull String userDir) throws IOException {
-        this.userDir = userDir;
-
-        Files.createDirectories(Path.of(userDir));
     }
 }

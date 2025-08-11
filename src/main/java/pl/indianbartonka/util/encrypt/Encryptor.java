@@ -1,7 +1,6 @@
 package pl.indianbartonka.util.encrypt;
 
 import java.io.File;
-import java.io.IOException;
 import javax.crypto.SecretKey;
 import javax.crypto.spec.IvParameterSpec;
 import org.jetbrains.annotations.NotNull;
@@ -34,12 +33,4 @@ public interface Encryptor {
     String getProvider();
 
     void setProvider(@NotNull String provider);
-
-    String getEncryptedDir();
-
-    void setEncryptedDir(@NotNull String encryptedDir) throws IOException;
-
-    String getUserDir();
-
-    void setUserDir(@NotNull String userDir) throws IOException;
 }
