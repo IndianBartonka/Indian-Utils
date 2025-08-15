@@ -253,15 +253,15 @@ public final class LinuxUtil {
             System.out.println("Slot pamięci (Bank Label): " + ram.bankLabel());
             System.out.println();
         }
-        
+
     }
 
-    @Since("0.0.9.3")
+    @Since("0.0.9.5")
     public static List<Ram> getRamData() throws IOException {
         final List<String> lines = new ArrayList<>();
         final List<Ram> ram = new ArrayList<>();
 
-        final Process process = new ProcessBuilder("sudo dmidecode --type 17").start();
+        final Process process = new ProcessBuilder("sudo", "dmidecode", "--type", "17").start();
 
         try (final BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()))) {
             String line;
