@@ -167,7 +167,7 @@ public final class LinuxUtil {
         final List<String> lines = new ArrayList<>();
         final List<Ram> ram = new ArrayList<>();
 
-        final Process process = new ProcessBuilder("sudo", "dmidecode", "--type", "17").start();
+        final Process process = new ProcessBuilder("dmidecode", "--type", "17").start();
 
         try (final BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()))) {
             String line;
