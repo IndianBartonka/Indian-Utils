@@ -13,9 +13,11 @@ import java.util.LinkedList;
 import java.util.List;
 import org.jetbrains.annotations.VisibleForTesting;
 import pl.indianbartonka.util.IndianUtils;
+import pl.indianbartonka.util.MathUtil;
 import pl.indianbartonka.util.annotation.Since;
 import pl.indianbartonka.util.annotation.UtilityClass;
 import pl.indianbartonka.util.system.parts.Disk;
+import pl.indianbartonka.util.system.parts.Ram;
 
 @UtilityClass
 @Since("0.0.9.3")
@@ -159,4 +161,164 @@ public final class LinuxUtil {
 
         return -1;
     }
+
+    static String mess = """
+            
+            Handle 0x0008, DMI type 17, 84 bytes
+            Memory Device
+            	Array Handle: 0x0001
+            	Error Information Handle: 0x0007
+            	Total Width: 64 bits
+            	Data Width: 64 bits
+            	Size: 8 GB
+            	Form Factor: Row Of Chips
+            	Set: None
+            	Locator: DIMM 0
+            	Bank Locator: P0 CHANNEL A
+            	Type: DDR4
+            	Type Detail: Synchronous Unbuffered (Unregistered)
+            	Speed: 3200 MT/s
+            	Manufacturer: Samsung
+            	Serial Number: 00000000
+            	Asset Tag: Not Specified
+            	Part Number: M471A1G44BB0-CWE   \s
+            	Rank: 1
+            	Configured Memory Speed: 3200 MT/s
+            	Minimum Voltage: 1.2 V
+            	Maximum Voltage: 1.2 V
+            	Configured Voltage: 1.2 V
+            	Memory Technology: DRAM
+            	Memory Operating Mode Capability: Volatile memory
+            	Firmware Version: Unknown
+            	Module Manufacturer ID: Bank 1, Hex 0xCE
+            	Module Product ID: Unknown
+            	Memory Subsystem Controller Manufacturer ID: Unknown
+            	Memory Subsystem Controller Product ID: Unknown
+            	Non-Volatile Size: None
+            	Volatile Size: 8 GB
+            	Cache Size: None
+            	Logical Size: None
+            
+            Handle 0x000B, DMI type 17, 84 bytes
+            Memory Device
+            	Array Handle: 0x0001
+            	Error Information Handle: 0x000A
+            	Total Width: 64 bits
+            	Data Width: 64 bits
+            	Size: 8 GB
+            	Form Factor: Row Of Chips
+            	Set: None
+            	Locator: DIMM 0
+            	Bank Locator: P0 CHANNEL B
+            	Type: DDR4
+            	Type Detail: Synchronous Unbuffered (Unregistered)
+            	Speed: 3200 MT/s
+            	Manufacturer: Samsung
+            	Serial Number: 00000000
+            	Asset Tag: Not Specified
+            	Part Number: M471A1G44BB0-CWE   \s
+            	Rank: 1
+            	Configured Memory Speed: 3200 MT/s
+            	Minimum Voltage: 1.2 V
+            	Maximum Voltage: 1.2 V
+            	Configured Voltage: 1.2 V
+            	Memory Technology: DRAM
+            	Memory Operating Mode Capability: Volatile memory
+            	Firmware Version: Unknown
+            	Module Manufacturer ID: Bank 1, Hex 0xCE
+            	Module Product ID: Unknown
+            	Memory Subsystem Controller Manufacturer ID: Unknown
+            	Memory Subsystem Controller Product ID: Unknown
+            	Non-Volatile Size: None
+            	Volatile Size: 8 GB
+            	Cache Size: None
+            	Logical Size: None
+            
+            
+            """;
+
+
+    public static void main(String[] args) throws IOException {
+//        System.out.println(mess);
+
+        System.out.println();
+        System.out.println(getRamData());
+        System.out.println();
+        for (final Ram ram : getRamData()) {
+            System.out.println("Pojemność RAM: " + MathUtil.formatBytesDynamic(ram.size(), false));
+            System.out.println("Nominalna prędkość (Speed): " + ram.basicSpeed() + " MHz");
+            System.out.println("Aktualne taktowanie (ConfiguredClockSpeed): " + ram.configuredSpeed() + " MHz");
+            System.out.println("Typ pamięci: " + ram.memoryType());
+            System.out.println("Numer katalogowy (Part Number): " + ram.partNumber());
+            System.out.println("Slot pamięci (Bank Label): " + ram.bankLabel());
+            System.out.println();
+        }
+        
+    }
+
+    @Since("0.0.9.3")
+    public static List<Ram> getRamData() throws IOException {
+        final List<String> lines = new ArrayList<>();
+        final List<Ram> ram = new ArrayList<>();
+
+        final Process process = new ProcessBuilder("sudo dmidecode --type 17").start();
+
+        try (final BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()))) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                if (line.isEmpty()) {
+                    ram.add(ramParser(lines));
+                    lines.clear();
+                } else {
+                    lines.add(line);
+                }
+            }
+        }
+
+        return ram;
+    }
+
+    private static Ram ramParser(final List<String> lines) {
+        long size = -1;
+        long basicSpeed = -1;
+        long configuredSpeed = -1;
+        String memoryType = "";
+        String partNumber = "";
+        String bankLabel = "";
+
+        for (final String line : lines) {
+            if (line.trim().startsWith("Size:")) {
+                final String[] parts = line.split(":");
+                size = Long.parseLong(parts[1].trim().split(" ")[0].trim());
+            }
+
+            if (line.contains("Speed")) {
+                final String[] parts = line.split(":");
+                basicSpeed = Long.parseLong(parts[1].replaceAll("MT/s", "").trim());
+            }
+
+            if (line.contains("Configured Memory Speed")) {
+                final String[] parts = line.split(":");
+                configuredSpeed = Long.parseLong(parts[1].replaceAll("MT/s", "").trim());
+            }
+
+            if (line.contains("Type:")) {
+                final String[] parts = line.split(":");
+                memoryType = parts[1].trim();
+            }
+
+            if (line.contains("Part Number")) {
+                final String[] parts = line.split(":");
+                partNumber = parts[1].trim();
+            }
+
+            if (line.contains("Bank Locator")) {
+                final String[] parts = line.split(":");
+                bankLabel = parts[1].trim();
+            }
+        }
+
+        return new Ram(size, basicSpeed, configuredSpeed, memoryType, partNumber, bankLabel);
+    }
+
 }

@@ -187,7 +187,7 @@ public final class SystemUtil {
         try {
             return switch (getSystem()) {
                 case WINDOWS, MAC -> WindowsUtil.getRamData();
-                case LINUX, FREE_BSD -> List.of();
+                case LINUX, FREE_BSD -> LinuxUtil.getRamData();
                 case UNKNOWN ->
                         throw new UnsupportedSystemException("Pozyskiwanie dysków dla " + getFullyOSName() + " nie jest jeszcze zaimplementowane");
             };
