@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.PrintStream;
+import java.io.UncheckedIOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.FileHandler;
@@ -157,7 +158,7 @@ public abstract class Logger {
                 if (!file.isFile() && !file.getName().contains(".lck")) continue;
                 FileUtil.deleteFile(file);
             }
-        } catch (final IOException ioException) {
+        } catch (final IOException | UncheckedIOException ioException) {
             if (IndianUtils.debug) {
                 this.debug("&cNie udało się usunać nie potrzebnych plików&e ##1LCK&r", ioException);
             }
