@@ -163,30 +163,34 @@ public final class LinuxUtil {
     }
 
     @Since("0.0.9.5")
-    public static List<Ram> getRamData() throws IOException {
+    public static List<Ram> getRamData() {
         final List<String> lines = new ArrayList<>();
         final List<Ram> ramList = new ArrayList<>();
 
-        final Process process = new ProcessBuilder("dmidecode", "--type", "17").start();
+        try {
+            final Process process = new ProcessBuilder("dmidecode", "--type", "17").start();
 
-        try (final BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()))) {
-            String line;
+            try (final BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()))) {
+                String line;
 
-            while ((line = reader.readLine()) != null) {
-                line = line.trim();
+                while ((line = reader.readLine()) != null) {
+                    line = line.trim();
 
-                if (line.isEmpty()) {
-                    final Ram ramStick = ramParser(lines);
+                    if (line.isEmpty()) {
+                        final Ram ramStick = ramParser(lines);
 
-                    if (ramStick.basicSpeed() != -1) {
-                        ramList.add(ramStick);
+                        if (ramStick.basicSpeed() != -1) {
+                            ramList.add(ramStick);
+                        }
+
+                        lines.clear();
+                    } else {
+                        lines.add(line);
                     }
-
-                    lines.clear();
-                } else {
-                    lines.add(line);
                 }
             }
+        } catch (final IOException ignored) {
+
         }
 
         return ramList;
