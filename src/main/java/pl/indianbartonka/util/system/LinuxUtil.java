@@ -165,7 +165,7 @@ public final class LinuxUtil {
     @Since("0.0.9.5")
     public static List<Ram> getRamData() throws IOException {
         final List<String> lines = new ArrayList<>();
-        final List<Ram> ram = new ArrayList<>();
+        final List<Ram> ramList = new ArrayList<>();
 
         final Process process = new ProcessBuilder("dmidecode", "--type", "17").start();
 
@@ -173,12 +173,15 @@ public final class LinuxUtil {
             String line;
 
             while ((line = reader.readLine()) != null) {
-
                 line = line.trim();
 
-                System.out.println(line);
                 if (line.isEmpty()) {
-                    ram.add(ramParser(lines));
+                    final Ram ramStick = ramParser(lines);
+
+                    if (ramStick.basicSpeed() != -1) {
+                        ramList.add(ramStick);
+                    }
+
                     lines.clear();
                 } else {
                     lines.add(line);
@@ -186,7 +189,7 @@ public final class LinuxUtil {
             }
         }
 
-        return ram;
+        return ramList;
     }
 
     private static Ram ramParser(final List<String> lines) {
