@@ -15,6 +15,7 @@ import org.jetbrains.annotations.Nullable;
 import pl.indianbartonka.util.BufferUtil;
 import pl.indianbartonka.util.MessageUtil;
 import pl.indianbartonka.util.annotation.Since;
+import pl.indianbartonka.util.http.ContentType;
 import pl.indianbartonka.util.http.HttpStatusCode;
 import pl.indianbartonka.util.http.connection.request.Request;
 import pl.indianbartonka.util.http.connection.request.RequestBody;
@@ -25,6 +26,7 @@ public class Connection implements AutoCloseable {
     private final boolean https;
     private final int rawStatusCode;
     private final HttpStatusCode httpStatusCode;
+    private final ContentType contentType;
     private final long contentLength;
     private final Map<String, String> headers;
     private final InputStream inputStream;
@@ -59,9 +61,11 @@ public class Connection implements AutoCloseable {
         this.httpStatusCode = HttpStatusCode.getByCode(this.rawStatusCode);
 
         if (this.httpStatusCode.isSuccess()) {
+            this.contentType = ContentType.getContentType(this.getResponseContentTypeString());
             this.contentLength = this.urlConnection.getContentLength();
             this.inputStream = this.urlConnection.getInputStream();
         } else {
+            this.contentType = null;
             this.contentLength = -1;
             this.inputStream = this.urlConnection.getErrorStream();
         }
@@ -76,6 +80,11 @@ public class Connection implements AutoCloseable {
         if (requestMethod.equals("GET")) return;
 
         this.urlConnection.setDoOutput(true);
+
+        final ContentType requestContentType = request.getContentType();
+        if (requestContentType != null) {
+            this.urlConnection.setRequestProperty("Content-Type", requestContentType.getMimeType());
+        }
 
         // Obsługa metod PUT, DELETE, POST
         if (requestBody != null) {
@@ -170,6 +179,22 @@ public class Connection implements AutoCloseable {
         }
 
         return builder.toString();
+    }
+
+    @Since("0.0.9.5")
+    @Nullable
+    public String getResponseContentTypeString() {
+        final String type = this.headers.get("Content-Type");
+        if (type != null) {
+            return type.split(";")[0].trim();
+        }
+        return null;
+    }
+
+    @Since("0.0.9.5")
+    @Nullable
+    public ContentType getResponseContentType() {
+        return this.contentType;
     }
 
     @Override

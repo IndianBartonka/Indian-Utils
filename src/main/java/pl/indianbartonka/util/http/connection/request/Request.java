@@ -2,13 +2,14 @@ package pl.indianbartonka.util.http.connection.request;
 
 import java.util.HashMap;
 import java.util.Map;
+import pl.indianbartonka.util.http.ContentType;
 
 public class Request {
 
     private final Map<String, String> headers;
     private String url;
     private String userAgent;
-    private String contentType;
+    private ContentType contentType;
     private long contentLength;
     private String requestMethod;
     private String authorization;
@@ -82,13 +83,13 @@ public class Request {
         this.headers.put("User-Agent", userAgent);
     }
 
-    public String getContentType() {
+    public ContentType getContentType() {
         return this.contentType;
     }
 
-    public void setContentType(final String contentType) {
+    public void setContentType(final ContentType contentType) {
         this.contentType = contentType;
-        this.headers.put("Content-Type", contentType);
+        this.headers.put("Content-Type", contentType.getMimeType());
     }
 
     public long getContentLength() {

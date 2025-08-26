@@ -11,6 +11,7 @@ import org.jetbrains.annotations.Nullable;
 import pl.indianbartonka.util.GsonUtil;
 import pl.indianbartonka.util.ThreadUtil;
 import pl.indianbartonka.util.discord.embed.Embed;
+import pl.indianbartonka.util.http.ContentType;
 import pl.indianbartonka.util.http.HttpStatusCode;
 import pl.indianbartonka.util.http.connection.Connection;
 import pl.indianbartonka.util.http.connection.request.Request;
@@ -79,7 +80,7 @@ public class WebHookClient {
 
     private void resetRequestsOnMinute() {
         //Requesty nie muszą być zawsze wysyłane co sekunde
-        // Więc po 3min resetuje je bo gdy wysyłamy jeden co np 10s to limit nie powinien zostać przekroczony
+        // Więc po 3 min resetuje je, bo gdy wysyłamy jeden co np 10s to limit nie powinien zostać przekroczony
 
         this.service.scheduleAtFixedRate(() -> this.requests = 0, 0, 3, TimeUnit.MINUTES);
     }
@@ -104,7 +105,7 @@ public class WebHookClient {
 
                 final Request request = new RequestBuilder()
                         .setUrl(webhookURL)
-                        .setContentType("application/json")
+                        .setContentType(ContentType.APPLICATION_JSON)
                         .POST(new RequestBody(this.gson.toJson(jsonPayload).getBytes()))
                         .build();
 
@@ -138,7 +139,7 @@ public class WebHookClient {
 
                 final Request request = new RequestBuilder()
                         .setUrl(webhookURL)
-                        .setContentType("application/json")
+                        .setContentType(ContentType.APPLICATION_JSON)
                         .POST(new RequestBody(this.gson.toJson(jsonPayload).getBytes()))
                         .build();
 

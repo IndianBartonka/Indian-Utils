@@ -180,6 +180,9 @@ public final class Test {
         try (final Connection connection = new Connection(request)) {
             final HttpStatusCode statusCode = connection.getHttpStatusCode();
 
+            LOGGER.info(connection.getResponseContentType());
+            LOGGER.info(connection.getResponseContentTypeString());
+
             if (statusCode == HttpStatusCode.OK) {
                 try {
                     final long start = System.currentTimeMillis();
