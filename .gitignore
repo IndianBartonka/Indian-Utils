@@ -49,3 +49,7 @@ logs.zip
 Test.txt
 /encrypted_dir
 src/main/java/pl/indianbartonka/util/Main.java
+ChaChaTest.txt.cha
+ChaChaTest.txt
+AesTest.txt.aes
+AesTest.txt

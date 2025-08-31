@@ -10,16 +10,17 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import pl.indianbartonka.util.encrypt.EncryptedFile;
 import pl.indianbartonka.util.encrypt.Encryptor;
-import pl.indianbartonka.util.encrypt.aes.AESEncryptor;
 import pl.indianbartonka.util.encrypt.aes.AESSettings;
+import pl.indianbartonka.util.encrypt.cha.ChaChaSettings;
+import pl.indianbartonka.util.encrypt.cha.ChaChaEncryptor;
 import pl.indianbartonka.util.exception.encryption.DecryptException;
 import pl.indianbartonka.util.exception.encryption.EncryptException;
 
-public class AesEncryptorTest {
+public class ChaChaEncryptorTest {
 
-    private final SecretKey secretKey = AESSettings.decodeKey("Rat4eNbQmcLNrU17wDfansXq4QiWUvcH0nZw5c5HOHs=");
-    private final IvParameterSpec ivParameterSpec = new IvParameterSpec(AESSettings.decodeIv("Rat4eNbQmcLNrU17wDfansXq4QiWUvcH0nZw5c5HOHs="));
-    private final Encryptor encryptor = new AESEncryptor(AESSettings.AESMode.GCM, AESSettings.AESPadding.NO_PADDING, this.ivParameterSpec);
+    private final SecretKey secretKey = AESSettings.decodeKey("XfMjx8FOEc1LKb2q1aM9YoSpSwvYejA8W//FjAVkuDI=");
+    private final IvParameterSpec ivParameterSpec = new IvParameterSpec(AESSettings.decodeIv("VngZURGvzyQ3kUBX"));
+    private final Encryptor encryptor = new ChaChaEncryptor(ChaChaSettings.ChaChaMode.CHACHA20_POLY1305, this.ivParameterSpec);
 
     @BeforeEach
     void encryptorSettings() {
@@ -31,14 +32,14 @@ public class AesEncryptorTest {
 
     @Test
     public void encrypt() throws IOException {
-        final File file = new File("AesTest.txt");
+        final File file = new File("ChaChaTest.txt");
 
         if (!file.exists()) {
-            FileUtil.writeText(file, List.of("Jestem Sigma🎤🎤"));
+            FileUtil.writeText(file, List.of("Czekoladowy pociąg🚂🚂"));
         }
 
         try {
-            EncryptedFile encryptedFile = this.encryptor.encryptFile(file, this.secretKey);
+            final EncryptedFile encryptedFile = this.encryptor.encryptFile(file, this.secretKey);
             System.out.println(encryptedFile.encryptedFile().getAbsolutePath());
             System.out.println("Zszyfrowano");
         } catch (final EncryptException exception) {
@@ -48,7 +49,7 @@ public class AesEncryptorTest {
 
     @Test
     public void decrypt() {
-        final File encryptedFile = new File("AesTest.txt" + this.encryptor.getFileExtension());
+        final File encryptedFile = new File("ChaChaTest.txt" + this.encryptor.getFileExtension());
 
         try {
             final File decryptedFile = this.encryptor.decryptFile(encryptedFile, this.secretKey);

@@ -1,4 +1,4 @@
-package pl.indianbartonka.util.encrypt.aes;
+package pl.indianbartonka.util.encrypt.cha;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -20,31 +20,31 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import pl.indianbartonka.util.BufferUtil;
 import pl.indianbartonka.util.FileUtil;
+import pl.indianbartonka.util.annotation.Since;
 import pl.indianbartonka.util.encrypt.EncryptedFile;
 import pl.indianbartonka.util.encrypt.Encryptor;
 import pl.indianbartonka.util.exception.encryption.DecryptException;
 import pl.indianbartonka.util.exception.encryption.EncryptException;
 import pl.indianbartonka.util.logger.Logger;
 
-public final class AESEncryptor implements Encryptor {
+@Since("0.0.9.5")
+public final class ChaChaEncryptor implements Encryptor {
 
     private final String fileExtension;
-    private AESSettings.AESMode aesMode;
-    private AESSettings.AESPadding aesPadding;
+    private ChaChaSettings.ChaChaMode chaChaMode;
     private IvParameterSpec ivParameterSpec;
     private String provider;
     private Logger logger;
 
-    public AESEncryptor(final AESSettings.AESMode aesMode, final AESSettings.AESPadding aesPadding, final IvParameterSpec ivParameterSpec) {
-        this(aesMode, aesPadding, ivParameterSpec, null);
+    public ChaChaEncryptor(final ChaChaSettings.ChaChaMode chaChaMode, final IvParameterSpec ivParameterSpec) {
+        this(chaChaMode, ivParameterSpec, null);
     }
 
-    public AESEncryptor(final AESSettings.AESMode aesMode, final AESSettings.AESPadding aesPadding, final IvParameterSpec ivParameterSpec, final String provider) {
-        this.aesMode = aesMode;
-        this.aesPadding = aesPadding;
+    public ChaChaEncryptor(final ChaChaSettings.ChaChaMode chaChaMode, final IvParameterSpec ivParameterSpec, final String provider) {
+        this.chaChaMode = chaChaMode;
         this.ivParameterSpec = ivParameterSpec;
         this.provider = provider;
-        this.fileExtension = ".aes";
+        this.fileExtension = ".cha";
     }
 
     @Override
@@ -52,11 +52,11 @@ public final class AESEncryptor implements Encryptor {
         try {
             // Append .aes extension to the encrypted file
             final File encryptedFile = new File(inputFile.getParentFile(), inputFile.getName() + this.fileExtension);
-            final Cipher cipher = AESSettings.createCipher(this.aesMode, this.aesPadding, key, this.ivParameterSpec, this.provider, true);
+            final Cipher cipher = ChaChaSettings.createCipher(this.chaChaMode, key, this.ivParameterSpec, this.provider, true);
             if (this.logger != null) this.logger.debug("Encrypting file: " + inputFile.getPath());
             this.processFile(cipher, inputFile, encryptedFile);
             if (this.logger != null) this.logger.debug("Encrypted file created: " + encryptedFile.getPath());
-            return new EncryptedFile(System.currentTimeMillis(), inputFile.length(), encryptedFile, "AES");
+            return new EncryptedFile(System.currentTimeMillis(), inputFile.length(), encryptedFile, "ChaCha");
         } catch (final IOException | InvalidAlgorithmParameterException | NoSuchPaddingException |
                        NoSuchAlgorithmException | InvalidKeyException | NoSuchProviderException exception) {
             throw new EncryptException("An error occurred while encrypting the file " + inputFile.getName(), exception);
@@ -68,7 +68,7 @@ public final class AESEncryptor implements Encryptor {
         try {
             // Create decrypted file without .aes extension
             final File decryptedFile = new File(inputFile.getParentFile(), inputFile.getName().replace(this.fileExtension, ""));
-            final Cipher cipher = AESSettings.createCipher(this.aesMode, this.aesPadding, key, this.ivParameterSpec, this.provider, false);
+            final Cipher cipher = ChaChaSettings.createCipher(this.chaChaMode, key, this.ivParameterSpec, this.provider, false);
             if (this.logger != null) this.logger.debug("Decrypting file: " + inputFile.getPath());
             this.processFile(cipher, inputFile, decryptedFile);
             if (this.logger != null) this.logger.debug("Decrypted file created: " + decryptedFile.getPath());
@@ -96,7 +96,7 @@ public final class AESEncryptor implements Encryptor {
     @Override
     public String encryptText(final @NotNull String text, final @NotNull SecretKey key) throws EncryptException {
         try {
-            final Cipher cipher = AESSettings.createCipher(this.aesMode, this.aesPadding, key, this.ivParameterSpec, this.provider, true);
+            final Cipher cipher = ChaChaSettings.createCipher(this.chaChaMode, key, this.ivParameterSpec, this.provider, true);
             final byte[] encryptedBytes = cipher.doFinal(text.getBytes());
             return Base64.getEncoder().encodeToString(encryptedBytes);
 
@@ -110,7 +110,7 @@ public final class AESEncryptor implements Encryptor {
     @Override
     public String decryptText(final @NotNull String encryptedText, final @NotNull SecretKey key) throws DecryptException {
         try {
-            final Cipher cipher = AESSettings.createCipher(this.aesMode, this.aesPadding, key, this.ivParameterSpec, this.provider, false);
+            final Cipher cipher = ChaChaSettings.createCipher(this.chaChaMode, key, this.ivParameterSpec, this.provider, false);
             final byte[] decodedBytes = Base64.getDecoder().decode(encryptedText);
             final byte[] decryptedBytes = cipher.doFinal(decodedBytes);
             return new String(decryptedBytes);
@@ -128,20 +128,12 @@ public final class AESEncryptor implements Encryptor {
 
     @Override
     public String getAlgorithm() {
-        return "AES";
+        return "ChaCha";
     }
 
     @Override
     public String getFileExtension() {
         return this.fileExtension;
-    }
-
-    public AESSettings.AESMode getAesMode() {
-        return this.aesMode;
-    }
-
-    public void setAesMode(final AESSettings.AESMode aesMode) {
-        this.aesMode = aesMode;
     }
 
     @Override
@@ -165,11 +157,11 @@ public final class AESEncryptor implements Encryptor {
         this.provider = provider;
     }
 
-    public AESSettings.AESPadding getAesPadding() {
-        return this.aesPadding;
+    public ChaChaSettings.ChaChaMode getChaChaMode() {
+        return this.chaChaMode;
     }
 
-    public void setAesPadding(final AESSettings.AESPadding aesPadding) {
-        this.aesPadding = aesPadding;
+    public void setChaChaMode(final ChaChaSettings.ChaChaMode chaChaMode) {
+        this.chaChaMode = chaChaMode;
     }
 }

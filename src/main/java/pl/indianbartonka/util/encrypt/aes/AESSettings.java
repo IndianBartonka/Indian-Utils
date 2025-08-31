@@ -17,15 +17,14 @@ import javax.crypto.spec.SecretKeySpec;
 public final class AESSettings {
 
     public static SecretKey generateKey(final AESKeySize keySize) {
-        final KeyGenerator keyGen;
         try {
-            keyGen = KeyGenerator.getInstance("AES");
+            final KeyGenerator keyGen = KeyGenerator.getInstance("AES");
+            keyGen.init(keySize.getKeySize());
+            return keyGen.generateKey();
         } catch (final NoSuchAlgorithmException ignored) {
             //Algorytm AES jest istniejącym algorytmem
             return null;
         }
-        keyGen.init(keySize.getKeySize());
-        return keyGen.generateKey();
     }
 
     public static String encodeKey(final SecretKey key) {
