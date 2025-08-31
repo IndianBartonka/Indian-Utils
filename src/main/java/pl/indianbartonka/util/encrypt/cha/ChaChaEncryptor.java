@@ -50,7 +50,7 @@ public final class ChaChaEncryptor implements Encryptor {
     @Override
     public EncryptedFile encryptFile(final @NotNull File inputFile, final @NotNull SecretKey key) throws EncryptException {
         try {
-            // Append .aes extension to the encrypted file
+            // Append .cha extension to the encrypted file
             final File encryptedFile = new File(inputFile.getParentFile(), inputFile.getName() + this.fileExtension);
             final Cipher cipher = ChaChaSettings.createCipher(this.chaChaMode, key, this.ivParameterSpec, this.provider, true);
             if (this.logger != null) this.logger.debug("Encrypting file: " + inputFile.getPath());
@@ -66,7 +66,7 @@ public final class ChaChaEncryptor implements Encryptor {
     @Override
     public File decryptFile(final @NotNull File inputFile, final @NotNull SecretKey key) throws DecryptException {
         try {
-            // Create decrypted file without .aes extension
+            // Create decrypted file without .cha extension
             final File decryptedFile = new File(inputFile.getParentFile(), inputFile.getName().replace(this.fileExtension, ""));
             final Cipher cipher = ChaChaSettings.createCipher(this.chaChaMode, key, this.ivParameterSpec, this.provider, false);
             if (this.logger != null) this.logger.debug("Decrypting file: " + inputFile.getPath());
