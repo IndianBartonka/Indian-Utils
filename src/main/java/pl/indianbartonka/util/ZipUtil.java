@@ -111,7 +111,7 @@ public final class ZipUtil {
      */
     private static void addDirectoryToZip(final File folder, final String parentName, final ZipOutputStream zos) throws IOException {
         if (logger != null) logger.debug("Packing: " + folder.getPath());
-        
+
         final File[] files = folder.listFiles();
         if (files != null) {
             for (final File file : files) {

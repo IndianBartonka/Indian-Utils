@@ -10,11 +10,10 @@ import pl.indianbartonka.util.logger.config.LoggerConfiguration;
 
 public class ZipUtilTest {
 
-    private static Logger logger;
     private static final String LOGS_DIR = "logs";
     private static final String ZIP_FILE_NAME = "logs.zip";
     private static final String UNZIP_DIR = "tescik";
-
+    private static Logger logger;
 
     @BeforeEach
     void setUp() {

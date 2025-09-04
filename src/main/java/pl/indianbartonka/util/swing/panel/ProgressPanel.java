@@ -40,9 +40,9 @@ public class ProgressPanel extends JPanel {
     public JProgressBar getProgressBar() {
         return this.progressBar;
     }
-    
+
     public void removePanel() {
-       final Container parent = this.getParent();
+        final Container parent = this.getParent();
         parent.remove(this);
         parent.revalidate();
         parent.repaint();

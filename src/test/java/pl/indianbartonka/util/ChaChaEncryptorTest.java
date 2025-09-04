@@ -11,8 +11,8 @@ import org.junit.jupiter.api.Test;
 import pl.indianbartonka.util.encrypt.EncryptedFile;
 import pl.indianbartonka.util.encrypt.Encryptor;
 import pl.indianbartonka.util.encrypt.aes.AESSettings;
-import pl.indianbartonka.util.encrypt.cha.ChaChaSettings;
 import pl.indianbartonka.util.encrypt.cha.ChaChaEncryptor;
+import pl.indianbartonka.util.encrypt.cha.ChaChaSettings;
 import pl.indianbartonka.util.exception.encryption.DecryptException;
 import pl.indianbartonka.util.exception.encryption.EncryptException;
 

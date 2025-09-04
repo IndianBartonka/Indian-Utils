@@ -103,23 +103,6 @@ public enum ContentType {
         this.extensions = extensions;
     }
 
-    public String getMimeType() {
-        return this.mimeType;
-    }
-
-    public boolean isHumanReadable() {
-        return this.isHumanReadable;
-    }
-
-    public String[] getExtensions() {
-        return this.extensions;
-    }
-
-    @Override
-    public String toString() {
-        return this.mimeType;
-    }
-
     public static ContentType getContentType(final String mimeType) {
         return Arrays.stream(values())
                 .filter(ct -> ct.mimeType.equalsIgnoreCase(mimeType))
@@ -137,6 +120,23 @@ public enum ContentType {
     public static String getMimeTypeByExtension(final String extension) {
         final ContentType contentType = getContentTypeByExtension(extension);
         return (contentType != null ? contentType.getMimeType() : null);
+    }
+
+    public String getMimeType() {
+        return this.mimeType;
+    }
+
+    public boolean isHumanReadable() {
+        return this.isHumanReadable;
+    }
+
+    public String[] getExtensions() {
+        return this.extensions;
+    }
+
+    @Override
+    public String toString() {
+        return this.mimeType;
     }
 }
 

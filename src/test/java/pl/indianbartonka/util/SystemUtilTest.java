@@ -5,12 +5,12 @@ import java.io.IOException;
 import java.util.List;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import pl.indianbartonka.util.system.parts.Disk;
-import pl.indianbartonka.util.system.parts.Ram;
 import pl.indianbartonka.util.system.SystemArch;
 import pl.indianbartonka.util.system.SystemFamily;
 import pl.indianbartonka.util.system.SystemOS;
 import pl.indianbartonka.util.system.SystemUtil;
+import pl.indianbartonka.util.system.parts.Disk;
+import pl.indianbartonka.util.system.parts.Ram;
 
 
 public class SystemUtilTest {
