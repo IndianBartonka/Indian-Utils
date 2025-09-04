@@ -90,10 +90,30 @@ public final class WindowsUtil {
                 if (IndianUtils.debug) ioException.printStackTrace();
             }
 
-            disks.add(new Disk(name, diskFile, type, blockSize, readOnly));
+            disks.add(new Disk(name, getDiskModel(diskFile), diskFile, type, blockSize, readOnly));
         }
 
         return disks;
+    }
+
+    private static String getDiskModel(final File diskFile) {
+        String model = "UNKNOWN";
+        final String diskLetter = diskFile.getPath().substring(0, 1);
+
+        try {
+            final Process process = Runtime.getRuntime().exec("powershell.exe -Command \"(Get-Partition -DriveLetter " + diskLetter + " | Get-Disk).Model\"");
+            try (final BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()))) {
+                String line;
+                while ((line = reader.readLine()) != null) {
+                    model = line;
+                }
+            }
+
+            process.waitFor();
+        } catch (final IOException | InterruptedException ignored) {
+        }
+
+        return model;
     }
 
     public static long getMemoryUsage(final long pid) throws IOException {

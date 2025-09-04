@@ -119,6 +119,7 @@ public class SystemUtilTest {
             final File diskFile = disk.diskFile();
             System.out.println();
             System.out.println(disk.name() + " | " + diskFile.getAbsolutePath());
+            System.out.println("Model dysku: " + disk.model());
             System.out.println("Typ dysku: " + disk.type());
             System.out.println("Rozmiar bloku: " + disk.blockSize());
             System.out.println("Tylko do odczytu: " + disk.readOnly());
