@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import pl.indianbartonka.util.IndianUtils;
 import pl.indianbartonka.util.annotation.Since;
 import pl.indianbartonka.util.system.SystemUtil;
 
@@ -11,16 +12,18 @@ public class Disk {
 
     private final String name;
     private final File diskFile;
-    private final String type;
+    private final String fileSystem;
     private final long blockSize;
     private final boolean readOnly;
     @Since("0.0.9.5")
     private String model;
+    @Since("0.0.9.5")
+    private String type;
 
-    public Disk(final String name, final File diskFile, final String type, final long blockSize, final boolean readOnly) {
+    public Disk(final String name, final File diskFile, final String fileSystem, final long blockSize, final boolean readOnly) {
         this.name = name;
         this.diskFile = diskFile;
-        this.type = type;
+        this.fileSystem = fileSystem;
         this.blockSize = blockSize;
         this.readOnly = readOnly;
     }
@@ -41,12 +44,24 @@ public class Disk {
         return this.model;
     }
 
+    public String getType() {
+        if (this.type != null) return this.type;
+
+        this.type = switch (SystemUtil.getSystem()) {
+            case WINDOWS -> getWindowsDiskType(this.diskFile);
+            case LINUX, FREE_BSD, MAC -> getLinuxDiskType(this.diskFile);
+            default -> "Unknown";
+        };
+
+        return this.type;
+    }
+
     public File getDiskFile() {
         return this.diskFile;
     }
 
-    public String getType() {
-        return this.type;
+    public String getFileSystem() {
+        return this.fileSystem;
     }
 
     public long getBlockSize() {
@@ -99,10 +114,79 @@ public class Disk {
             }
 
             process.waitFor();
-        } catch (final IOException | InterruptedException ignored) {
+        } catch (final IOException | InterruptedException exception) {
+            if (IndianUtils.debug) {
+                exception.printStackTrace();
+            }
         }
 
         return model;
+    }
+
+    private static String getWindowsDiskType(final File diskFile) {
+        String type = "UNKNOWN";
+        final String diskLetter = diskFile.getPath().substring(0, 1);
+
+        try {
+            final String command = """
+                    $disk = Get-Partition -DriveLetter <LETTER> | Get-Disk
+                    Get-PhysicalDisk | Where-Object { $_.DeviceId -eq $disk.Number } | Select-Object -ExpandProperty MediaType
+                    """.replace("<LETTER>", diskLetter);
+
+            final Process process = new ProcessBuilder("powershell.exe", "-Command", command).start();
+
+            try (final BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()))) {
+                final String line = reader.readLine();
+
+                if (line != null && !line.isEmpty()) type = line;
+            }
+
+            process.waitFor();
+        } catch (final IOException | InterruptedException exception) {
+            if (IndianUtils.debug) {
+                exception.printStackTrace();
+            }
+        }
+
+        return type;
+    }
+
+    //Writen witch ChatGPT
+    private static String getLinuxDiskType(final File diskFile) {
+        String type = "UNKNOWN";
+
+        try {
+            final Process psychicalDisk = Runtime.getRuntime().exec(new String[]{"/bin/bash", "-c", "basename $(df " + diskFile.getAbsolutePath() + " | tail -1 | awk '{print $1}' | sed -E 's/p?[0-9]+$//')"}
+            );
+
+            final String disk;
+            try (final BufferedReader reader = new BufferedReader(new InputStreamReader(psychicalDisk.getInputStream()))) {
+                disk = reader.readLine();
+            }
+
+            psychicalDisk.waitFor();
+
+            if (disk != null && !disk.isEmpty()) {
+                final Process diskType = Runtime.getRuntime().exec(new String[]{"/bin/bash", "-c", "cat /sys/block/" + disk.trim() + "/queue/rotational"});
+
+                final String rotational;
+
+                try (final BufferedReader r2 = new BufferedReader(new InputStreamReader(diskType.getInputStream()))) {
+                    rotational = r2.readLine();
+                }
+
+                diskType.waitFor();
+
+                if (rotational != null) {
+                    type = "0".equals(rotational.trim()) ? "SSD" : "HDD";
+                }
+            }
+        } catch (final IOException | InterruptedException exception) {
+            if (IndianUtils.debug) {
+                exception.printStackTrace();
+            }
+        }
+        return type;
     }
 
     @Override
@@ -111,7 +195,7 @@ public class Disk {
                 "name='" + this.name + '\'' +
                 ", model='" + this.getModel() + '\'' +
                 ", diskFile=" + this.diskFile +
-                ", type='" + this.type + '\'' +
+                ", fileSystem='" + this.fileSystem + '\'' +
                 ", blockSize=" + this.blockSize +
                 ", readOnly=" + this.readOnly +
                 '}';

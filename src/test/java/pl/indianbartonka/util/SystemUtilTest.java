@@ -116,11 +116,14 @@ public class SystemUtilTest {
         System.out.println(disks);
         System.out.println("Dostępne dyski: " + disks.size());
 
+        IndianUtils.setDebug(true);
+
         for (final Disk disk : disks) {
             final File diskFile = disk.getDiskFile();
             System.out.println();
             System.out.println(disk.getName() + " | " + diskFile.getAbsolutePath());
             System.out.println("Model dysku: " + disk.getModel());
+            System.out.println("System Plików: " + disk.getFileSystem());
             System.out.println("Typ dysku: " + disk.getType());
             System.out.println("Rozmiar bloku: " + disk.getBlockSize());
             System.out.println("Tylko do odczytu: " + disk.isReadOnly());
