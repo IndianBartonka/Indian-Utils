@@ -30,7 +30,7 @@ public final class IndianUtils {
 
                 final List<String> flags = ManagementFactory.getRuntimeMXBean().getInputArguments();
 
-                if (flags.contains("-UtilsDebug")) {
+                if (flags.contains("-Xdebug")) {
                     debug = true;
                 }
 
