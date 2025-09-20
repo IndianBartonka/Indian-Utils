@@ -4,6 +4,8 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.lang.management.ManagementFactory;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 import org.jetbrains.annotations.VisibleForTesting;
 import pl.indianbartonka.util.annotation.UtilityClass;
@@ -24,6 +26,14 @@ public final class IndianUtils {
                 while ((line = reader.readLine()) != null) {
                     version = line;
                 }
+
+
+                final List<String> flags = ManagementFactory.getRuntimeMXBean().getInputArguments();
+
+                if (flags.contains("-UtilsDebug")) {
+                    debug = true;
+                }
+
             } catch (final IOException ignored) {
 
             }
