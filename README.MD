@@ -1,3 +1,5 @@
+//TODO: Zrób listę zależności użytych w poleceniach linux i windows
+
 <div align="center">
 
 # Indian Utils
