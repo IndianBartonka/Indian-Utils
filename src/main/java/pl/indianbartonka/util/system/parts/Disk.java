@@ -72,6 +72,7 @@ public class Disk {
         return this.readOnly;
     }
 
+//TODO: Move some methods to WindowsUtil and Linux Util
     private static String getWindowsDiskModel(final File diskFile) {
         String model = "UNKNOWN";
         final String diskLetter = diskFile.getPath().substring(0, 1);
