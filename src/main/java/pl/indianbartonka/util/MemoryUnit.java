@@ -16,9 +16,11 @@ public enum MemoryUnit {
     KILOBYTES(1000),
     MEGABYTES(1000 * 1000),
     GIGABYTES(1000 * 1000 * 1000),
+    TERABYTES(1000L * 1000 * 1000 * 1000),
     KIBIBYTES(1024),
     MEBIBYTES(1024 * 1024),
-    GIBIBYTES(1024 * 1024 * 1024);
+    GIBIBYTES(1024 * 1024 * 1024),
+    TEBIBYTES(1024L * 1024 * 1024 * 1024);
 
     private final double bytes;
 

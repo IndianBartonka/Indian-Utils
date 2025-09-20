@@ -122,6 +122,16 @@ public final class MathUtil {
     }
 
     /**
+     * Extracts the remaining terabytes from a total number of bytes.
+     *
+     * @param bytes The number of bytes.
+     * @return The remaining terabytes.
+     */
+    public static long getRemainingTerabytesFromTotalBytes(final long bytes) {
+        return (bytes % (1024L * 1024 * 1024 * 1024 * 1024)) / (1024L * 1024 * 1024 * 1024);
+    }
+
+    /**
      * Extracts the remaining megabytes from a total number of bytes.
      *
      * @param bytes The number of bytes.
@@ -153,14 +163,26 @@ public final class MathUtil {
     }
 
     /**
-     * Extracts the remaining gigabytes from a total number of kilobytes.
+     * Extracts the remaining gigabytes from a total number of kilobytes,
+     * after counting full terabytes.
      *
      * @param kilobytes The number of kilobytes.
      * @return The remaining gigabytes.
      */
     public static long getRemainingGigabytesFromTotalKilobytes(final long kilobytes) {
-        return kilobytes / (1024 * 1024);  // Convert kilobytes to full gigabytes
+        return (kilobytes % (1024L * 1024 * 1024)) / (1024 * 1024);
     }
+
+    /**
+     * Extracts the remaining terabytes from a total number of kilobytes.
+     *
+     * @param kilobytes The number of kilobytes.
+     * @return The remaining terabytes.
+     */
+    public static long getRemainingTerabytesFromTotalKilobytes(final long kilobytes) {
+        return (kilobytes % (1024L * 1024 * 1024 * 1024)) / (1024L * 1024 * 1024);
+    }
+
 
     /**
      * Extracts the remaining megabytes from a total number of kilobytes.
@@ -208,18 +230,21 @@ public final class MathUtil {
 
         final List<Character> unitsPattern = new ArrayList<>();
 
+        final long tb = getRemainingTerabytesFromTotalKilobytes(kilobytes);
         final long gb = getRemainingGigabytesFromTotalKilobytes(kilobytes);
         final long mb = getRemainingMegabytesFromTotalKilobytes(kilobytes);
         final long kb = getRemainingKilobytesFromTotalKilobytes(kilobytes);
 
         if (kilobytes == 0) unitsPattern.add('k');
 
+        if (tb > 0) unitsPattern.add('t');
         if (gb > 0) unitsPattern.add('g');
         if (mb > 0) unitsPattern.add('m');
         if (kb > 0) unitsPattern.add('k');
 
         return formatKilobytes(kilobytes, unitsPattern, shortNames);
     }
+
 
     /**
      * Formats kilobytes dynamically based on their magnitude, using either short or long names.
@@ -244,6 +269,7 @@ public final class MathUtil {
 
         final List<Character> unitsPattern = new ArrayList<>();
 
+        final long tb = getRemainingTerabytesFromTotalBytes(bytes);
         final long gb = getRemainingGigabytesFromTotalBytes(bytes);
         final long mb = getRemainingMegabytesFromTotalBytes(bytes);
         final long kb = getRemainingKilobytesFromTotalBytes(bytes);
@@ -251,6 +277,7 @@ public final class MathUtil {
 
         if (bytes == 0) unitsPattern.add('b');
 
+        if (tb > 0) unitsPattern.add('t');
         if (gb > 0) unitsPattern.add('g');
         if (mb > 0) unitsPattern.add('m');
         if (kb > 0) unitsPattern.add('k');
@@ -326,20 +353,23 @@ public final class MathUtil {
     private static Map<Character, String> getUnitBytesMap(final long bytes, final boolean shortNames) {
         final Map<Character, String> unitMap = new HashMap<>();
 
+        final long b = getRemainingBytesFromTotalBytes(bytes);
         final long kb = getRemainingKilobytesFromTotalBytes(bytes);
         final long mb = getRemainingMegabytesFromTotalBytes(bytes);
         final long gb = getRemainingGigabytesFromTotalBytes(bytes);
-        final long b = getRemainingBytesFromTotalBytes(bytes);
+        final long tb = getRemainingTerabytesFromTotalBytes(bytes);
 
         if (shortNames) {
             unitMap.put('k', kb + " KB");
             unitMap.put('m', mb + " MB");
             unitMap.put('g', gb + " GB");
+            unitMap.put('t', tb + " TB");
             unitMap.put('b', b + " B");
         } else {
             unitMap.put('k', kb + " kilobajtów");
             unitMap.put('m', mb + " megabajtów");
             unitMap.put('g', gb + " gigabajtów");
+            unitMap.put('t', tb + " terabajtów");
             unitMap.put('b', b + " bajtów");
 
             if (bytes == 0) {
@@ -368,18 +398,21 @@ public final class MathUtil {
     private static Map<Character, String> getUnitKilobytesMap(final long kilobytes, final boolean shortNames) {
         final Map<Character, String> unitMap = new HashMap<>();
 
-        final long kb = getRemainingKilobytesFromTotalKilobytes(kilobytes);
-        final long mb = getRemainingMegabytesFromTotalKilobytes(kilobytes);
+        final long tb = getRemainingTerabytesFromTotalKilobytes(kilobytes);
         final long gb = getRemainingGigabytesFromTotalKilobytes(kilobytes);
+        final long mb = getRemainingMegabytesFromTotalKilobytes(kilobytes);
+        final long kb = getRemainingKilobytesFromTotalKilobytes(kilobytes);
 
         if (shortNames) {
-            unitMap.put('k', kb + " KB");
-            unitMap.put('m', mb + " MB");
+            unitMap.put('t', tb + " TB");
             unitMap.put('g', gb + " GB");
+            unitMap.put('m', mb + " MB");
+            unitMap.put('k', kb + " KB");
         } else {
-            unitMap.put('k', kb + " kilobajtów");
-            unitMap.put('m', mb + " megabajtów");
+            unitMap.put('t', tb + " terabajtów");
             unitMap.put('g', gb + " gigabajtów");
+            unitMap.put('m', mb + " megabajtów");
+            unitMap.put('k', kb + " kilobajtów");
         }
 
         if (kilobytes == 0) {
@@ -392,4 +425,5 @@ public final class MathUtil {
 
         return unitMap;
     }
+
 }

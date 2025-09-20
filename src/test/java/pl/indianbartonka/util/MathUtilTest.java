@@ -29,6 +29,7 @@ public class MathUtilTest {
     public void testFormatKilobytesDynamic() {
         assertEquals("1 MB", MathUtil.formatKilobytesDynamic(1024, true));
         assertEquals("1 kilobajtów", MathUtil.formatBytesDynamic(1024, false));
+        assertEquals("2 terabajtów 381 gigabajtów 969 megabajtów 288 kilobajtów", MathUtil.formatKilobytesDynamic(2_547_983_648L, false));
     }
 
     @Test
