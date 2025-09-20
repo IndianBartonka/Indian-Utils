@@ -113,16 +113,17 @@ public class SystemUtilTest {
 
         final List<Disk> disks = SystemUtil.getAvailableDisk();
 
+        System.out.println(disks);
         System.out.println("Dostępne dyski: " + disks.size());
 
         for (final Disk disk : disks) {
-            final File diskFile = disk.diskFile();
+            final File diskFile = disk.getDiskFile();
             System.out.println();
-            System.out.println(disk.name() + " | " + diskFile.getAbsolutePath());
-            System.out.println("Model dysku: " + disk.model());
-            System.out.println("Typ dysku: " + disk.type());
-            System.out.println("Rozmiar bloku: " + disk.blockSize());
-            System.out.println("Tylko do odczytu: " + disk.readOnly());
+            System.out.println(disk.getName() + " | " + diskFile.getAbsolutePath());
+            System.out.println("Model dysku: " + disk.getModel());
+            System.out.println("Typ dysku: " + disk.getType());
+            System.out.println("Rozmiar bloku: " + disk.getBlockSize());
+            System.out.println("Tylko do odczytu: " + disk.isReadOnly());
 
             System.out.println();
             System.out.println("Testowanie szybkości zapisu pliku 100mb 3razy");
@@ -147,6 +148,45 @@ public class SystemUtilTest {
 //                }
 //            }
         }
+    }
+
+    @Test
+    public void testAllDisksSpace() {
+        System.out.println();
+
+        final List<Disk> disks = SystemUtil.getAvailableDisk();
+
+        System.out.println("Dostępne dyski: " + disks.size());
+
+        long free = 0;
+        long max = 0;
+        long used = 0;
+
+        for (final Disk disk : disks) {
+           final File diskFile = disk.getDiskFile();
+
+            System.out.println(disk.getName() + " | " + diskFile.getAbsolutePath());
+            System.out.println("Model dysku: " + disk.getModel());
+            System.out.println("Całkowita pamięć: " + MathUtil.formatBytesDynamic(SystemUtil.getMaxDiskSpace(diskFile), false));
+            System.out.println("Użyta pamięć: " + MathUtil.formatBytesDynamic(SystemUtil.getUsedDiskSpace(diskFile), false));
+            System.out.println("Wolna pamięć: " + MathUtil.formatBytesDynamic(SystemUtil.getFreeDiskSpace(diskFile), false));
+
+            max += SystemUtil.getMaxDiskSpace(diskFile);
+            free += SystemUtil.getFreeDiskSpace(diskFile);
+            used += SystemUtil.getUsedDiskSpace(diskFile);
+
+            System.out.println();
+            System.out.println();
+            System.out.println();
+        }
+
+        System.out.println();
+        System.out.println();
+        System.out.println();
+
+        System.out.println("Całkowita pamięć: " + MathUtil.formatBytesDynamic(max, false));
+        System.out.println("Użyta pamięć: " + MathUtil.formatBytesDynamic(used, false));
+        System.out.println("Wolna pamięć: " + MathUtil.formatBytesDynamic(free, false));
     }
 
     @Test

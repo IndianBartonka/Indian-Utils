@@ -135,41 +135,13 @@ public final class LinuxUtil {
                         if (IndianUtils.debug) ioException.printStackTrace();
                     }
 
-                    disks.add(new Disk(name, getDiskModel(diskFile), diskFile, type, blockSize, readOnly));
+                    disks.add(new Disk(name, diskFile, type, blockSize, readOnly));
                 }
             }
         } catch (final IOException exception) {
             throw new UncheckedIOException(exception);
         }
         return disks;
-    }
-
-    private static String getDiskModel(final File diskFile) {
-        String model = "UNKNOWN";
-
-        try {
-            final String[] cmd = {"/bin/bash", "-c",
-                    "lsblk -no MODEL $(df " + diskFile.getAbsolutePath() + " | tail -1 | awk '{print $1}' | sed -E 's/p?[0-9]+$//')"
-            };
-
-            final Process process = Runtime.getRuntime().exec(cmd);
-
-            try (final BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()))) {
-                String line;
-                while ((line = reader.readLine()) != null) {
-                    line = line.trim();
-                    if (!line.isEmpty()) {
-                        model = line;
-                        break;
-                    }
-                }
-            }
-
-            process.waitFor();
-        } catch (final IOException | InterruptedException ignored) {
-        }
-
-        return model;
     }
 
     public static long getMemoryUsage(final long pid) throws IOException {

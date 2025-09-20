@@ -200,9 +200,9 @@ public final class SystemUtil {
     @Since("0.0.9.3")
     @CheckReturnValue
     public static long testDisk(final Disk disk, final int mbSize, final int totalWrites) throws IOException {
-        if (disk.readOnly()) return -1;
+        if (disk.isReadOnly()) return -1;
 
-        final File fileDir = new File(disk.diskFile(), String.valueOf(UUID.randomUUID()));
+        final File fileDir = new File(disk.getDiskFile(), String.valueOf(UUID.randomUUID()));
         final File file = new File(fileDir, "testFile.dat");
 
         fileDir.deleteOnExit();
