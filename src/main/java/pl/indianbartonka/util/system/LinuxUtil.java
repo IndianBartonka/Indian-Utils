@@ -144,6 +144,75 @@ public final class LinuxUtil {
         return disks;
     }
 
+    public static String getDiskModel(final File diskFile) {
+        String model = "UNKNOWN";
+
+        try {
+            final String[] cmd = {"/bin/bash", "-c",
+                    "lsblk -no MODEL $(df " + diskFile.getAbsolutePath() + " | tail -1 | awk '{print $1}' | sed -E 's/p?[0-9]+$//')"
+            };
+
+            final Process process = Runtime.getRuntime().exec(cmd);
+
+            try (final BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()))) {
+                String line;
+                while ((line = reader.readLine()) != null) {
+                    line = line.trim();
+                    if (!line.isEmpty()) {
+                        model = line;
+                        break;
+                    }
+                }
+            }
+
+            process.waitFor();
+        } catch (final IOException | InterruptedException exception) {
+            if (IndianUtils.debug) {
+                exception.printStackTrace();
+            }
+        }
+
+        return model;
+    }
+
+    //Writen witch ChatGPT
+    public static String getDiskType(final File diskFile) {
+        String type = "UNKNOWN";
+
+        try {
+            final Process psychicalDisk = Runtime.getRuntime().exec(new String[]{"/bin/bash", "-c", "basename $(df " + diskFile.getAbsolutePath() + " | tail -1 | awk '{print $1}' | sed -E 's/p?[0-9]+$//')"}
+            );
+
+            final String disk;
+            try (final BufferedReader reader = new BufferedReader(new InputStreamReader(psychicalDisk.getInputStream()))) {
+                disk = reader.readLine();
+            }
+
+            psychicalDisk.waitFor();
+
+            if (disk != null && !disk.isEmpty()) {
+                final Process diskType = Runtime.getRuntime().exec(new String[]{"/bin/bash", "-c", "cat /sys/block/" + disk.trim() + "/queue/rotational"});
+
+                final String rotational;
+
+                try (final BufferedReader r2 = new BufferedReader(new InputStreamReader(diskType.getInputStream()))) {
+                    rotational = r2.readLine();
+                }
+
+                diskType.waitFor();
+
+                if (rotational != null) {
+                    type = "0".equals(rotational.trim()) ? "SSD" : "HDD";
+                }
+            }
+        } catch (final IOException | InterruptedException exception) {
+            if (IndianUtils.debug) {
+                exception.printStackTrace();
+            }
+        }
+        return type;
+    }
+
     public static long getMemoryUsage(final long pid) throws IOException {
         final Process process = Runtime.getRuntime().exec("ps -p " + pid + " -o rss=");
 

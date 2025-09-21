@@ -96,6 +96,54 @@ public final class WindowsUtil {
         return disks;
     }
 
+    public static String getDiskModel(final File diskFile) {
+        String model = "UNKNOWN";
+        final String diskLetter = diskFile.getPath().substring(0, 1);
+
+        try {
+            final Process process = Runtime.getRuntime().exec("powershell.exe -Command \"(Get-Partition -DriveLetter " + diskLetter + " | Get-Disk).Model\"");
+            try (final BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()))) {
+                String line;
+                while ((line = reader.readLine()) != null) {
+                    model = line;
+                }
+            }
+
+            process.waitFor();
+        } catch (final IOException | InterruptedException ignored) {
+        }
+
+        return model;
+    }
+
+    public static String getDiskType(final File diskFile) {
+        String type = "UNKNOWN";
+        final String diskLetter = diskFile.getPath().substring(0, 1);
+
+        try {
+            final String command = """
+                    $disk = Get-Partition -DriveLetter <LETTER> | Get-Disk
+                    Get-PhysicalDisk | Where-Object { $_.DeviceId -eq $disk.Number } | Select-Object -ExpandProperty MediaType
+                    """.replace("<LETTER>", diskLetter);
+
+            final Process process = new ProcessBuilder("powershell.exe", "-Command", command).start();
+
+            try (final BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()))) {
+                final String line = reader.readLine();
+
+                if (line != null && !line.isEmpty()) type = line;
+            }
+
+            process.waitFor();
+        } catch (final IOException | InterruptedException exception) {
+            if (IndianUtils.debug) {
+                exception.printStackTrace();
+            }
+        }
+
+        return type;
+    }
+
     public static long getMemoryUsage(final long pid) throws IOException {
         final Process process = Runtime.getRuntime().exec("tasklist /NH /FI \"PID eq " + pid + "\"");
         try (final BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()))) {
