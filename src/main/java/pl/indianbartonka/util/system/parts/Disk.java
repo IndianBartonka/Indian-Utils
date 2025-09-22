@@ -70,8 +70,6 @@ public class Disk {
         return this.readOnly;
     }
 
-//TODO: Move some methods to WindowsUtil and Linux Util
-
     @Override
     public String toString() {
         return "Disk{" +
