@@ -3,16 +3,21 @@ package pl.indianbartonka.util.system;
 import com.sun.management.OperatingSystemMXBean;
 import java.io.File;
 import java.io.IOException;
-import java.io.RandomAccessFile;
 import java.lang.management.ManagementFactory;
+import java.nio.ByteBuffer;
+import java.nio.channels.FileChannel;
 import java.nio.file.AccessDeniedException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.nio.file.StandardOpenOption;
 import java.util.List;
 import java.util.Locale;
+import java.util.concurrent.TimeUnit;
 import org.jetbrains.annotations.CheckReturnValue;
 import org.jetbrains.annotations.VisibleForTesting;
+import pl.indianbartonka.util.DateUtil;
 import pl.indianbartonka.util.FileUtil;
+import pl.indianbartonka.util.MathUtil;
 import pl.indianbartonka.util.MemoryUnit;
 import pl.indianbartonka.util.MessageUtil;
 import pl.indianbartonka.util.annotation.Since;
@@ -195,11 +200,10 @@ public final class SystemUtil {
         }
     }
 
-    //TODO: Zrób testowanie dysku w MB/s zapisania
     @VisibleForTesting
     @Since("0.0.9.3")
     @CheckReturnValue
-    public static long testDisk(final Disk disk, final int mbSize, final int totalWrites) throws IOException {
+    public static double testDisk(final Disk disk, final int mbSize, final int totalWrites) throws IOException {
         if (disk.isReadOnly()) return -1;
 
         final File fileDir = new File(disk.getDiskFile(), "IndianUtilsDiskTest");
@@ -209,24 +213,37 @@ public final class SystemUtil {
         file.deleteOnExit();
 
         try {
+
+            final long freeSize = getFreeDiskSpace(disk.getDiskFile());
+            final double totalMB = (double) mbSize * totalWrites;
+
+            if (totalMB > MemoryUnit.MEBIBYTES.from(freeSize, MemoryUnit.BYTES)) {
+                throw new IOException("Nie ma tyle miejsca na dysku");
+            }
+
             Files.createDirectories(fileDir.toPath());
 
             if (!file.createNewFile()) {
                 throw new IOException("Nie można utworzyć pliku testowego z nieznanych przyczyn");
             }
 
-            final long startTime = System.currentTimeMillis();
+            final long startTime = System.nanoTime();
 
-            try (final RandomAccessFile randomAccessFile = new RandomAccessFile(file, "rw")) {
-                final byte[] buffer = new byte[Math.toIntExact(MemoryUnit.MEGABYTES.to(mbSize, MemoryUnit.BYTES))];
+            try (final FileChannel channel = FileChannel.open(file.toPath(), StandardOpenOption.WRITE)) {
+                final byte[] buffer = new byte[Math.toIntExact(
+                        MemoryUnit.MEGABYTES.to(mbSize, MemoryUnit.BYTES))];
+                final ByteBuffer byteBuffer = ByteBuffer.wrap(buffer);
 
                 for (int i = 0; i < totalWrites; i++) {
-                    randomAccessFile.write(buffer);
-                    randomAccessFile.getChannel().force(false);
+                    byteBuffer.clear();
+                    channel.write(byteBuffer);
                 }
             }
 
-            return System.currentTimeMillis() - startTime;
+            final long endTime = System.nanoTime();
+            final double seconds = DateUtil.secondsFrom((endTime - startTime), TimeUnit.NANOSECONDS);
+
+            return MathUtil.formatDecimal((totalMB / seconds), 2);
         } catch (final AccessDeniedException accessDeniedException) {
             return -1;
         } finally {
