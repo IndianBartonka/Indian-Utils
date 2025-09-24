@@ -75,6 +75,7 @@ public class Disk {
         return "Disk{" +
                 "name='" + this.name + '\'' +
                 ", model='" + this.getModel() + '\'' +
+                ", type='" + this.getType() + '\'' +
                 ", diskFile=" + this.diskFile +
                 ", fileSystem='" + this.fileSystem + '\'' +
                 ", blockSize=" + this.blockSize +
