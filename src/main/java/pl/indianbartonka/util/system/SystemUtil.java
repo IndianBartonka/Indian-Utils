@@ -200,6 +200,7 @@ public final class SystemUtil {
         }
     }
 
+    //TODO: Autom,atycznie dobieraj ile MB ma byc zapisywane tak aby miejsce na dysku sie nie skończyło i patrz czy dysk jest hdd czy ssd i na tegfo podstawie dobiersj to
     @VisibleForTesting
     @Since("0.0.9.3")
     @CheckReturnValue
@@ -230,8 +231,7 @@ public final class SystemUtil {
             final long startTime = System.nanoTime();
 
             try (final FileChannel channel = FileChannel.open(file.toPath(), StandardOpenOption.WRITE)) {
-                final byte[] buffer = new byte[Math.toIntExact(
-                        MemoryUnit.MEGABYTES.to(mbSize, MemoryUnit.BYTES))];
+                final byte[] buffer = new byte[Math.toIntExact(MemoryUnit.MEGABYTES.to(mbSize, MemoryUnit.BYTES))];
                 final ByteBuffer byteBuffer = ByteBuffer.wrap(buffer);
 
                 for (int i = 0; i < totalWrites; i++) {
