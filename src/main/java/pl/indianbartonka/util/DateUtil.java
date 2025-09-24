@@ -272,6 +272,28 @@ public final class DateUtil {
     }
 
     /**
+     * Converts a time value from the specified source unit to seconds.
+     *
+     * @param time       The time value to convert.
+     * @param sourceUnit The source {@link TimeUnit}.
+     * @return The equivalent time in seconds.
+     */
+    public static long secondsFrom(final long time, final TimeUnit sourceUnit) {
+        return sourceUnit.toSeconds(time);
+    }
+
+    /**
+     * Converts a time value in seconds to the specified target unit.
+     *
+     * @param time       The time value to convert.
+     * @param targetUnit The target {@link TimeUnit}.
+     * @return The equivalent time in the target unit.
+     */
+    public static long secondsTo(final long time, final TimeUnit targetUnit) {
+        return targetUnit.convert(time, TimeUnit.SECONDS);
+    }
+
+    /**
      * Converts seconds to milliseconds.
      *
      * @param seconds The number of seconds to convert.
