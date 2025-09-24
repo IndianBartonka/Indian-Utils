@@ -10,7 +10,6 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.List;
 import java.util.Locale;
-import java.util.UUID;
 import org.jetbrains.annotations.CheckReturnValue;
 import org.jetbrains.annotations.VisibleForTesting;
 import pl.indianbartonka.util.FileUtil;
@@ -196,13 +195,14 @@ public final class SystemUtil {
         }
     }
 
+    //TODO: Zrób testowanie dysku w MB/s zapisania
     @VisibleForTesting
     @Since("0.0.9.3")
     @CheckReturnValue
     public static long testDisk(final Disk disk, final int mbSize, final int totalWrites) throws IOException {
         if (disk.isReadOnly()) return -1;
 
-        final File fileDir = new File(disk.getDiskFile(), String.valueOf(UUID.randomUUID()));
+        final File fileDir = new File(disk.getDiskFile(), "IndianUtilsDiskTest");
         final File file = new File(fileDir, "testFile.dat");
 
         fileDir.deleteOnExit();
