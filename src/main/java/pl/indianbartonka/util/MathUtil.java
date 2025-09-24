@@ -38,6 +38,7 @@ public final class MathUtil {
     static {
         final DecimalFormatSymbols decimalFormatSymbols = new DecimalFormatSymbols(Locale.ENGLISH);
         DECIMAL_FORMAT.setDecimalFormatSymbols(decimalFormatSymbols);
+        DECIMAL_FORMAT.setGroupingUsed(false);
     }
 
     /**
