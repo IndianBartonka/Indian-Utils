@@ -17,6 +17,7 @@ import org.jetbrains.annotations.CheckReturnValue;
 import org.jetbrains.annotations.VisibleForTesting;
 import pl.indianbartonka.util.DateUtil;
 import pl.indianbartonka.util.FileUtil;
+import pl.indianbartonka.util.MathUtil;
 import pl.indianbartonka.util.MemoryUnit;
 import pl.indianbartonka.util.MessageUtil;
 import pl.indianbartonka.util.annotation.Since;
@@ -199,12 +200,31 @@ public final class SystemUtil {
         }
     }
 
-    //TODO: Autom,atycznie dobieraj ile MB ma byc zapisywane tak aby miejsce na dysku sie nie skończyło i patrz czy dysk jest hdd czy ssd i na tegfo podstawie dobiersj to
     @VisibleForTesting
     @Since("0.0.9.3")
     @CheckReturnValue
-    public static double testDisk(final Disk disk, final int mbSize, final int totalWrites) throws IOException {
+    public static double testDiskWrite(final Disk disk) throws IOException {
         if (disk.isReadOnly()) return -1;
+
+        long mbSize;
+        final int totalWrites;
+
+        if (disk.getType().equals("SSD")) {
+            mbSize = 100;
+            totalWrites = 10;
+        } else {
+            mbSize = 100;
+            totalWrites = 4;
+        }
+
+        final double totalMB = (double) mbSize * totalWrites;
+
+        final long freeSize = getFreeDiskSpace(disk.getDiskFile());
+        final long freeMb = MemoryUnit.MEBIBYTES.from(freeSize, MemoryUnit.BYTES);
+
+        if (totalMB > freeMb) {
+            mbSize = MathUtil.getCorrectNumber((freeMb / 5), 2, Long.MAX_VALUE);
+        }
 
         final File fileDir = new File(disk.getDiskFile(), "IndianUtilsDiskTest");
         final File file = new File(fileDir, "testFile.dat");
@@ -213,14 +233,6 @@ public final class SystemUtil {
         file.deleteOnExit();
 
         try {
-
-            final long freeSize = getFreeDiskSpace(disk.getDiskFile());
-            final double totalMB = (double) mbSize * totalWrites;
-
-            if (totalMB > MemoryUnit.MEBIBYTES.from(freeSize, MemoryUnit.BYTES)) {
-                throw new IOException("Nie ma tyle miejsca na dysku");
-            }
-
             Files.createDirectories(fileDir.toPath());
 
             if (!file.createNewFile()) {

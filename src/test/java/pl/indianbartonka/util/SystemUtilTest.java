@@ -129,8 +129,8 @@ public class SystemUtilTest {
             System.out.println("Tylko do odczytu: " + disk.isReadOnly());
 
             System.out.println();
-            System.out.println("Testowanie szybkości zapisu pliku 100mb 10razy");
-            System.out.println(SystemUtil.testDisk(disk, 100, 10) + " MB/s");
+            System.out.println("Testowanie szybkości zapisu");
+            System.out.println(MathUtil.formatDecimal(SystemUtil.testDiskWrite(disk), 3) + " MB/s");
             System.out.println();
 
             System.out.println("Całkowita pamięć: " + MathUtil.formatBytesDynamic(SystemUtil.getMaxDiskSpace(diskFile), false));
