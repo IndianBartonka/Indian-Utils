@@ -118,7 +118,7 @@ public final class MathUtil {
      * @param bytes The number of bytes.
      * @return The remaining gigabytes.
      */
-    public static long getRemainingGigabytesFromTotalBytes(final long bytes) {
+    public static long getRemainingGibibytesFromTotalBytes(final long bytes) {
         return (bytes % (1024L * 1024 * 1024 * 1024)) / (1024 * 1024 * 1024);
     }
 
@@ -128,7 +128,7 @@ public final class MathUtil {
      * @param bytes The number of bytes.
      * @return The remaining terabytes.
      */
-    public static long getRemainingTerabytesFromTotalBytes(final long bytes) {
+    public static long getRemainingTebibytesFromTotalBytes(final long bytes) {
         return (bytes % (1024L * 1024 * 1024 * 1024 * 1024)) / (1024L * 1024 * 1024 * 1024);
     }
 
@@ -138,7 +138,7 @@ public final class MathUtil {
      * @param bytes The number of bytes.
      * @return The remaining megabytes.
      */
-    public static long getRemainingMegabytesFromTotalBytes(final long bytes) {
+    public static long getRemainingMebibytesFromTotalBytes(final long bytes) {
         return (bytes % (1024 * 1024 * 1024)) / (1024 * 1024);
     }
 
@@ -148,7 +148,7 @@ public final class MathUtil {
      * @param bytes The number of bytes.
      * @return The remaining kilobytes.
      */
-    public static long getRemainingKilobytesFromTotalBytes(final long bytes) {
+    public static long getRemainingKibibytesFromTotalBytes(final long bytes) {
         return (bytes % (1024 * 1024)) / 1024;
     }
 
@@ -157,20 +157,20 @@ public final class MathUtil {
      * This method calculates the remainder of bytes that don't form a full kilobyte (1024 bytes).
      *
      * @param bytes The total number of bytes.
-     * @return The remaining bytes, which are less than 1024.
+     * @return The remaining bytes, which are les than 1024.
      */
     public static long getRemainingBytesFromTotalBytes(final long bytes) {
         return bytes % 1024;
     }
 
     /**
-     * Extracts the remaining gigabytes from a total number of kilobytes,
+     * Extracts the remaining Gibibytes from a total number of kilobytes,
      * after counting full terabytes.
      *
      * @param kilobytes The number of kilobytes.
-     * @return The remaining gigabytes.
+     * @return The remaining Gibibytes.
      */
-    public static long getRemainingGigabytesFromTotalKilobytes(final long kilobytes) {
+    public static long getRemainingGibibytesFromTotalKibibytes(final long kilobytes) {
         return (kilobytes % (1024L * 1024 * 1024)) / (1024 * 1024);
     }
 
@@ -180,7 +180,7 @@ public final class MathUtil {
      * @param kilobytes The number of kilobytes.
      * @return The remaining terabytes.
      */
-    public static long getRemainingTerabytesFromTotalKilobytes(final long kilobytes) {
+    public static long getRemainingTebibytesFromTotalKibibytes(final long kilobytes) {
         return (kilobytes % (1024L * 1024 * 1024 * 1024)) / (1024L * 1024 * 1024);
     }
 
@@ -191,7 +191,7 @@ public final class MathUtil {
      * @param kilobytes The number of kilobytes.
      * @return The remaining megabytes.
      */
-    public static long getRemainingMegabytesFromTotalKilobytes(final long kilobytes) {
+    public static long getRemainingMebibytesFromTotalKibibytes(final long kilobytes) {
         return (kilobytes % (1024 * 1024)) / 1024;
     }
 
@@ -201,7 +201,7 @@ public final class MathUtil {
      * @param kilobytes the total number of kilobytes
      * @return the remaining kilobytes after full megabytes
      */
-    public static long getRemainingKilobytesFromTotalKilobytes(final long kilobytes) {
+    public static long getRemainingKibibytesFromTotalKibibytes(final long kilobytes) {
         return kilobytes % 1024;
     }
 
@@ -223,18 +223,18 @@ public final class MathUtil {
      * Formats kilobytes dynamically based on their magnitude, using either short or long names.
      *
      * @param kilobytes  The number of kilobytes to format.
-     * @param shortNames If true, uses short names (e.g., KB, MB, GB); otherwise uses long names (e.g., kilobytes, megabytes, gigabytes).
+     * @param shortNames If true, uses short names (e.g., KB, MB, GB); otherwise uses long names (e.g., kilobytes, megabytes, Gibibytes).
      * @return The formatted kilobytes as a string.
      */
-    public static String formatKilobytesDynamic(final long kilobytes, final boolean shortNames) {
+    public static String formatKibibytesDynamic(final long kilobytes, final boolean shortNames) {
         if (kilobytes < 0) return "N/A";
 
         final List<Character> unitsPattern = new ArrayList<>();
 
-        final long tb = getRemainingTerabytesFromTotalKilobytes(kilobytes);
-        final long gb = getRemainingGigabytesFromTotalKilobytes(kilobytes);
-        final long mb = getRemainingMegabytesFromTotalKilobytes(kilobytes);
-        final long kb = getRemainingKilobytesFromTotalKilobytes(kilobytes);
+        final long tb = getRemainingTebibytesFromTotalKibibytes(kilobytes);
+        final long gb = getRemainingGibibytesFromTotalKibibytes(kilobytes);
+        final long mb = getRemainingMebibytesFromTotalKibibytes(kilobytes);
+        final long kb = getRemainingKibibytesFromTotalKibibytes(kilobytes);
 
         if (kilobytes == 0) unitsPattern.add('k');
 
@@ -243,7 +243,7 @@ public final class MathUtil {
         if (mb > 0) unitsPattern.add('m');
         if (kb > 0) unitsPattern.add('k');
 
-        return formatKilobytes(kilobytes, unitsPattern, shortNames);
+        return formatKibibytes(kilobytes, unitsPattern, shortNames);
     }
 
 
@@ -254,15 +254,15 @@ public final class MathUtil {
      * @return The formatted kilobytes as a string.
      */
     @Since("0.0.9.3")
-    public static String formatKilobytesDynamic(final long kilobytes) {
-        return formatKilobytesDynamic(kilobytes, true);
+    public static String formatKibibytesDynamic(final long kilobytes) {
+        return formatKibibytesDynamic(kilobytes, true);
     }
 
     /**
      * Formats bytes dynamically based on their magnitude, using either short or long names.
      *
      * @param bytes      The number of bytes to format.
-     * @param shortNames If true, uses short names (e.g., KB, MB, GB); otherwise uses long names (e.g., kilobytes, megabytes, gigabytes).
+     * @param shortNames If true, uses short names (e.g., KB, MB, GB); otherwise uses long names (e.g., kilobytes, megabytes, Gibibytes).
      * @return The formatted bytes as a string.
      */
     public static String formatBytesDynamic(final long bytes, final boolean shortNames) {
@@ -270,10 +270,10 @@ public final class MathUtil {
 
         final List<Character> unitsPattern = new ArrayList<>();
 
-        final long tb = getRemainingTerabytesFromTotalBytes(bytes);
-        final long gb = getRemainingGigabytesFromTotalBytes(bytes);
-        final long mb = getRemainingMegabytesFromTotalBytes(bytes);
-        final long kb = getRemainingKilobytesFromTotalBytes(bytes);
+        final long tb = getRemainingTebibytesFromTotalBytes(bytes);
+        final long gb = getRemainingGibibytesFromTotalBytes(bytes);
+        final long mb = getRemainingMebibytesFromTotalBytes(bytes);
+        final long kb = getRemainingKibibytesFromTotalBytes(bytes);
         final long remainingBytes = getRemainingBytesFromTotalBytes(bytes);
 
         if (bytes == 0) unitsPattern.add('b');
@@ -307,17 +307,17 @@ public final class MathUtil {
      * @return The formatted kilobytes as a string.
      */
     @VisibleForTesting
-    public static String formatKilobytes(final long kilobytes, final List<Character> unitsPattern, final boolean shortNames) {
-        final StringBuilder formattedKilobytes = new StringBuilder();
-        final Map<Character, String> unitMap = getUnitKilobytesMap(kilobytes, shortNames);
+    public static String formatKibibytes(final long kilobytes, final List<Character> unitsPattern, final boolean shortNames) {
+        final StringBuilder formattedKibibytes = new StringBuilder();
+        final Map<Character, String> unitMap = getUnitKibibytesMap(kilobytes, shortNames);
 
         for (final char unit : unitsPattern) {
             if (unitMap.containsKey(unit)) {
-                formattedKilobytes.append(unitMap.get(unit)).append(" ");
+                formattedKibibytes.append(unitMap.get(unit)).append(" ");
             }
         }
 
-        return formattedKilobytes.toString().trim();
+        return formattedKibibytes.toString().trim();
     }
 
     /**
@@ -355,10 +355,10 @@ public final class MathUtil {
         final Map<Character, String> unitMap = new HashMap<>();
 
         final long b = getRemainingBytesFromTotalBytes(bytes);
-        final long kb = getRemainingKilobytesFromTotalBytes(bytes);
-        final long mb = getRemainingMegabytesFromTotalBytes(bytes);
-        final long gb = getRemainingGigabytesFromTotalBytes(bytes);
-        final long tb = getRemainingTerabytesFromTotalBytes(bytes);
+        final long kb = getRemainingKibibytesFromTotalBytes(bytes);
+        final long mb = getRemainingMebibytesFromTotalBytes(bytes);
+        final long gb = getRemainingGibibytesFromTotalBytes(bytes);
+        final long tb = getRemainingTebibytesFromTotalBytes(bytes);
 
         if (shortNames) {
             unitMap.put('k', kb + " KB");
@@ -396,13 +396,13 @@ public final class MathUtil {
      * @param shortNames If true, uses short names; otherwise uses long names.
      * @return A map of unit characters to their string representations.
      */
-    private static Map<Character, String> getUnitKilobytesMap(final long kilobytes, final boolean shortNames) {
+    private static Map<Character, String> getUnitKibibytesMap(final long kilobytes, final boolean shortNames) {
         final Map<Character, String> unitMap = new HashMap<>();
 
-        final long tb = getRemainingTerabytesFromTotalKilobytes(kilobytes);
-        final long gb = getRemainingGigabytesFromTotalKilobytes(kilobytes);
-        final long mb = getRemainingMegabytesFromTotalKilobytes(kilobytes);
-        final long kb = getRemainingKilobytesFromTotalKilobytes(kilobytes);
+        final long tb = getRemainingTebibytesFromTotalKibibytes(kilobytes);
+        final long gb = getRemainingGibibytesFromTotalKibibytes(kilobytes);
+        final long mb = getRemainingMebibytesFromTotalKibibytes(kilobytes);
+        final long kb = getRemainingKibibytesFromTotalKibibytes(kilobytes);
 
         if (shortNames) {
             unitMap.put('t', tb + " TB");

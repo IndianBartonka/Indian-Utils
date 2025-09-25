@@ -21,15 +21,15 @@ public class MathUtilTest {
     }
 
     @Test
-    public void testKilobytesToMb() {
-        assertEquals(1, MathUtil.getRemainingMegabytesFromTotalKilobytes(1024));
+    public void testKibibytesToMb() {
+        assertEquals(1, MathUtil.getRemainingMebibytesFromTotalKibibytes(1024));
     }
 
     @Test
-    public void testFormatKilobytesDynamic() {
-        assertEquals("1 MB", MathUtil.formatKilobytesDynamic(1024, true));
+    public void testFormatKibibytesDynamic() {
+        assertEquals("1 MB", MathUtil.formatKibibytesDynamic(1024, true));
         assertEquals("1 kilobajtów", MathUtil.formatBytesDynamic(1024, false));
-        assertEquals("2 terabajtów 381 gigabajtów 969 megabajtów 288 kilobajtów", MathUtil.formatKilobytesDynamic(2_547_983_648L, false));
+        assertEquals("2 terabajtów 381 gigabajtów 969 megabajtów 288 kilobajtów", MathUtil.formatKibibytesDynamic(2_547_983_648L, false));
     }
 
     @Test
