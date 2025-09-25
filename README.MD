@@ -1,5 +1,3 @@
-//TODO: Zrób listę zależności użytych w poleceniach linux i windows
-
 <div align="center">
 
 # Indian Utils
@@ -14,6 +12,8 @@ Utile używane w różnych projektach przez Indiana
 
 **Java**: 17+
 
+---
+
 ## Testowano na
 
 ### Windows
@@ -25,6 +25,8 @@ Utile używane w różnych projektach przez Indiana
 * FerenOs (6.8.0-57-generic)
 * Debian (6.1.0-31-amd64)
 * Debian ARM (Raspberry Edition 6.12.25+rpt-rpi-2712)
+
+---
 
 # Biblioteki użyte w projekcie
 
@@ -39,6 +41,68 @@ Używane do łatwiej serializacji i deserializacji Json
 ### [JUnit Jupiter API 5.13.0-M3](https://junit.org/junit5/)
 
 Używane do prostych testów jednostkowych.
+
+---
+
+# Używane w poleceniach cmd
+
+Niektórych danych nie można pozyskiwać javą, a nie zamierzałem pisać natywnych plików cpp i używać JNA, zależy mi na
+lekkości libki
+
+## Windows
+
+#### 1. Powershell
+
+## Linux
+
+#### 1. Pozyskiwanie informacji o połączeniu sieciowym
+
+- nmcli
+- wpa_cli
+
+#### 2. Filtrowanie i przetwarzanie tekstu
+
+- grep
+- cut
+- xargs
+- awk
+- sed
+- basename
+
+#### 3. Listowanie urządzeń PCI/PCIe
+
+- lspci
+
+#### 4. Informacje o dyskach
+
+- lsblk
+- df
+
+#### 5. Informacje o pamięci RAM
+
+- dmidecode
+
+#### 6. Informacje o procesach
+
+- ps
+
+## Pobieranie
+
+```shell
+sudo apt update && sudo apt install -y pciutils coreutils grep gawk sed util-linux dmidecode procps
+```
+
+I ewentualnie
+
+```shell
+sudo apt update && sudo apt install -y network-manager
+```
+
+```shell
+sudo apt update && sudo apt install -y wpasupplicant
+```
+
+---
 
 # Zależności
 
@@ -86,9 +150,13 @@ resolvers += "jitpack" at "https://jitpack.io"
 libraryDependencies += "com.github.IndianBartonka" % "Indian-Utils" % "TAG"    
 ```
 
+---
+
 # Przy projekcie pomagali
 
 ![Wykres kontrybucji](https://contrib.rocks/image?repo=IndianBartonka/Indian-Utils)
+
+---
 
 # Gwiazdki na przestrzeni czasu
 
