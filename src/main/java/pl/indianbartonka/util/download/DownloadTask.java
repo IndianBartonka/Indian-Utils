@@ -44,7 +44,7 @@ public class DownloadTask {
 
     public void downloadFile() throws IOException, TimeoutException {
         final long inactivityTimeoutMillis = DateUtil.secondToMillis(this.timeOutSeconds);
-        long lastActivityTime;
+
 
         try (final FileOutputStream fileOutputStream = new FileOutputStream(this.outputFile)) {
             this.downloading = true;
@@ -59,6 +59,7 @@ public class DownloadTask {
             int bytesRead;
             long totalBytesRead = 0;
 
+            long lastActivityTime = System.currentTimeMillis();
             long lastTime = System.currentTimeMillis();
             long lastBytesRead = 0;
             int lastProgress = -1;
@@ -69,34 +70,36 @@ public class DownloadTask {
                     break;
                 }
 
-                lastActivityTime = System.currentTimeMillis();
-                fileOutputStream.write(buffer, 0, bytesRead);
-                totalBytesRead += bytesRead;
+                if (bytesRead > 0) {
+                    lastActivityTime = System.currentTimeMillis();
+                    fileOutputStream.write(buffer, 0, bytesRead);
+                    totalBytesRead += bytesRead;
 
-                final long currentTime = System.currentTimeMillis();
-                final double elapsedTime = (currentTime - lastTime) / 1000.0;
-                if (elapsedTime >= 1.0) {
-                    final long bytesSinceLastTime = totalBytesRead - lastBytesRead;
-                    final double speedBytesPerSecond = bytesSinceLastTime / elapsedTime;
-                    final double speedMBps = speedBytesPerSecond / 1_048_576;
-                    lastTime = currentTime;
-                    lastBytesRead = totalBytesRead;
+                    final long currentTime = System.currentTimeMillis();
+                    final double elapsedTime = (currentTime - lastTime) / 1000.0;
+                    if (elapsedTime >= 1.0) {
+                        final long bytesSinceLastTime = totalBytesRead - lastBytesRead;
+                        final double speedBytesPerSecond = bytesSinceLastTime / elapsedTime;
+                        final double speedMBps = speedBytesPerSecond / MemoryUnit.BYTES.from(1, MemoryUnit.MEBIBYTES);
+                        lastTime = currentTime;
+                        lastBytesRead = totalBytesRead;
 
-                    final int progress = Math.round((float) totalBytesRead / (float) this.fileSize * 100.0f);
+                        final int progress = Math.round((float) totalBytesRead / (float) this.fileSize * 100.0f);
 
-                    final double formatedSpeed = MathUtil.formatDecimal(speedMBps, 3);
-                    final long remainingTimeSeconds = (long) (MemoryUnit.MEGABYTES.from(this.fileSize, MemoryUnit.BYTES) / formatedSpeed);
-                    final String remainingTimeString = DateUtil.formatTimeDynamic(remainingTimeSeconds * 1000, true);
-
-                    if (this.downloadListener != null) {
-                        this.downloadListener.onSecond(progress, formatedSpeed, remainingTimeString);
-                    }
-
-                    if (progress != lastProgress) {
-                        lastProgress = progress;
+                        final double formatedSpeed = MathUtil.formatDecimal(speedMBps, 3);
+                        final long remainingTimeSeconds = (long) (MemoryUnit.MEGABYTES.from(this.fileSize, MemoryUnit.BYTES) / formatedSpeed);
+                        final String remainingTimeString = DateUtil.formatTimeDynamic(remainingTimeSeconds * 1000, true);
 
                         if (this.downloadListener != null) {
-                            this.downloadListener.onProgress(progress, formatedSpeed, remainingTimeString);
+                            this.downloadListener.onSecond(progress, formatedSpeed, remainingTimeString);
+                        }
+
+                        if (progress != lastProgress) {
+                            lastProgress = progress;
+
+                            if (this.downloadListener != null) {
+                                this.downloadListener.onProgress(progress, formatedSpeed, remainingTimeString);
+                            }
                         }
                     }
                 }
