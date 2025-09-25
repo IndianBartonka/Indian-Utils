@@ -17,7 +17,6 @@ import org.jetbrains.annotations.CheckReturnValue;
 import org.jetbrains.annotations.VisibleForTesting;
 import pl.indianbartonka.util.DateUtil;
 import pl.indianbartonka.util.FileUtil;
-import pl.indianbartonka.util.MathUtil;
 import pl.indianbartonka.util.MemoryUnit;
 import pl.indianbartonka.util.MessageUtil;
 import pl.indianbartonka.util.annotation.Since;
@@ -243,7 +242,7 @@ public final class SystemUtil {
             final long endTime = System.nanoTime();
             final double seconds = DateUtil.secondsFrom((endTime - startTime), TimeUnit.NANOSECONDS);
 
-            return MathUtil.formatDecimal((totalMB / seconds), 2);
+            return (totalMB / seconds);
         } catch (final AccessDeniedException accessDeniedException) {
             return -1;
         } finally {
