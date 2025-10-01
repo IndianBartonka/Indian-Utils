@@ -21,6 +21,7 @@ public class DownloadTask {
     private boolean stopped;
     private boolean downloading;
     private boolean finished;
+    private boolean brokenSize;
 
     public DownloadTask(final InputStream inputStream, final File outputFile, final long fileSize, final int timeOutSeconds, @Nullable final DownloadListener downloadListener) {
         this.inputStream = inputStream;
@@ -45,6 +46,7 @@ public class DownloadTask {
              int definedBuffer = BufferUtil.calculateOptimalBufferSize(this.fileSize);
 
             if (this.fileSize == -1) {
+                this.brokenSize = true;
                 definedBuffer = BufferUtil.calculateOptimalBufferSize(MemoryUnit.BYTES.from(1, MemoryUnit.GIBIBYTES));
             }
 
@@ -73,7 +75,9 @@ public class DownloadTask {
                     fileOutputStream.write(buffer, 0, bytesRead);
                     totalBytesRead += bytesRead;
 
-                    this.fileSize = this.fileSize - bytesRead;
+                    if (this.brokenSize) {
+                        this.fileSize = this.fileSize - bytesRead;
+                    }
 
                     final long currentTime = System.currentTimeMillis();
                     final double elapsedTime = (currentTime - lastTime) / 1000.0;
