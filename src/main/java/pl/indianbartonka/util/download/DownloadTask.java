@@ -10,6 +10,7 @@ import pl.indianbartonka.util.BufferUtil;
 import pl.indianbartonka.util.DateUtil;
 import pl.indianbartonka.util.MathUtil;
 import pl.indianbartonka.util.MemoryUnit;
+import pl.indianbartonka.util.annotation.Since;
 
 public class DownloadTask {
 
@@ -45,7 +46,7 @@ public class DownloadTask {
 
              int definedBuffer = BufferUtil.calculateOptimalBufferSize(this.fileSize);
 
-            if (this.fileSize == -1) {
+            if (this.fileSize <= -1) {
                 this.brokenSize = true;
                 definedBuffer = BufferUtil.calculateOptimalBufferSize(MemoryUnit.BYTES.from(1, MemoryUnit.GIBIBYTES));
             }
@@ -154,6 +155,11 @@ public class DownloadTask {
 
     public boolean isFinished() {
         return this.finished;
+    }
+
+    @Since("0.0.9.5")
+    public boolean isBrokenSize() {
+        return this.brokenSize;
     }
 
     public void stopDownload() {
