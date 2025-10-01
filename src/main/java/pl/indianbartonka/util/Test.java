@@ -166,7 +166,7 @@ public final class Test {
             }
 
             @Override
-            public void onDownloadStop() {
+            public void onDownloadStop(File outputFile) {
                 this.tempLogger.println();
                 this.tempLogger.alert("Zatrzymano pobieranie!");
                 this.panel.removePanel();

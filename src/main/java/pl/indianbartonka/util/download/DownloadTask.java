@@ -64,7 +64,7 @@ public class DownloadTask {
 
             while ((bytesRead = this.inputStream.read(buffer)) != -1) {
                 if (this.stopped) {
-                    if (this.downloadListener != null) this.downloadListener.onDownloadStop();
+                    if (this.downloadListener != null) this.downloadListener.onDownloadStop(this.outputFile);
                     break;
                 }
 
