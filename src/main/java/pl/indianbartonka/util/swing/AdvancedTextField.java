@@ -9,6 +9,7 @@ import pl.indianbartonka.util.annotation.Since;
 @Since("0.0.9.3")
 public class AdvancedTextField extends JTextField {
 
+    private final JPopupMenu popupMenu = new JPopupMenu();
     private String cut = "Wytnij";
     private String paste = "Wklej";
     private String copy = "Kopiuj";
@@ -44,8 +45,6 @@ public class AdvancedTextField extends JTextField {
     }
 
     private void addPopupMenu() {
-        final JPopupMenu popupMenu = new JPopupMenu();
-
         final JMenuItem cutItem = new JMenuItem(this.cut);
         cutItem.addActionListener(e -> this.cut());
 
@@ -55,11 +54,11 @@ public class AdvancedTextField extends JTextField {
         final JMenuItem pasteItem = new JMenuItem(this.paste);
         pasteItem.addActionListener(e -> this.paste());
 
-        popupMenu.add(cutItem);
-        popupMenu.add(copyItem);
-        popupMenu.add(pasteItem);
+        this.popupMenu.add(cutItem);
+        this.popupMenu.add(copyItem);
+        this.popupMenu.add(pasteItem);
 
-        this.setComponentPopupMenu(popupMenu);
+        this.setComponentPopupMenu(this.popupMenu);
     }
 
     public void setCutText(final String cut) {
@@ -72,5 +71,9 @@ public class AdvancedTextField extends JTextField {
 
     public void setCopyText(final String copy) {
         this.copy = copy;
+    }
+
+    public JPopupMenu getPopupMenu() {
+        return this.popupMenu;
     }
 }
