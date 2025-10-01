@@ -14,6 +14,7 @@ import javax.swing.JPanel;
 import pl.indianbartonka.util.download.DownloadListener;
 import pl.indianbartonka.util.download.DownloadTask;
 import pl.indianbartonka.util.http.HttpStatusCode;
+import pl.indianbartonka.util.http.UserAgent;
 import pl.indianbartonka.util.http.connection.Connection;
 import pl.indianbartonka.util.http.connection.request.Request;
 import pl.indianbartonka.util.http.connection.request.RequestBuilder;
@@ -123,14 +124,14 @@ public final class Test {
     }
 
     public static void downloadFileTest() throws IOException {
-        final String fileName = "Bedrock.zip";
-
         final DownloadListener downloadListener = new DownloadListener() {
-            final Logger tempLogger = LOGGER.tempLogger(fileName);
+            Logger tempLogger;
             final ProgressPanel panel = new ProgressPanel();
 
             @Override
             public void onStart(final int definedBuffer, final long fileSize, final File outputFile) {
+                tempLogger = LOGGER.tempLogger(outputFile.getName());
+
                 this.tempLogger.info("Pobieranie:&a " + outputFile.getName());
                 this.tempLogger.info("Rozmiar pliku to:&a " + MathUtil.formatBytesDynamic(fileSize));
                 this.tempLogger.info("Ustalony buffer dla naszego pliku to:&a " + MathUtil.formatBytesDynamic(definedBuffer, false));
@@ -173,7 +174,8 @@ public final class Test {
         };
 
         final Request request = new RequestBuilder()
-                .setUrl("https://www.minecraft.net/bedrockdedicatedserver/bin-win/bedrock-server-1.21.83.1.zip")
+                .setUrl("https://ftp.icm.edu.pl/pub/Linux/dist/linuxmint/isos/stable/22.2/linuxmint-22.2-cinnamon-64bit.iso")
+                .setUserAgent(UserAgent.USER_AGENT_EDGE)
                 .GET()
                 .build();
 
@@ -187,7 +189,7 @@ public final class Test {
                 try {
                     final long start = System.currentTimeMillis();
 
-                    final DownloadTask downloadTask = new DownloadTask(connection.getInputStream(), new File(fileName),
+                    final DownloadTask downloadTask = new DownloadTask(connection.getInputStream(), new File(connection.extractFileName()),
                             connection.getContentLength(),
                             30,
                             downloadListener
@@ -195,14 +197,14 @@ public final class Test {
 
                     LOGGER.info(downloadTask);
 
-                    final ThreadUtil threadUtil = new ThreadUtil("DownloadTest");
+//                    final ThreadUtil threadUtil = new ThreadUtil("DownloadTest");
 
-                    threadUtil.newThread(() -> {
-                        ThreadUtil.sleep(10);
-                        LOGGER.println();
-                        LOGGER.info("Zatrzymywanie pobierania:&b " + fileName);
-                        downloadTask.stopDownload();
-                    }).start();
+//                    threadUtil.newThread(() -> {
+//                        ThreadUtil.sleep(10);
+//                        LOGGER.println();
+//                        LOGGER.info("Zatrzymywanie pobierania:&b " + fileName);
+//                        downloadTask.stopDownload();
+//                    }).start();
 
                     downloadTask.downloadFile();
 

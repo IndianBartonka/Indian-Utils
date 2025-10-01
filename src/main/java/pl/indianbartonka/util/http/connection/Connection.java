@@ -22,6 +22,7 @@ import pl.indianbartonka.util.http.connection.request.RequestBody;
 
 public class Connection implements AutoCloseable {
 
+    private final Request request;
     private final HttpURLConnection urlConnection;
     private final boolean https;
     private final int rawStatusCode;
@@ -33,6 +34,8 @@ public class Connection implements AutoCloseable {
     private final String responseMessage;
 
     public Connection(final Request request) throws IOException {
+        this.request = request;
+
         if (request.getUrl().startsWith("https")) {
             this.urlConnection = (HttpsURLConnection) new URL(request.getUrl()).openConnection();
             this.https = true;
@@ -179,6 +182,25 @@ public class Connection implements AutoCloseable {
         }
 
         return builder.toString();
+    }
+
+    @Since("0.0.9.5")
+    public String extractFileName() {
+        String fileName = null;
+        final String disposition = this.urlConnection.getHeaderField("Content-Disposition");
+
+        if (disposition != null && disposition.contains("filename=")) {
+            fileName = disposition.substring(disposition.indexOf("filename=") + 9);
+            fileName = fileName.replace("\"", "").trim();
+        }
+
+        if (fileName == null || fileName.isEmpty()) {
+            final String url = this.request.getUrl();
+            fileName = url.substring(url.lastIndexOf('/') + 1);
+            if (fileName.isEmpty()) fileName = "pobrany_plik";
+        }
+
+        return fileName;
     }
 
     @Since("0.0.9.5")

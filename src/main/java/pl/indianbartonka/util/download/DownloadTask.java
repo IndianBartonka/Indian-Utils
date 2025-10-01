@@ -15,7 +15,7 @@ public class DownloadTask {
 
     private final InputStream inputStream;
     private final File outputFile;
-    private final long fileSize;
+    private  long fileSize;
     private final int timeOutSeconds;
     private final DownloadListener downloadListener;
     private boolean stopped;
@@ -33,23 +33,21 @@ public class DownloadTask {
     }
 
     public DownloadTask(final InputStream inputStream, final File outputFile, final long fileSize, final int timeOutSeconds) {
-        this.inputStream = inputStream;
-        this.outputFile = outputFile;
-        this.fileSize = fileSize;
-        this.timeOutSeconds = timeOutSeconds;
-        this.downloadListener = null;
-        this.stopped = false;
-        this.downloading = false;
+       this(inputStream, outputFile, fileSize, timeOutSeconds, null);
     }
 
     public void downloadFile() throws IOException, TimeoutException {
         final long inactivityTimeoutMillis = DateUtil.secondToMillis(this.timeOutSeconds);
 
-
         try (final FileOutputStream fileOutputStream = new FileOutputStream(this.outputFile)) {
             this.downloading = true;
 
-            final int definedBuffer = BufferUtil.calculateOptimalBufferSize(this.fileSize);
+             int definedBuffer = BufferUtil.calculateOptimalBufferSize(this.fileSize);
+
+            if (this.fileSize == -1) {
+                definedBuffer = BufferUtil.calculateOptimalBufferSize(MemoryUnit.BYTES.from(1, MemoryUnit.GIBIBYTES));
+            }
+
             final byte[] buffer = new byte[definedBuffer];
 
             if (this.downloadListener != null) {
@@ -75,6 +73,8 @@ public class DownloadTask {
                     fileOutputStream.write(buffer, 0, bytesRead);
                     totalBytesRead += bytesRead;
 
+                    this.fileSize = this.fileSize - bytesRead;
+
                     final long currentTime = System.currentTimeMillis();
                     final double elapsedTime = (currentTime - lastTime) / 1000.0;
                     if (elapsedTime >= 1.0) {
@@ -88,7 +88,7 @@ public class DownloadTask {
 
                         final double formatedSpeed = MathUtil.formatDecimal(speedMBps, 3);
                         final long remainingTimeSeconds = (long) (MemoryUnit.MEGABYTES.from(this.fileSize, MemoryUnit.BYTES) / formatedSpeed);
-                        final String remainingTimeString = DateUtil.formatTimeDynamic(remainingTimeSeconds * 1000, true);
+                        final String remainingTimeString = DateUtil.formatTimeDynamic(DateUtil.secondToMillis(remainingTimeSeconds), true);
 
                         if (this.downloadListener != null) {
                             this.downloadListener.onSecond(progress, formatedSpeed, remainingTimeString);
