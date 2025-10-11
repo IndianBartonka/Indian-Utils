@@ -224,9 +224,10 @@ public final class MathUtil {
      *
      * @param kilobytes  The number of kilobytes to format.
      * @param shortNames If true, uses short names (e.g., KB, MB, GB); otherwise uses long names (e.g., kilobytes, megabytes, Gibibytes).
+     * @param spaceBetweenUnits If true, adding spaces between units.
      * @return The formatted kilobytes as a string.
      */
-    public static String formatKibibytesDynamic(final long kilobytes, final boolean shortNames) {
+    public static String formatKibibytesDynamic(final long kilobytes, final boolean shortNames, final boolean spaceBetweenUnits) {
         if (kilobytes < 0) return "N/A";
 
         final List<Character> unitsPattern = new ArrayList<>();
@@ -243,7 +244,7 @@ public final class MathUtil {
         if (mb > 0) unitsPattern.add('m');
         if (kb > 0) unitsPattern.add('k');
 
-        return formatKibibytes(kilobytes, unitsPattern, shortNames);
+        return formatKibibytes(kilobytes, unitsPattern, shortNames, spaceBetweenUnits);
     }
 
 
@@ -255,7 +256,18 @@ public final class MathUtil {
      */
     @Since("0.0.9.3")
     public static String formatKibibytesDynamic(final long kilobytes) {
-        return formatKibibytesDynamic(kilobytes, true);
+        return formatKibibytesDynamic(kilobytes, true, true);
+    }
+
+    /**
+     * Formats bytes dynamically based on their magnitude, using either short or long names.
+     *
+     * @param bytes The number of bytes to format.
+     * @return The formatted bytes as a string.
+     */
+    @Since("0.0.9.3")
+    public static String formatBytesDynamic(final long bytes) {
+        return formatBytesDynamic(bytes, true);
     }
 
     /**
@@ -266,6 +278,18 @@ public final class MathUtil {
      * @return The formatted bytes as a string.
      */
     public static String formatBytesDynamic(final long bytes, final boolean shortNames) {
+        return formatBytesDynamic(bytes, shortNames, true);
+    }
+
+    /**
+     * Formats bytes dynamically based on their magnitude, using either short or long names.
+     *
+     * @param bytes      The number of bytes to format.
+     * @param shortNames If true, uses short names (e.g., KB, MB, GB); otherwise uses long names (e.g., kilobytes, megabytes, Gibibytes).
+     * @param spaceBetweenUnits If true, adding spaces between units.
+     * @return The formatted bytes as a string.
+     */
+    public static String formatBytesDynamic(final long bytes, final boolean shortNames, final boolean spaceBetweenUnits) {
         if (bytes < 0) return "N/A";
 
         final List<Character> unitsPattern = new ArrayList<>();
@@ -284,18 +308,7 @@ public final class MathUtil {
         if (kb > 0) unitsPattern.add('k');
         if (remainingBytes > 0) unitsPattern.add('b');
 
-        return formatBytes(bytes, unitsPattern, shortNames);
-    }
-
-    /**
-     * Formats bytes dynamically based on their magnitude, using either short or long names.
-     *
-     * @param bytes The number of bytes to format.
-     * @return The formatted bytes as a string.
-     */
-    @Since("0.0.9.3")
-    public static String formatBytesDynamic(final long bytes) {
-        return formatBytesDynamic(bytes, true);
+        return formatBytes(bytes, unitsPattern, shortNames, spaceBetweenUnits);
     }
 
     /**
@@ -304,12 +317,13 @@ public final class MathUtil {
      * @param kilobytes    The number of kilobytes to format.
      * @param unitsPattern The units pattern to use (e.g., 'k', 'm', 'g').
      * @param shortNames   If true, uses short names; otherwise uses long names.
+     * @param spaceBetweenUnits If true, adding spaces between units.
      * @return The formatted kilobytes as a string.
      */
     @VisibleForTesting
-    public static String formatKibibytes(final long kilobytes, final List<Character> unitsPattern, final boolean shortNames) {
+    public static String formatKibibytes(final long kilobytes, final List<Character> unitsPattern, final boolean shortNames, final boolean spaceBetweenUnits) {
         final StringBuilder formattedKibibytes = new StringBuilder();
-        final Map<Character, String> unitMap = getUnitKibibytesMap(kilobytes, shortNames);
+        final Map<Character, String> unitMap = getUnitKibibytesMap(kilobytes, shortNames, spaceBetweenUnits);
 
         for (final char unit : unitsPattern) {
             if (unitMap.containsKey(unit)) {
@@ -326,12 +340,13 @@ public final class MathUtil {
      * @param bytes        The number of bytes to format.
      * @param unitsPattern The units pattern to use (e.g., 'b', 'k', 'm', 'g').
      * @param shortNames   If true, uses short names; otherwise uses long names.
+     * @param spaceBetweenUnits If true, adding spaces between units.
      * @return The formatted bytes as a string.
      */
     @VisibleForTesting
-    public static String formatBytes(final long bytes, final List<Character> unitsPattern, final boolean shortNames) {
+    public static String formatBytes(final long bytes, final List<Character> unitsPattern, final boolean shortNames, final boolean spaceBetweenUnits) {
         final StringBuilder formattedBytes = new StringBuilder();
-        final Map<Character, String> unitMap = getUnitBytesMap(bytes, shortNames);
+        final Map<Character, String> unitMap = getUnitBytesMap(bytes, shortNames, spaceBetweenUnits);
 
         for (final char unit : unitsPattern) {
             if (unitMap.containsKey(unit)) {
@@ -349,9 +364,10 @@ public final class MathUtil {
      *
      * @param bytes      The number of bytes.
      * @param shortNames If true, uses short names; otherwise uses long names.
+     * @param spaceBetweenUnits If true, adding spaces between units.
      * @return A map of unit characters to their string representations.
      */
-    private static Map<Character, String> getUnitBytesMap(final long bytes, final boolean shortNames) {
+    private static Map<Character, String> getUnitBytesMap(final long bytes, final boolean shortNames, final boolean spaceBetweenUnits) {
         final Map<Character, String> unitMap = new HashMap<>();
 
         final long b = getRemainingBytesFromTotalBytes(bytes);
@@ -360,18 +376,20 @@ public final class MathUtil {
         final long gb = getRemainingGibibytesFromTotalBytes(bytes);
         final long tb = getRemainingTebibytesFromTotalBytes(bytes);
 
+        final String space = (spaceBetweenUnits ? " " : "");
+
         if (shortNames) {
-            unitMap.put('k', kb + " KB");
-            unitMap.put('m', mb + " MB");
-            unitMap.put('g', gb + " GB");
-            unitMap.put('t', tb + " TB");
-            unitMap.put('b', b + " B");
+            unitMap.put('k', kb + space + "KB");
+            unitMap.put('m', mb + space + "MB");
+            unitMap.put('g', gb + space + "GB");
+            unitMap.put('t', tb + space + "TB");
+            unitMap.put('b', b + space + "B");
         } else {
-            unitMap.put('k', kb + " kilobajtów");
-            unitMap.put('m', mb + " megabajtów");
-            unitMap.put('g', gb + " gigabajtów");
-            unitMap.put('t', tb + " terabajtów");
-            unitMap.put('b', b + " bajtów");
+            unitMap.put('k', kb + space + "kilobajtów");
+            unitMap.put('m', mb + space + "megabajtów");
+            unitMap.put('g', gb + space + "gigabajtów");
+            unitMap.put('t', tb + space + "terabajtów");
+            unitMap.put('b', b + space + "bajtów");
 
             if (bytes == 0) {
                 unitMap.put('b', b + " bajtów");
@@ -394,9 +412,10 @@ public final class MathUtil {
      *
      * @param kilobytes  The number of kilobytes.
      * @param shortNames If true, uses short names; otherwise uses long names.
+     * @param spaceBetweenUnits If true, adding spaces between units.
      * @return A map of unit characters to their string representations.
      */
-    private static Map<Character, String> getUnitKibibytesMap(final long kilobytes, final boolean shortNames) {
+    private static Map<Character, String> getUnitKibibytesMap(final long kilobytes, final boolean shortNames, final boolean spaceBetweenUnits) {
         final Map<Character, String> unitMap = new HashMap<>();
 
         final long tb = getRemainingTebibytesFromTotalKibibytes(kilobytes);
@@ -404,23 +423,25 @@ public final class MathUtil {
         final long mb = getRemainingMebibytesFromTotalKibibytes(kilobytes);
         final long kb = getRemainingKibibytesFromTotalKibibytes(kilobytes);
 
+        final String space = (spaceBetweenUnits ? " " : "");
+
         if (shortNames) {
-            unitMap.put('t', tb + " TB");
-            unitMap.put('g', gb + " GB");
-            unitMap.put('m', mb + " MB");
-            unitMap.put('k', kb + " KB");
+            unitMap.put('t', tb + space + "TB");
+            unitMap.put('g', gb + space + "GB");
+            unitMap.put('m', mb + space + "MB");
+            unitMap.put('k', kb + space + "KB");
         } else {
-            unitMap.put('t', tb + " terabajtów");
-            unitMap.put('g', gb + " gigabajtów");
-            unitMap.put('m', mb + " megabajtów");
-            unitMap.put('k', kb + " kilobajtów");
+            unitMap.put('t', tb + space + "terabajtów");
+            unitMap.put('g', gb + space + "gigabajtów");
+            unitMap.put('m', mb + space + "megabajtów");
+            unitMap.put('k', kb + space + "kilobajtów");
         }
 
         if (kilobytes == 0) {
             if (shortNames) {
-                unitMap.put('k', kb + " KB");
+                unitMap.put('k', kb + space + "KB");
             } else {
-                unitMap.put('k', kb + " kilobajtów");
+                unitMap.put('k', kb + space + "kilobajtów");
             }
         }
 
