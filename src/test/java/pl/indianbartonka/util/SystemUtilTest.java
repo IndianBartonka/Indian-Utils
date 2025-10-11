@@ -111,7 +111,7 @@ public class SystemUtilTest {
     public void testDiskSpace() throws IOException {
         System.out.println();
 
-        final List<Disk> disks = SystemUtil.getAvailableDisk();
+        final List<Disk> disks = SystemUtil.getAvailableDisks();
 
         System.out.println(disks);
         System.out.println("Dostępne dyski: " + disks.size());
@@ -157,7 +157,7 @@ public class SystemUtilTest {
     public void testAllDisksSpace() {
         System.out.println();
 
-        final List<Disk> disks = SystemUtil.getAvailableDisk();
+        final List<Disk> disks = SystemUtil.getAvailableDisks();
 
         System.out.println("Dostępne dyski: " + disks.size());
 

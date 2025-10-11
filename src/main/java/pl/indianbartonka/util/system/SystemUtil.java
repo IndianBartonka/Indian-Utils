@@ -176,7 +176,7 @@ public final class SystemUtil {
         }
     }
 
-    public static List<Disk> getAvailableDisk() {
+    public static List<Disk> getAvailableDisks() {
         return switch (getSystem()) {
             //Free BSD i Mac są dla testów nie wiem jak działają :)
             case WINDOWS, MAC -> WindowsUtil.getAvailableDisks();
