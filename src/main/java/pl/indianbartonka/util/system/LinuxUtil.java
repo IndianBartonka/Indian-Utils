@@ -9,7 +9,6 @@ import java.io.UncheckedIOException;
 import java.nio.file.FileStore;
 import java.nio.file.Files;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 import org.jetbrains.annotations.VisibleForTesting;
@@ -245,7 +244,6 @@ public final class LinuxUtil {
                     line = line.trim();
 
                     if (line.isEmpty()) {
-                        try {
                             final Ram ramStick = ramParser(lines);
 
                             if (ramStick.basicSpeed() != -1) {
@@ -253,9 +251,6 @@ public final class LinuxUtil {
                             }
 
                             lines.clear();
-                        } catch (final NumberFormatException numberFormatException) {
-                            if (IndianUtils.debug) numberFormatException.printStackTrace();
-                        }
                     } else {
                         lines.add(line);
                     }
@@ -279,50 +274,67 @@ public final class LinuxUtil {
         for (final String line : lines) {
 
             if (line.trim().startsWith("Size:")) {
-                final String[] parts = line.split(":");
-                size = Long.parseLong(parts[1].trim().split(" ")[0].trim());
+                try {
+                    final String[] parts = line.split(":");
+                    size = Long.parseLong(parts[1].trim().split(" ")[0].trim());
 
-                System.out.println(parts.length);
-                System.out.println(Arrays.toString(parts));
+                    final String[] parts2 = parts[1].trim().split(" ");
 
-                if (parts.length == 3) {
-                    final String d = parts[2].trim();
+                    if (parts2.length >= 2) {
+                        final String unit = parts2[1].trim();
 
-                    if(d.equalsIgnoreCase("GB")){
-                        size = MemoryUnit.GIBIBYTES.to(size, MemoryUnit.BYTES);
-                    } else if (d.equalsIgnoreCase("MB")) {
-                        size = MemoryUnit.MEBIBYTES.to(size, MemoryUnit.BYTES);
+                        if (unit.equalsIgnoreCase("GB")) {
+                            size = MemoryUnit.GIBIBYTES.to(size, MemoryUnit.BYTES);
+                        } else if (unit.equalsIgnoreCase("MB")) {
+                            size = MemoryUnit.MEBIBYTES.to(size, MemoryUnit.BYTES);
+                        }
                     }
+                } catch (final NumberFormatException numberFormatException) {
+                    if (IndianUtils.debug) numberFormatException.printStackTrace();
                 }
             }
 
             if (line.contains("Speed")) {
+                try {
                 final String[] parts = line.split(":");
                 basicSpeed = Long.parseLong(parts[1].replaceAll("MT/s", "").trim());
+                } catch (final NumberFormatException ignored) {
+                }
             }
 
             if (line.contains("Configured Memory Speed")) {
+                try {
                 final String[] parts = line.split(":");
                 configuredSpeed = Long.parseLong(parts[1].replaceAll("MT/s", "").trim());
+                } catch (final NumberFormatException ignored) {
+                }
             }
 
             if (line.contains("Type:")) {
+                try {
                 final String[] parts = line.split(":");
                 memoryType = parts[1].trim();
+                } catch (final NumberFormatException ignored) {
+                }
             }
 
             if (line.contains("Part Number")) {
+                try {
                 final String[] parts = line.split(":");
                 partNumber = parts[1].trim();
+                } catch (final NumberFormatException ignored) {
+                }
             }
 
             if (line.contains("Bank Locator")) {
+                try {
                 final String[] parts = line.split(":");
                 bankLabel = parts[1].trim();
+                } catch (final NumberFormatException ignored) {
+                }
             }
         }
 
         return new Ram(size, basicSpeed, configuredSpeed, memoryType, partNumber, bankLabel);
     }
-
 }
