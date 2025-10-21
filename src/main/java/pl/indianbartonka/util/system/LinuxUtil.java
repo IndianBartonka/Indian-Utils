@@ -9,6 +9,7 @@ import java.io.UncheckedIOException;
 import java.nio.file.FileStore;
 import java.nio.file.Files;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 import org.jetbrains.annotations.VisibleForTesting;
@@ -167,9 +168,8 @@ public final class LinuxUtil {
 
             process.waitFor();
         } catch (final IOException | InterruptedException exception) {
-            if (IndianUtils.debug) {
-                exception.printStackTrace();
-            }
+            if (IndianUtils.debug) exception.printStackTrace();
+
         }
 
         return model;
@@ -206,9 +206,8 @@ public final class LinuxUtil {
                 }
             }
         } catch (final IOException | InterruptedException exception) {
-            if (IndianUtils.debug) {
-                exception.printStackTrace();
-            }
+            if (IndianUtils.debug) exception.printStackTrace();
+
         }
         return type;
     }
@@ -246,20 +245,24 @@ public final class LinuxUtil {
                     line = line.trim();
 
                     if (line.isEmpty()) {
-                        final Ram ramStick = ramParser(lines);
+                        try {
+                            final Ram ramStick = ramParser(lines);
 
-                        if (ramStick.basicSpeed() != -1) {
-                            ramList.add(ramStick);
+                            if (ramStick.basicSpeed() != -1) {
+                                ramList.add(ramStick);
+                            }
+
+                            lines.clear();
+                        } catch (final NumberFormatException numberFormatException) {
+                            if (IndianUtils.debug) numberFormatException.printStackTrace();
                         }
-
-                        lines.clear();
                     } else {
                         lines.add(line);
                     }
                 }
             }
-        } catch (final IOException ignored) {
-
+        } catch (final IOException  ioException) {
+            if (IndianUtils.debug) ioException.printStackTrace();
         }
 
         return ramList;
@@ -274,9 +277,23 @@ public final class LinuxUtil {
         String bankLabel = "";
 
         for (final String line : lines) {
+
             if (line.trim().startsWith("Size:")) {
                 final String[] parts = line.split(":");
                 size = Long.parseLong(parts[1].trim().split(" ")[0].trim());
+
+                System.out.println(parts.length);
+                System.out.println(Arrays.toString(parts));
+
+                if (parts.length == 3) {
+                    final String d = parts[2].trim();
+
+                    if(d.equalsIgnoreCase("GB")){
+                        size = MemoryUnit.GIBIBYTES.to(size, MemoryUnit.BYTES);
+                    } else if (d.equalsIgnoreCase("MB")) {
+                        size = MemoryUnit.MEBIBYTES.to(size, MemoryUnit.BYTES);
+                    }
+                }
             }
 
             if (line.contains("Speed")) {
@@ -305,7 +322,7 @@ public final class LinuxUtil {
             }
         }
 
-        return new Ram(MemoryUnit.GIBIBYTES.to(size, MemoryUnit.BYTES), basicSpeed, configuredSpeed, memoryType, partNumber, bankLabel);
+        return new Ram(size, basicSpeed, configuredSpeed, memoryType, partNumber, bankLabel);
     }
 
 }
