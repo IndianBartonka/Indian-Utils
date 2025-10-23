@@ -195,6 +195,7 @@ public class WebHookClient {
                 this.logger.warning("&cWysyłasz zbyt dużo&b requestów&c!");
                 this.logger.alert("Odczekamy teraz &eminute&r zanim wyślemy następne!");
                 this.rateLimitNow();
+                //TODO: To handluj bezpośrednio w metodzie albo jakoś inaczej to zrób i zrobi się metode "resend" czy coś w tym stylu 
             } else {
                 this.logger.debug("Kod odpowiedzi: " + statusCode.getCode());
             }
