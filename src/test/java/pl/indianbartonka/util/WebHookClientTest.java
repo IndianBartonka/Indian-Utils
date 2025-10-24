@@ -21,21 +21,23 @@ public class WebHookClientTest {
     private static final LoggerConfiguration loggerConfiguration = LoggerConfiguration.builder()
             .setLogsPath(System.getProperty("user.dir") + File.separator + "logs")
             .setLoggingToFile(true)
+            .setDebug(true)
             .build();
 
     private final Logger logger = new Logger(loggerConfiguration) {
     };
 
-    private final WebHookClient client = new WebHookClient(this.logger, false);
     private final String userName = "Tescior";
     private final String avatarURL = "https://th.bing.com/th/id/OIP.f3tTSSqVRSktMK8uFBqlJQHaIi?w=148&h=180&c=7&r=0&o=5&dpr=1.3&pid=1.7";
     //I don't care :)
-    private final String webhookURL = "https://discord.com/api/webhooks/1284515601615814738/J57QHGXF4xm52pVnxaLpMAUqx0cTAFyF1Gq4co5d6iM6MSeoY4F73a6eQBdEXO8sJsw6";
+    private final String webhookURL = "https://discord.com/api/webhooks/1431293923392880796/2yaI87lcfy5hQEZTzxXRpQl6cJxCgEQ7xvQmyJpoicRhYIj2xyP3ZHzKVka9a34vuISM";
+    private final WebHookClient client = new WebHookClient(this.logger, false, this.webhookURL, this.userName, this.avatarURL);
 
     @Test
     public void sendMessage() {
-        this.client.sendMessage(this.webhookURL, this.userName, this.avatarURL, "Siema");
+        this.client.sendMessage("Siema");
     }
+
 
     @Test
     public void sendEmbed() {
@@ -64,6 +66,6 @@ public class WebHookClientTest {
                 .build();
 
 
-        this.client.sendEmbedMessage(this.webhookURL, this.userName, this.avatarURL, embed);
+        this.client.sendEmbedMessage(embed);
     }
 }

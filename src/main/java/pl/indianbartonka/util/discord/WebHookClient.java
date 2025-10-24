@@ -10,9 +10,11 @@ import java.util.concurrent.locks.ReentrantLock;
 import org.jetbrains.annotations.Nullable;
 import pl.indianbartonka.util.GsonUtil;
 import pl.indianbartonka.util.ThreadUtil;
+import pl.indianbartonka.util.annotation.Since;
 import pl.indianbartonka.util.discord.embed.Embed;
 import pl.indianbartonka.util.http.ContentType;
 import pl.indianbartonka.util.http.HttpStatusCode;
+import pl.indianbartonka.util.http.UserAgent;
 import pl.indianbartonka.util.http.connection.Connection;
 import pl.indianbartonka.util.http.connection.request.Request;
 import pl.indianbartonka.util.http.connection.request.RequestBody;
@@ -25,24 +27,24 @@ public class WebHookClient {
     private final ScheduledExecutorService service;
     private final ReentrantLock lock;
     private final Gson gson;
-    private int requests;
-    private boolean block;
+    private String webhookURL;
+    private String userName;
+    private @Nullable String avatarUrl;
 
-    public WebHookClient(final Logger logger, final Gson gson, final boolean disableShutdownHook) {
+    public WebHookClient(final Logger logger, final Gson gson, final boolean disableShutdownHook, final String webhookURL, final String userName, @Nullable final String avatarUrl) {
         this.logger = logger;
-        this.service = Executors.newScheduledThreadPool(4, new ThreadUtil("Discord-WebHook"));
+        this.webhookURL = webhookURL;
+        this.userName = userName;
+        this.avatarUrl = avatarUrl;
+        this.service = Executors.newScheduledThreadPool(4, new ThreadUtil("Discord-WebHook-" + userName));
         this.lock = new ReentrantLock();
         this.gson = gson;
-        this.requests = 0;
-        this.block = false;
-
-        this.resetRequestsOnMinute();
 
         if (!disableShutdownHook) this.addShutdownHook();
     }
 
-    public WebHookClient(final Logger logger, final boolean disableShutdownHook) {
-        this(logger, GsonUtil.getGson(), disableShutdownHook);
+    public WebHookClient(final Logger logger, final boolean disableShutdownHook, final String webhookURL, final String userName, @Nullable final String avatarUrl) {
+        this(logger, GsonUtil.getGson(), disableShutdownHook, webhookURL, userName, avatarUrl);
     }
 
     private void addShutdownHook() {
@@ -57,45 +59,16 @@ public class WebHookClient {
         }));
     }
 
-    private void rateLimit() {
-        this.logger.debug("Aktualna liczba wysłanych requestów do discord: " + (this.requests + 1));
-        if (this.requests == 19) {
-            this.rateLimitNow();
-        }
-    }
-
-    private void rateLimitNow() {
-        try {
-            this.lock.lock();
-            this.block = true;
-            this.logger.debug("Czekanie ");
-            ThreadUtil.sleep(60);
-            this.requests = 0;
-            this.block = false;
-            this.logger.debug("Przeczekano ");
-        } finally {
-            this.lock.unlock();
-        }
-    }
-
-    private void resetRequestsOnMinute() {
-        //Requesty nie muszą być zawsze wysyłane co sekunde
-        // Więc po 3 min resetuje je, bo gdy wysyłamy jeden co np 10s to limit nie powinien zostać przekroczony
-
-        this.service.scheduleAtFixedRate(() -> this.requests = 0, 0, 3, TimeUnit.MINUTES);
-    }
-
-    public void sendMessage(final String webhookURL, final String userName, @Nullable final String avatarUrl, final String message) {
+    public void sendMessage(final String message) {
         this.service.execute(() -> {
 
             try {
                 this.lock.lock();
-                this.rateLimit();
 
                 final JsonObject jsonPayload = new JsonObject();
                 jsonPayload.addProperty("content", message);
-                jsonPayload.addProperty("username", userName);
-                jsonPayload.addProperty("avatar_url", avatarUrl);
+                jsonPayload.addProperty("username", this.userName);
+                jsonPayload.addProperty("avatar_url", this.avatarUrl);
                 jsonPayload.addProperty("tts", false);
 
                 if (message.isEmpty()) {
@@ -104,13 +77,14 @@ public class WebHookClient {
                 }
 
                 final Request request = new RequestBuilder()
-                        .setUrl(webhookURL)
+                        .setUrl(this.webhookURL)
                         .setContentType(ContentType.APPLICATION_JSON)
+                        .setUserAgent(UserAgent.randomUserAgent())
                         .POST(new RequestBody(this.gson.toJson(jsonPayload).getBytes()))
                         .build();
 
                 try (final Connection connection = new Connection(request)) {
-                    this.handleHttpCode(connection.getHttpStatusCode());
+                    this.handleHttpCode(connection.getHttpStatusCode(), message, null);
                 }
 
             } catch (final Exception exception) {
@@ -121,16 +95,15 @@ public class WebHookClient {
         });
     }
 
-    public void sendEmbedMessage(final String webhookURL, final String userName, @Nullable final String avatarUrl, final Embed embed) {
+    public void sendEmbedMessage(final Embed embed) {
         this.service.execute(() -> {
 
             try {
                 this.lock.lock();
-                this.rateLimit();
 
                 final JsonObject jsonPayload = new JsonObject();
-                jsonPayload.addProperty("username", userName);
-                jsonPayload.addProperty("avatar_url", avatarUrl);
+                jsonPayload.addProperty("username", this.userName);
+                jsonPayload.addProperty("avatar_url", this.avatarUrl);
                 jsonPayload.addProperty("tts", embed.isTts());
 
                 final JsonArray embedsArray = new JsonArray();
@@ -138,13 +111,14 @@ public class WebHookClient {
                 jsonPayload.add("embeds", embedsArray);
 
                 final Request request = new RequestBuilder()
-                        .setUrl(webhookURL)
+                        .setUrl(this.webhookURL)
                         .setContentType(ContentType.APPLICATION_JSON)
+                        .setUserAgent(UserAgent.randomUserAgent())
                         .POST(new RequestBody(this.gson.toJson(jsonPayload).getBytes()))
                         .build();
 
                 try (final Connection connection = new Connection(request)) {
-                    this.handleHttpCode(connection.getHttpStatusCode());
+                    this.handleHttpCode(connection.getHttpStatusCode(), null, embed);
                 }
 
             } catch (final Exception exception) {
@@ -157,7 +131,7 @@ public class WebHookClient {
 
     public void shutdown() {
         try {
-            while (this.block || this.lock.isLocked()) {
+            while (this.lock.isLocked()) {
                 this.logger.alert("Czekanie na możliwość wysłania requestów do discord, następna próba za&a 10&b sekund");
                 ThreadUtil.sleep(10);
             }
@@ -180,9 +154,7 @@ public class WebHookClient {
         }
     }
 
-    private void handleHttpCode(final HttpStatusCode statusCode) {
-        this.requests++;
-
+    private void handleHttpCode(final HttpStatusCode statusCode, final String message, final Embed embed) {
         if (statusCode == HttpStatusCode.UNKNOWN) {
             this.logger.error("Nieznany kod odpowiedzi!");
             return;
@@ -193,12 +165,46 @@ public class WebHookClient {
         } else if (statusCode != HttpStatusCode.NO_CONTENT) {
             if (statusCode == HttpStatusCode.TOO_MANY_REQUESTS) {
                 this.logger.warning("&cWysyłasz zbyt dużo&b requestów&c!");
-                this.logger.alert("Odczekamy teraz &eminute&r zanim wyślemy następne!");
-                this.rateLimitNow();
-                //TODO: To handluj bezpośrednio w metodzie albo jakoś inaczej to zrób i zrobi się metode "resend" czy coś w tym stylu 
+                this.logger.alert("Odczekamy teraz &a30&b sekund&r zanim wyślemy następne!");
+
+                if (message != null) this.sendMessage(message);
+                if (embed != null) this.sendEmbedMessage(embed);
+
+                ThreadUtil.sleep(30);
+
             } else {
-                this.logger.debug("Kod odpowiedzi: " + statusCode.getCode());
+                this.logger.error("Kod odpowiedzi: " + statusCode.getCode());
             }
         }
+    }
+
+    @Since("0.0.9.5")
+    public String getWebhookURL() {
+        return this.webhookURL;
+    }
+
+    @Since("0.0.9.5")
+    public void setWebhookURL(final String webhookURL) {
+        this.webhookURL = webhookURL;
+    }
+
+    @Since("0.0.9.5")
+    public String getUserName() {
+        return this.userName;
+    }
+
+    @Since("0.0.9.5")
+    public void setUserName(final String userName) {
+        this.userName = userName;
+    }
+
+    @Since("0.0.9.5")
+    public @Nullable String getAvatarUrl() {
+        return this.avatarUrl;
+    }
+
+    @Since("0.0.9.5")
+    public void setAvatarUrl(@Nullable final String avatarUrl) {
+        this.avatarUrl = avatarUrl;
     }
 }
