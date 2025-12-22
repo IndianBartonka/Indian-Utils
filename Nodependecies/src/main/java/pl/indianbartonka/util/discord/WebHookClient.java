@@ -95,6 +95,8 @@ public class WebHookClient {
         });
     }
 
+    //TODO: Ogarnij info ile ma limitu znakow embed i fieldow ile max
+
     public void sendEmbedMessage(final Embed embed) {
         this.service.execute(() -> {
 

@@ -1,1 +1,0 @@
-Aktualne ikony są wygenerowane przez GPT i Bing Chat
