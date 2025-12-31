@@ -14,6 +14,7 @@ public class LoggerTest {
     @BeforeEach
     void setUp() {
         final LoggerConfiguration loggerConfiguration = LoggerConfiguration.builder()
+                .setLogName("Log-" + DateUtil.getFixedDate())
                 .setLogsPath(System.getProperty("user.dir") + File.separator + "logs")
                 .setLoggingToFile(true)
                 .setLogJULtoFile(true)

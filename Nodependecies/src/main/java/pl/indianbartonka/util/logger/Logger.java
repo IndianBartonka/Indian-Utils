@@ -155,8 +155,7 @@ public abstract class Logger {
             if (files == null) return;
 
             for (final File file : files) {
-                if (!file.isFile() && !file.getName().contains(".lck")) continue;
-                FileUtil.deleteFile(file);
+                if (!file.isFile() && file.getName().contains(".lck")) FileUtil.deleteFile(file);
             }
         } catch (final IOException | UncheckedIOException ioException) {
             if (IndianUtils.debug) {
