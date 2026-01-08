@@ -1,5 +1,6 @@
 package pl.indianbartonka.util;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
@@ -233,7 +234,32 @@ public final class Test {
         }
     }
 
-    public static void main(final String[] args) throws IOException {
+    public static void main(String[] args) {
+        try {
+            // Komenda sprawdzająca klucz rejestru dla zainstalowanych aplikacji (64-bit)
+            String command = "reg query HKLM\\Software\\Microsoft\\Windows\\CurrentVersion\\Uninstall /s /f \"DisplayName\"";
+
+            Process process = Runtime.getRuntime().exec(command);
+            BufferedReader reader = process.inputReader();
+
+            String line;
+            System.out.println("Lista zainstalowanych programów:");
+            System.out.println("--------------------------------");
+
+            while ((line = reader.readLine()) != null) {
+                if (line.contains("DisplayName")) {
+                    // Wyciąganie samej nazwy programu z wiersza rejestru
+                    String programName = line.split("REG_SZ")[1].trim();
+                    System.out.println(programName);
+                }
+            }
+            reader.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void maind(final String[] args) throws IOException {
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(500, 250);
         frame.setLocationRelativeTo(null);

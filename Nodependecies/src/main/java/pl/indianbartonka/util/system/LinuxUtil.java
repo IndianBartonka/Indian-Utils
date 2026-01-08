@@ -4,7 +4,6 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.io.UncheckedIOException;
 import java.nio.file.FileStore;
 import java.nio.file.Files;
@@ -40,7 +39,7 @@ public final class LinuxUtil {
     private static String getWpaWiFiSSID() {
         try {
             final Process process = Runtime.getRuntime().exec("wpa_cli status");
-            try (final BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()))) {
+             try (final BufferedReader reader = process.inputReader()) {
                 String ssid;
                 while ((ssid = reader.readLine()) != null) {
                     if (ssid.contains("ssid=") && !ssid.contains("bssid=")) {
@@ -57,7 +56,7 @@ public final class LinuxUtil {
     private static String getNmWiFiSSID() {
         try {
             final Process process = Runtime.getRuntime().exec("nmcli -t -f name connection show --active");
-            try (final BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()))) {
+             try (final BufferedReader reader = process.inputReader()) {
                 String ssid;
                 while ((ssid = reader.readLine()) != null) {
                     if (!ssid.equalsIgnoreCase("lo") && !ssid.isEmpty()) return ssid;
@@ -71,7 +70,7 @@ public final class LinuxUtil {
 
     public static String getProcessorName() throws IOException {
         final Process process = new ProcessBuilder("sh", "-c", "grep -m 1 'Model\\|Hardware\\|model name' /proc/cpuinfo | cut -d ':' -f2 | xargs").start();
-        try (final BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()))) {
+         try (final BufferedReader reader = process.inputReader()) {
             final String line = reader.readLine();
             return (line != null && !line.trim().isEmpty()) ? line.trim() : "Nie znaleziono nazwy procesora";
         }
@@ -82,7 +81,7 @@ public final class LinuxUtil {
 
         //TODO: Dodać wasparcie dla zintegrowanych układów graficznych
         final Process process = new ProcessBuilder("sh", "-c", "lspci | grep -i 'vga\\|3d\\|2d' | cut -d ':' -f3").start();
-        try (final BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()))) {
+         try (final BufferedReader reader = process.inputReader()) {
             String line;
             while ((line = reader.readLine()) != null) {
                 cards.add(line.trim());
@@ -154,7 +153,7 @@ public final class LinuxUtil {
 
             final Process process = Runtime.getRuntime().exec(cmd);
 
-            try (final BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()))) {
+             try (final BufferedReader reader = process.inputReader()) {
                 String line;
                 while ((line = reader.readLine()) != null) {
                     line = line.trim();
@@ -183,7 +182,7 @@ public final class LinuxUtil {
             );
 
             final String disk;
-            try (final BufferedReader reader = new BufferedReader(new InputStreamReader(psychicalDisk.getInputStream()))) {
+            try (final BufferedReader reader = psychicalDisk.inputReader()) {
                 disk = reader.readLine();
             }
 
@@ -194,7 +193,7 @@ public final class LinuxUtil {
 
                 final String rotational;
 
-                try (final BufferedReader r2 = new BufferedReader(new InputStreamReader(diskType.getInputStream()))) {
+                try (final BufferedReader r2 = diskType.inputReader()) {
                     rotational = r2.readLine();
                 }
 
@@ -214,7 +213,7 @@ public final class LinuxUtil {
     public static long getMemoryUsage(final long pid) throws IOException {
         final Process process = Runtime.getRuntime().exec("ps -p " + pid + " -o rss=");
 
-        try (final BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()))) {
+         try (final BufferedReader reader = process.inputReader()) {
             //Robie tak na wszelki wypadek gdyby jakis system mial jakis niepotrzebny header w tym poleceniu
             String line;
             while ((line = reader.readLine()) != null) {
@@ -237,7 +236,7 @@ public final class LinuxUtil {
         try {
             final Process process = new ProcessBuilder("dmidecode", "--type", "17").start();
 
-            try (final BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()))) {
+             try (final BufferedReader reader = process.inputReader()) {
                 String line;
 
                 while ((line = reader.readLine()) != null) {

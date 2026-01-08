@@ -54,7 +54,7 @@ public final class IndianUtils {
     public static boolean wineCheck() {
         try {
             final Process process = Runtime.getRuntime().exec("wine --version");
-            try (final BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()))) {
+            try (final BufferedReader reader = process.inputReader()) {
                 String line;
                 while ((line = reader.readLine()) != null) {
                     if (line.contains("wine-")) return true;
@@ -71,7 +71,7 @@ public final class IndianUtils {
     public static boolean box64Check() {
         try {
             final Process process = Runtime.getRuntime().exec("box64 --version");
-            try (final BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()))) {
+             try (final BufferedReader reader = process.inputReader()) {
                 String line;
                 while ((line = reader.readLine()) != null) {
                     if (line.contains("Box64")) return true;
@@ -88,7 +88,7 @@ public final class IndianUtils {
     public static boolean box86Check() {
         try {
             final Process process = Runtime.getRuntime().exec("box86 --version");
-            try (final BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()))) {
+             try (final BufferedReader reader = process.inputReader()) {
                 String line;
                 while ((line = reader.readLine()) != null) {
                     if (line.contains("Box86")) return true;

@@ -3,7 +3,6 @@ package pl.indianbartonka.util.system;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.nio.file.FileStore;
 import java.nio.file.Files;
 import java.util.ArrayList;
@@ -27,7 +26,7 @@ public final class WindowsUtil {
     public static String getWiFiSSID() throws IOException {
         final Process process = new ProcessBuilder("powershell.exe", "Get-NetConnectionProfile").start();
 
-        try (final BufferedReader reader = new BufferedReader(process.inputReader())) {
+        try (final BufferedReader reader = process.inputReader()) {
             String line;
             while ((line = reader.readLine()) != null) {
                 if (line.trim().startsWith("Name")) {
@@ -44,7 +43,7 @@ public final class WindowsUtil {
     public static String getProcessorName() throws IOException {
         final Process process = new ProcessBuilder("powershell.exe", "-Command", "Get-CimInstance", "Win32_Processor", "|", "Select-Object", "-ExpandProperty", "Name").start();
 
-        try (final BufferedReader bufferedReader = new BufferedReader(process.inputReader())) {
+        try (final BufferedReader bufferedReader = process.inputReader()) {
             return bufferedReader.readLine();
         }
     }
@@ -53,7 +52,7 @@ public final class WindowsUtil {
         final Process process = new ProcessBuilder("powershell.exe", "-Command", "Get-CimInstance", "Win32_VideoController", "|", "Select-Object", "-ExpandProperty", "Name").start();
 
         final List<String> graphicCards = new ArrayList<>();
-        try (final BufferedReader bufferedReader = new BufferedReader(process.inputReader())) {
+        try (final BufferedReader bufferedReader = process.inputReader()) {
             String line;
             while ((line = bufferedReader.readLine()) != null) {
                 graphicCards.add(line.trim());
@@ -102,7 +101,7 @@ public final class WindowsUtil {
 
         try {
             final Process process = Runtime.getRuntime().exec("powershell.exe -Command \"(Get-Partition -DriveLetter " + diskLetter + " | Get-Disk).Model\"");
-            try (final BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()))) {
+             try (final BufferedReader reader = process.inputReader()) {
                 String line;
                 while ((line = reader.readLine()) != null) {
                     model = line;
@@ -128,7 +127,7 @@ public final class WindowsUtil {
 
             final Process process = new ProcessBuilder("powershell.exe", "-Command", command).start();
 
-            try (final BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()))) {
+             try (final BufferedReader reader = process.inputReader()) {
                 final String line = reader.readLine();
 
                 if (line != null && !line.isEmpty()) type = line;
@@ -146,7 +145,7 @@ public final class WindowsUtil {
 
     public static long getMemoryUsage(final long pid) throws IOException {
         final Process process = Runtime.getRuntime().exec("tasklist /NH /FI \"PID eq " + pid + "\"");
-        try (final BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()))) {
+         try (final BufferedReader reader = process.inputReader()) {
             String line;
             while ((line = reader.readLine()) != null) {
                 if (line.contains(".exe")) {
@@ -178,8 +177,7 @@ public final class WindowsUtil {
 
         final Process process = new ProcessBuilder("powershell.exe", "-Command", psScript).start();
 
-        try (final BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()))) {
-
+         try (final BufferedReader reader = process.inputReader()) {
             String line;
             while ((line = reader.readLine()) != null) {
                 if (line.isEmpty()) {
